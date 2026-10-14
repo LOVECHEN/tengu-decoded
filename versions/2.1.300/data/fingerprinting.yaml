@@ -1,0 +1,493 @@
+version: 2.1.300
+build: "2026-10-14T12:54:55Z"
+git_sha: c6733ae1276880507ca0c5b053ae18fb0df090d6
+runtime: Bun v1.4.3 standalone
+platform_analyzed: linux-x86_64
+packaging: ESM code-split, 2,401 application JS modules, cli.beauty.js 1,857,789 lines
+scope: full_device_fingerprint
+baseline: 2.1.197
+note: >-
+  Device fingerprinting for Claude Code 2.1.300. Symbols are per-build minified names;
+  readable names come from the build's re-export map (cli.beauty.js:877517). The marquee
+  delta is the identifier family. 2.1.197 already had TWO random ids (userID vW, machineID
+  z5t), not one. 2.1.300 adds summonSidKey (HMAC key, never sent), remoteControlMachineId
+  (UUID, sent raw as bridge machine_id), and a per-account P-256 device key registered
+  server-side that survives logout. Nothing is hardware-derived on the wire; the raw
+  /etc/machine-id is now read by first-party code for local pid-file bookkeeping.
+
+correction_to_brief: >-
+  The task brief stated 2.1.197 had one persistent random identifier. Verified false:
+  2.1.197 had userID (vW, 2.1.197 cli.beauty.js:606434) and machineID (z5t, 2.1.197
+  cli.beauty.js:606453). summonSidKey and remoteControlMachineId each have 0 hits in
+  2.1.197 cli.beauty.js.
+
+identifier_state:
+  module: 152 chunk-7rwjz6p0.js
+  crypto_imports: "randomBytes as Tu, randomUUID as tO (module 152)"
+  state_fields_line: cli.beauty.js:112840
+  state_fields: [generatedUserID, generatedMachineID, generatedSummonSidKey, remoteControlMachineIdOnce]
+  setters_line: cli.beauty.js:113017
+  hex_validator: { name: Ps, regex: "^[0-9a-f]{64}$", line: cli.beauty.js:115567 }
+  uuid_validator: { name: OO, line: cli.beauty.js:115607 }
+  first_arg_semantics: "storageV5 backend handle forwarded to config writer Ce(updater, e) (cli.beauty.js:113841); NOT a seed"
+  readable_alias_map: cli.beauty.js:877517
+  seed_install_ids:
+    fn: Uee
+    readable: seedInstallIDs
+    line: cli.beauty.js:115592
+    body: "_M(e), Umt(e), await $mt()"
+    entry_callers: [cli.beauty.js:740, cli.beauty.js:854, cli.beauty.js:948, cli.beauty.js:1289]
+  init_eager_line: cli.beauty.js:772825
+  init_eager_body: "oPo(n), Umt(n), z() && n !== void 0 && _M(n)"
+  diskless_mode:
+    predicate: "me() = host.launchOptions.diskless() (module 19)"
+    effect: "config writes in-memory only (Ls, cli.beauty.js:113830); ids become per-process"
+
+machine_identity:
+
+  user_id:
+    getter: _M
+    readable: getOrCreateUserID
+    was: vW
+    line: cli.beauty.js:115569
+    status: CHANGED
+    generation: 'Tu(32).toString("hex")'
+    config_field: userID
+    in_process_cache: generatedUserID
+    validation: "must match Ps (64 lowercase hex) or it is regenerated and overwritten (NEW)"
+    seed_param:
+      accepted: true
+      rule: "used only if it matches Ps (cli.beauty.js:115574)"
+      production_callers_passing_seed: none
+      only_alias_exposing_it: "_getOrCreateUserIDForTesting (K7s = _M, cli.beauty.js:115747)"
+    derived_from_hardware: false
+    hashed_before_transmission: false
+    survives_logout: true
+    reset_paths:
+      - delete or edit userID in global config
+      - change CLAUDE_CONFIG_DIR
+      - store a non-64-hex value (regenerated)
+      - "diskless mode: per process"
+    clearer_exists: false
+    call_sites:
+      - { line: cli.beauty.js:115593, module: 152, use: "Uee seed" }
+      - { line: cli.beauty.js:133594, module: 152, use: "central bundle coreUserData.deviceId" }
+      - { line: cli.beauty.js:142341, module: 152, use: "1P event user_id (PW)" }
+      - { line: cli.beauty.js:142411, module: 152, use: "GrowthBook exposure device_id (Mxo)" }
+      - { line: cli.beauty.js:176894, module: "187 chunk-v7aj317d.js", use: "Messages API metadata.user_id device_id (EBe)" }
+      - { line: cli.beauty.js:194426, module: "212 chunk-wtz98g8s.js", use: "OTel user.id (CDt)" }
+      - { line: cli.beauty.js:349721, module: "332 chunk-c17p1pm2.js", use: "Datadog getUserBucket" }
+      - { line: cli.beauty.js:350128, module: "334 chunk-pjq854na.js", use: "error-report user_bucket" }
+      - { line: cli.beauty.js:772825, module: "701 chunk-7g3j6er8.js", use: "init eager create (storage V5)" }
+      - { line: cli.beauty.js:813761, module: "767 chunk-fngv4535.js", use: "local org-config rollout bucket" }
+    direct_config_reader:
+      line: cli.beauty.js:1534796
+      module: "1802 chunk-babcr4fj.js (cc-plugin-telemetry)"
+      regex: "^[A-Za-z0-9_-]{8,128}$"
+    transmitted_as:
+      - { field: device_id, context: "Messages API metadata.user_id JSON", line: cli.beauty.js:176894 }
+      - { field: user_id, context: "1P event", line: cli.beauty.js:142342 }
+      - { field: deviceId, context: "1P user_metadata (central bundle)", line: cli.beauty.js:133611 }
+      - { field: "id/deviceID", context: "GrowthBook attributes", line: cli.beauty.js:142577 }
+      - { field: device_id, context: "GrowthBook exposure event", line: cli.beauty.js:142411 }
+      - { field: "user.id", context: "OTel resource", line: cli.beauty.js:194437 }
+      - { field: deviceId, context: "cc-plugin-telemetry row", line: cli.beauty.js:1534458 }
+
+  machine_id_random_token:
+    getter: Umt
+    readable: getOrCreateMachineID
+    was: z5t
+    line: cli.beauty.js:115581
+    status: CHANGED (64-hex validation only)
+    generation: 'Tu(32).toString("hex")'
+    config_field: machineID
+    eager: true
+    derived_from_hardware: false
+    survives_logout: true
+    reset: "_resetGeneratedMachineIDForTesting (test only)"
+    transmitted_as:
+      - field: host_name_redacted
+        value: "Umt().slice(0, 12)"
+        context: error report
+        endpoint: "https://browser-intake-us5-datadoghq.com/api/v2/logs"
+        line: cli.beauty.js:350262
+    sent_raw_anywhere_else: false
+
+  summon_sid_key:
+    getter: rPo
+    readable: getOrCreateSummonSidKey
+    line: cli.beauty.js:115596
+    status: NEW
+    generation: 'Tu(32).toString("hex")'
+    config_field: summonSidKey
+    eager: false
+    derived_from_hardware: false
+    survives_logout: true
+    reset: "_resetGeneratedSummonSidKeyForTesting (test only)"
+    sole_consumer:
+      module: "576 chunk-bhg73hzf.js"
+      fn: Se
+      line: cli.beauty.js:701360
+      formula: 'createHmac("sha256", rPo(storageV5)).update(sessionId + slug).digest("hex").slice(0, 16)'
+      session_id_source: "q from module 19, re-exported as getSessionId (cli.beauty.js:878167)"
+    key_transmitted: false
+    transmitted_as:
+      - field: sid
+        value: "HMAC-SHA256(summonSidKey, sessionId+artifactSlug)[0:16]"
+        body: "{status, reason?, covers_reply_id?, gesture_at?, sid, seq}"
+        endpoint: "POST /api/frame/comments/{slug}/{threadId}/summon-status (Pc.postRelayBound)"
+        lines: [cli.beauty.js:701445, cli.beauty.js:701462, cli.beauty.js:700340]
+    linkability: "stable per (session, artifact); not linkable across without the key"
+
+  remote_control_machine_id:
+    getter: f7s
+    inner: xO
+    readable: getOrCreateRemoteControlMachineId
+    line: cli.beauty.js:115613
+    status: NEW
+    generation: "crypto.randomUUID() (tO)"
+    config_field: remoteControlMachineId
+    persistence: "compare-and-set via xu; returns null if not persisted"
+    survives_logout: true
+    reset: "_resetRemoteControlMachineIdForTesting (test only)"
+    consumers: [cli.beauty.js:1079764, cli.beauty.js:1080324]
+    transmitted_as:
+      - field: machine_id
+        also: metadata.machine_id
+        endpoint: "POST {baseUrl}/v1/environments/bridge"
+        fn: registerBridgeEnvironment
+        lines: [cli.beauty.js:1075710, cli.beauty.js:1075737, cli.beauty.js:1075746]
+        sent_with: "machine_name = os.hostname() (pre-existing)"
+
+  device_key:
+    status: NEW
+    algorithm: "ECDSA P-256 (generateKeyPairSync ec prime256v1), PKCS8 DER base64"
+    keygen_line: cli.beauty.js:999861
+    indexed_by: accountUuid
+    stores:
+      file: { path: "~/.claude/.device-keys.json (os.homedir, NOT CLAUDE_CONFIG_DIR)", mode: "0600", path_fn_line: cli.beauty.js:271338, default_on_linux: true }
+      keychain: { service: "Claude Code-device-keys", line: cli.beauty.js:999673, selected_on_linux: false }
+      legacy: { field: "credentials store coworkRemoteDevice[accountUuid]", line: cli.beauty.js:999909 }
+      diskless: { line: cli.beauty.js:999818, holds_key: false }
+    gate: { flag: tengu_violin_wood, accessor: "rb (nx, module 272)", line: cli.beauty.js:280539 }
+    registration:
+      fn: Ee
+      line: cli.beauty.js:1000193
+      endpoint: "POST /api/organizations/:orgUUID/cowork/remote_devices"
+      endpoint_line: cli.beauty.js:1000152
+      body: "{display_name, platform: linux, public_key: SPKI DER base64}"
+      display_name_default: "Claude Code on <os.hostname()> · Linux (Mrt, cli.beauty.js:1000268; label from eHe(\"linux\"), cli.beauty.js:10588)"
+      auth: teleport-org
+      server_returns: "id -> rowPk -> deviceUUID"
+    signatures:
+      encoding: ieee-p1363
+      line: cli.beauty.js:1000076
+      domains: ["anthropic.ccr.create_session_bind.v1", "anthropic.ccr.session_bind.v1", "anthropic.ccr.tool_host_resume.v1"]
+      kid: "creg_<deviceUUID>"
+      session_create_fields: [target_device_id, bind_attestation, bind_attestation_issued_at]
+      session_create_line: cli.beauty.js:199009
+    survives_logout: true
+    logout_preserve_lines: [cli.beauty.js:958978, cli.beauty.js:959056]
+    derived_from_hardware: false
+
+  hardware_machine_id:
+    purpose: OpenTelemetry host.id
+    getter: getMachineId
+    dispatcher: { fn: IH, line: cli.beauty.js:91665, behaviour: "lazy dynamic import per process.platform" }
+    bundled_copies: 1
+    was_bundled_copies: 2
+    platforms:
+      darwin: { command: 'ioreg -rd1 -c "IOPlatformExpertDevice"', key: IOPlatformUUID, module: "962 chunk-q41h63mb.js", line: cli.beauty.js:906474 }
+      linux: { files: [/etc/machine-id, /var/lib/dbus/machine-id], module: "963 chunk-psfxkqtw.js", line: cli.beauty.js:906513 }
+      freebsd: { sources: [/etc/hostid, "kenv -q smbios.system.uuid"], module: "964 chunk-tn6appbd.js", line: cli.beauty.js:906558 }
+      win32: { command: '%windir%\System32\REG.exe QUERY HKLM\SOFTWARE\Microsoft\Cryptography /v MachineGuid', module: "965 chunk-pmkcaqa1.js", line: cli.beauty.js:906608 }
+      default: { module: "966 chunk-c3zefe0d.js", result: undefined }
+    host_detector_line: cli.beauty.js:91733
+    third_party_resource_builder:
+      fn: it
+      module: "1771 chunk-ftswk8c4.js"
+      line: cli.beauty.js:1470602
+      keeps_only: host.arch
+      os_detector_skipped_when: "i8e() (diskless + OTLP logs exporter)"
+    transmitted_by_default: false
+
+  pid_domain:
+    status: NEW
+    fn: XFs
+    module: "128 chunk-kbrwtpfv.js"
+    line: cli.beauty.js:100314
+    value_linux: "linux:<raw /etc/machine-id>:<readlink /proc/self/ns/pid>"
+    value_windows: "linux:<os.hostname().toLowerCase()>"
+    memoised_by: "MA (ownPidDomain), cli.beauty.js:100382"
+    sibling: "wme() pidSpace = hostname#pidns (cli.beauty.js:100369)"
+    written_to: ["session pid-files (cli.beauty.js:139910)", "peer/lock records (cli.beauty.js:103771, cli.beauty.js:119860)"]
+    used_for: "foreign PID namespace detection (cli.beauty.js:118893, cli.beauty.js:463172)"
+    network_sink_found: false
+    confidence: tentative
+
+  bridge_host_profile:
+    status: NEW
+    collector: { fn: Pzr, line: cli.beauty.js:1074734, inner: Izr, inner_line: cli.beauty.js:1074792 }
+    fields: [platform, arch, os_version, distro, wsl, tools, "mcp_servers (full only)", collected_at]
+    sent_as: "host on POST /v1/environments/bridge (cli.beauty.js:1075751)"
+    gates:
+      - { flag: tengu_bridge_host_profile, default: "off", line: cli.beauty.js:1074678 }
+      - { setting: remoteControl.shareHostProfile, line: cli.beauty.js:1074684 }
+
+hashing_primitives:
+  identity_derivatives:
+    - { name: datadog_userBucket, formula: "parseInt(sha256(userID).slice(0,8),16) % 30", transmitted: integer, line: cli.beauty.js:349720 }
+    - { name: error_user_bucket, formula: "parseInt(sha256(userID).slice(0,8),16) % 30", transmitted: integer, line: cli.beauty.js:350125 }
+    - { name: org_config_gate_bucket, formula: 'parseInt(sha256("org_config_gate:"+userID).slice(0,8),16) % 100', transmitted: false, status: NEW, line: cli.beauty.js:813601 }
+    - { name: summon_sid, formula: "HMAC-SHA256(summonSidKey, sessionId+slug)[0:16]", transmitted: true, status: NEW, line: cli.beauty.js:701360 }
+    - { name: repo_hash_rh, formula: "sha256(normalised git remote URL)[0:16]", transmitted: true, line: cli.beauty.js:59932 }
+  reversible_encodings:
+    - "user.account_id = CLAUDE_CODE_ACCOUNT_TAGGED_ID || uqn('user', accountUuid) (cli.beauty.js:194471)"
+  createHash_totals: "not recomputed (per-chunk import aliases make a literal grep non-comparable to 2.1.197)"
+
+identity_fields:
+  - name: userID
+    aka: [device_id, deviceId, user_id, "user.id"]
+    accessor: "_M() cli.beauty.js:115569"
+    hashed: false
+  - name: machineID
+    aka: [host_name_redacted]
+    accessor: "Umt() cli.beauty.js:115581"
+    transmitted: "12-hex prefix only (cli.beauty.js:350262)"
+  - name: summonSidKey
+    accessor: "rPo() cli.beauty.js:115596"
+    transmitted: "never (HMAC key)"
+    status: NEW
+  - name: remoteControlMachineId
+    aka: [machine_id]
+    accessor: "f7s() cli.beauty.js:115613"
+    transmitted: "raw, bridge registration"
+    status: NEW
+  - name: deviceUUID
+    aka: [target_device_id, rowPk]
+    source: "server-assigned on device registry (cli.beauty.js:1000193)"
+    status: NEW
+  - name: accountUuid
+    source: "VC() gateway ?? An() oauthAccount ?? env when diskless (cli.beauty.js:133604)"
+    validator: "Zw length>=8 passthrough (cli.beauty.js:133690)"
+    hashed: false
+  - name: organizationUuid
+    source: same as accountUuid
+    hashed: false
+  - name: emailAddress
+    central_getter: "ek.email() stub returning undefined (cli.beauty.js:133652)"
+    otel_emit: "!me() ? oauthAccount.emailAddress : i8e() ? CLAUDE_CODE_USER_EMAIL : undefined (cli.beauty.js:194465)"
+    plugin_telemetry: "only when userType === 'ant' (cli.beauty.js:1534896)"
+    plaintext_pii: true
+  - name: sessionId
+    source: "q() / getSessionId (module 19)"
+  - name: parent_session_id
+    source: "QC() (cli.beauty.js:103144)"
+    status: "NEW in Messages API metadata (cli.beauty.js:176898)"
+
+central_metadata_bundle:
+  class: ek
+  method: coreUserData
+  was: nit
+  line: cli.beauty.js:133593
+  fields: [deviceId, sessionId, "email (stub -> undefined)", appVersion, platform, organizationUuid, accountUuid, "userType: external", subscriptionType, rateLimitTier, firstTokenTime, "githubActionsMetadata?"]
+  change: "account/org prefer gateway account VC(); env fallback when diskless"
+
+service_identity_matrix:
+  anthropic_messages_api:
+    builder: { fn: EBe, line: cli.beauty.js:176875, module: "187 chunk-v7aj317d.js" }
+    fields: [device_id, account_uuid, session_id, "parent_session_id (NEW)", "tk (NEW, only when CLAUDE_CODE_REMOTE and Jn(); vmt)", "ti (declared, never assigned)"]
+    extra_metadata: "CLAUDE_CODE_EXTRA_METADATA sanitised; dropped if JSON > 512 bytes (Za, cli.beauty.js:176697)"
+    hashed: false
+  growthbook:
+    attrs_builder: { fn: aqn, line: cli.beauty.js:142800, shaper: nT, shaper_line: cli.beauty.js:142573 }
+    exposure_event_line: cli.beauty.js:142397
+    new_attrs: [organizationRole, subscriptionCreatedAt, sessionOrigin, ccrDerivedSurface, atisPin, slackTagConnected]
+    email: "absent (stub)"
+  first_party_event_sink:
+    endpoint: "{baseUrl}/api/event_logging/v2/batch"
+    transport_line: cli.beauty.js:141444
+    builder_line: cli.beauty.js:142328
+    core_metadata_fn: { fn: GOr, line: cli.beauty.js:141165 }
+    new_core_fields: [is_clean_tree_at_start, changed_file_count_at_start, untracked_file_count_at_start, remoteControlLane, projectsSession, promptId, rendererMode]
+    head_sha_gate: "not diskless AND Claude.ai Max/Pro (c5, cli.beauty.js:131207)"
+  datadog:
+    endpoint: "https://http-intake.logs.us5.datadoghq.com/api/v2/logs"
+    endpoint_line: cli.beauty.js:349576
+    client_token: pubea5604… (redacted)
+    token_line: cli.beauty.js:349577
+    gate: "Ie() === 'firstParty' and event in allowlist O (cli.beauty.js:349582)"
+    id: "userBucket (0-29)"
+    strips: [head_sha, is_clean_tree_at_start, changed_file_count_at_start, untracked_file_count_at_start]
+  error_reports:
+    builder: { fn: K, module: "334 chunk-pjq854na.js", line: cli.beauty.js:350206 }
+    endpoint: "https://browser-intake-us5-datadoghq.com/api/v2/logs?ddsource=browser&dd-api-key=<client token>"
+    endpoint_line: cli.beauty.js:349907
+    gate: "TMs (cli.beauty.js:349419): not DISABLE_ERROR_REPORTING, not diskless, firstParty, compliance verdict"
+    per_process_cap: 100
+    redacted_host_field: "host_name_redacted = Umt().slice(0,12)"
+    os_release: "major.minor only"
+    real_hostname_sent: false
+  opentelemetry:
+    builder: { fn: CDt, line: cli.beauty.js:194425, module: "212 chunk-wtz98g8s.js" }
+    include_flag_defaults:
+      OTEL_METRICS_INCLUDE_SESSION_ID: true
+      OTEL_METRICS_INCLUDE_VERSION: false
+      OTEL_METRICS_INCLUDE_ACCOUNT_UUID: true
+      OTEL_METRICS_INCLUDE_ENTRYPOINT: false
+      OTEL_METRICS_INCLUDE_RESOURCE_ATTRIBUTES: true
+      OTEL_METRICS_INCLUDE_REPOSITORY: false
+    include_flag_defaults_line: cli.beauty.js:194373
+    repository_attrs: ["vcs.repository.url.full", "vcs.owner.name", "vcs.repository.name", "vcs.provider.name"]
+    oidc_overlay: { fn: ZAr, line: cli.beauty.js:194356 }
+  bridge_registration:
+    endpoint: "POST {baseUrl}/v1/environments/bridge"
+    line: cli.beauty.js:1075710
+    fields: [machine_name, "machine_id (NEW)", directory, branch, git_repo_url, max_sessions, metadata, "host (NEW)", environment_id]
+  summon_status:
+    endpoint: "POST /api/frame/comments/{slug}/{threadId}/summon-status"
+    line: cli.beauty.js:700340
+    id_field: "sid (HMAC)"
+    status: NEW
+  device_registry:
+    endpoint: "POST /api/organizations/:orgUUID/cowork/remote_devices"
+    line: cli.beauty.js:1000152
+    status: NEW
+  plugin_telemetry:
+    service: cc-plugin-telemetry
+    module: "1802 chunk-babcr4fj.js"
+    line: cli.beauty.js:1534439
+    endpoint: "https://api.anthropic.com/api/event_logging/v2/batch (hard-coded)"
+    endpoint_line: cli.beauty.js:1534583
+    header: "x-service-name: claude-code"
+    row_builder_line: cli.beauty.js:1534454
+    host_probes: ["uname -s", "uname -r", "uname -m", "command -v npm yarn pnpm bun deno node"]
+    allowed_tiers: [builtin, core]
+    status: NEW
+  segment:
+    active: false
+
+compliance_allowlist_mode:
+  status: NEW
+  predicate: { fn: Zk, line: cli.beauty.js:135958, body: 'Ta("hipaa") || (Ugt() && (local-agent entrypoint || PUs()))' }
+  applies_to: ["1P events (rin, cli.beauty.js:136259)", "Datadog rows (txo -> wNs, cli.beauty.js:349835)"]
+  schemas_line: cli.beauty.js:136280
+  effects: ["os.version forced off", "user.email not in allowlist", "ids shape-validated"]
+  confidence: "taint source not traced"
+
+trust_mechanisms:
+  trusted_device_token:
+    module: "287 chunk-ayxavv1t.js"
+    enroll_fn: { fn: son, line: cli.beauty.js:292569 }
+    endpoint: "POST {BASE_API_URL}/api/auth/trusted_devices"
+    endpoint_line: cli.beauty.js:292628
+    request_body: "{display_name: Claude Code on <os.hostname()> · Linux}  (eHe(\"linux\") -> \"Linux\", cli.beauty.js:292629, cli.beauty.js:10588)"
+    response_field: device_token
+    triggers: [proactive, "server_denied (NEW)", "device_bind (NEW)"]
+    gates:
+      - { name: tengu_sessions_elevated_auth_enforcement, line: cli.beauty.js:292296 }
+      - { name: require_trusted_devices, line: cli.beauty.js:292297 }
+      - { name: tengu_sessions_elevated_auth_disable_proactive_enrollment, line: cli.beauty.js:292298 }
+      - { name: "essential-traffic-only skip (NEW)", line: cli.beauty.js:292613 }
+    env_override: CLAUDE_TRUSTED_DEVICE_TOKEN
+    reader_line: cli.beauty.js:292428
+    new_stored_field: trustedDeviceEnrolledAfterRefusalAtMs
+    header: X-Trusted-Device-Token
+    header_literal_count: { v2_1_197: 5, v2_1_300: 27 }
+    machine_bound: false
+  oauth:
+    client_id_prod: "9d1c250a-e61b-44d9-88ed-5944d1962f5e"
+    client_id_prod_line: cli.beauty.js:9522
+    client_id_local_dev: "22422756-60c9-4084-8eb7-27705fd5cf9a"
+    client_id_local_dev_line: cli.beauty.js:9548
+    design_client_id: "59637612-477b-4836-a601-b0589eda7704"
+    env_override: CLAUDE_CODE_OAUTH_CLIENT_ID
+    endpoints:
+      console_authorize: "https://platform.claude.com/oauth/authorize"
+      claude_ai_authorize: "https://claude.com/cai/oauth/authorize"
+      token: "https://platform.claude.com/v1/oauth/token"
+      create_api_key: "https://api.anthropic.com/api/oauth/claude_cli/create_api_key"
+      roles: "https://api.anthropic.com/api/oauth/claude_cli/roles"
+      profile: "{BASE_API_URL}/api/oauth/profile (cli.beauty.js:118237)"
+      claude_cli_profile: "{BASE_API_URL}/api/claude_cli_profile (cli.beauty.js:118214)"
+    pkce: { method: S256, line: cli.beauty.js:118397 }
+    scopes: ["user:inference", "user:profile", "org:create_api_key", "user:sessions:claude_code", "user:mcp_servers", "user:file_upload", "user:projects:read", "user:projects:write", "user:design:read", "user:design:write", "user:plugins (NEW)"]
+    device_identifiers_sent: none
+  provider_selector:
+    fn: Ie
+    was: yr
+    line: cli.beauty.js:21727
+    order: [gateway, bedrock, foundry, anthropicAws, anthropicGoogleCloud, mantle, vertex, firstParty]
+    role: routing / data residency; not geo-blocking
+
+credential_storage:
+  effective_backend: plaintext
+  backend_line: cli.beauty.js:98156
+  warning_line: cli.beauty.js:97953
+  dir: "CLAUDE_SECURESTORAGE_CONFIG_DIR or config dir (wx, cli.beauty.js:97643); null when diskless"
+  keychain_service_name: "Claude Code${OAUTH_FILE_SUFFIX}${suffix}${-sha256(configDir)[:8] when non-default} (Ome, cli.beauty.js:97653)"
+  encryption_at_rest: none
+  machine_bound: false
+  api_key_keychain_save: "dead code: let s = !1 (cli.beauty.js:129660-129681)"
+  logout_full_wipe: "default performLogout (preserveNonAnthropicAuth false): whole credentials store deleted (w.delete), then coworkRemoteDevice written back (cli.beauty.js:958976-958979, ee cli.beauty.js:959049)"
+  logout_selective_prune_when_preserveNonAnthropicAuth: [claudeAiOauth, organizationUuid, trustedDeviceToken, trustedDeviceEnrolledAfterRefusalAtMs, enterpriseGateway, designOauth, cloudSessionsOauth]
+  logout_selective_prune_line: cli.beauty.js:958963
+  logout_preserves: [coworkRemoteDevice, .device-keys.json, userID, machineID, summonSidKey, remoteControlMachineId]
+
+config_storage:
+  keys: [userID, machineID, summonSidKey, remoteControlMachineId, firstStartTime, oauthAccount]
+  writer: "Ce -> xu (cli.beauty.js:113841)"
+  reader: "ce()"
+
+kill_switches:
+  - DISABLE_TELEMETRY
+  - DISABLE_GROWTHBOOK
+  - DISABLE_ERROR_REPORTING
+  - DO_NOT_TRACK
+  - CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC
+
+env_identity_overrides:
+  - CLAUDE_CODE_ACCOUNT_UUID
+  - CLAUDE_CODE_ORGANIZATION_UUID
+  - CLAUDE_CODE_USER_EMAIL
+  - CLAUDE_CODE_ACCOUNT_TAGGED_ID
+  - CLAUDE_CODE_SESSION_ID
+  - CLAUDE_CODE_EXTRA_METADATA
+  - CLAUDE_TRUSTED_DEVICE_TOKEN
+  - CLAUDE_CODE_HOST_PLATFORM
+  - "CLAUDE_CODE_SESSION_ORIGIN (NEW)"
+
+what_leaves_the_machine:
+  - { id: userID, form: raw, where: "Messages API metadata, 1P events, GrowthBook, OTel user.id, cc-plugin-telemetry" }
+  - { id: userID, form: "bucket %30", where: "Datadog, error reports" }
+  - { id: machineID, form: "12-hex prefix", where: "error reports host_name_redacted" }
+  - { id: summonSidKey, form: "never; HMAC sid only", where: "summon-status" }
+  - { id: remoteControlMachineId, form: raw, where: "bridge registration machine_id" }
+  - { id: device_public_key, form: "SPKI + signatures", where: "cowork/remote_devices, session create bind_attestation" }
+  - { id: hostname, form: raw, where: "trusted_devices display_name, remote_devices display_name, bridge machine_name" }
+  - { id: hardware_machine_id, form: "not sent", where: "OTel stripped; pidDomain local (tentative)" }
+  - { id: email, form: raw, where: "OTel user.email (non-diskless, ungated)" }
+
+deltas_vs_2_1_197:
+  - "CORRECTION: 2.1.197 had two random ids (userID, machineID), not one"
+  - "NEW summonSidKey (rPo, cli.beauty.js:115596): HMAC key for summon-status sid; key never sent"
+  - "NEW remoteControlMachineId (f7s, cli.beauty.js:115613): UUID sent raw as bridge machine_id (cli.beauty.js:1075737)"
+  - "NEW per-account P-256 device key + /cowork/remote_devices registry + bind_attestation; survives logout (cli.beauty.js:958978, cli.beauty.js:959056)"
+  - "NEW pidDomain reads raw /etc/machine-id into local pid-files (cli.beauty.js:100314)"
+  - "CHANGED userID/machineID getters validate 64-hex; _M accepts an unused seed"
+  - "CHANGED Messages API metadata adds parent_session_id and tk; 512-byte cap"
+  - "CHANGED GrowthBook attributes add organizationRole, subscriptionCreatedAt, sessionOrigin, ccrDerivedSurface, atisPin, slackTagConnected"
+  - "NEW cc-plugin-telemetry service posting deviceId to hard-coded api.anthropic.com ingest"
+  - "NEW bridge host profile (flag default off)"
+  - "NEW OTEL_METRICS_INCLUDE_REPOSITORY (default false); OTel email gated only in diskless mode"
+  - "NEW trusted-device triggers server_denied/device_bind; header literal 5 -> 27"
+  - "NEW OAuth scope user:plugins; provider plane anthropicGoogleCloud"
+  - "Unchanged: Datadog client token, OAuth client ids, plaintext creds, dead keychain save, hardware UUID stripped from OTel"
+
+uncertainties:
+  - "Whether storage-V5 replicates session pid-files (containing raw /etc/machine-id) off-box was not traced"
+  - "Keychain device-key store defined but not selected on Linux; macOS/Windows builds not analysed"
+  - "z() gate at cli.beauty.js:772825 is chunk-local; storage-V5 meaning inferred"
+  - "Source of the hipaa taint and full Ugt() predicate not traced"
+  - "Whether the plugin-telemetry host fetch rewrites the hard-coded api.anthropic.com URL was not traced"
+  - "ti field in metadata.user_id is declared but never assigned in this build"

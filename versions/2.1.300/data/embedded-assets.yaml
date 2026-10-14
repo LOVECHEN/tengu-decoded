@@ -1,0 +1,1344 @@
+# Embedded assets - Claude Code (tengu) v2.1.300
+# Source: bundle/manifest.tsv (2,651 rows) + every /$bunfs/root/<name> literal in cli.beauty.js, mapped back to the manifest.
+# Build: 2026-10-14T12:54:55Z | GIT_SHA c6733ae1276880507ca0c5b053ae18fb0df090d6 | Runtime Bun v1.4.3
+# Every one of the 252 non-JS records is referenced exactly once (files[].line = the declaring line, files[].module = host module).
+# files[].bytes = stored bytes (compressed for .zst and the 3 vendored libs).
+# status is vs 2.1.197, whose source references only /$bunfs/root/image-processor.node and /$bunfs/root/audio-capture.node.
+# delivered_to: model = prompt text; disk = extracted skill/plugin folder; subprocess = node/python process; browser = Artifact/preview/localhost page.
+# Companion doc: ../embedded-assets.md
+version: 2.1.300
+baseline: 2.1.197
+build_time: '2026-10-14T12:54:55Z'
+git_sha: c6733ae1276880507ca0c5b053ae18fb0df090d6
+runtime: Bun v1.4.3
+totals:
+  embedded_files: 2651
+  stored_bytes: 50971068
+  js_modules: 2399
+  chunks: 2395
+  non_js_records: 252
+  non_js_stored_bytes: 4923889
+  zst_files: 139
+  zst_stored_bytes: 1814579
+  zst_decompressed_bytes: 5986213
+  vendored_zstd_js: 3
+  utf16_text_files: 16
+  note: The 2 .mjs records (ids 2567, 2568) are text-loader assets that extract.py concatenated into cli.min.js; they are not in bundle/modules/.
+readers:
+- name: Ne
+  definition: cli.beauty.js:1408 Ne = import.meta.require (module 7)
+  sites: 108
+  used_for: 106 text assets + 2 .node
+- name: tt
+  definition: cli.beauty.js:372893 (module 391)
+  sites: 139
+  used_for: every .zst, read at module evaluation
+- name: Nyo
+  definition: cli.beauty.js:372897 zstd magic [40,181,47,253] :372879, Bun.zstdDecompressSync; error "embedded asset is missing or corrupt" :372903
+  sites: 2
+  used_for: fonts
+- name: uct
+  definition: cli.beauty.js:372888 async Bun.zstdDecompress
+  sites: 3
+  used_for: vendored libs
+manifest_flags:
+- flags: '01010100'
+  rows: 2399
+  meaning: JS module (loader byte 0x01)
+- flags: '00050001'
+  rows: 144
+  meaning: 'file loader 0x05: 139 .zst + 3 vendored libs + 2 fonts'
+- flags: 010d0001
+  rows: 90
+  meaning: text loader 0x0d, stored single-byte (all pure ASCII)
+- flags: 020d0001
+  rows: 16
+  meaning: text loader 0x0d, stored UTF-16LE (all contain non-ASCII)
+- flags: 000a0001
+  rows: 2
+  meaning: napi loader 0x0a
+skill_extraction:
+  register: Zs = registerBundledSkill cli.beauty.js:365324 (module 363)
+  extract_dir: d3e() cli.beauty.js:365394 -> uHt() :228718 = <claudeTempDir>/bundled-skills/2.1.300/<32 hex>/<skill>
+groups:
+- id: code_chunks
+  title: Code-split application chunks
+  status: CHANGED
+  count: 2395
+  stored_bytes: 46009001
+  files:
+  - chunk-<hash>.js (2,395; min 615 B, median 4,882 B, max 4,934,447 B module 424 chunk-538n62w8.js)
+  purpose: The application, split by Bun into ESM chunks that import each other by absolute /$bunfs/root path.
+  reader: static import / import() (1,398) / import.meta.require (493), counted over cli.min.js
+  loaded_by:
+  - cli.beauty.js:438 entry static imports
+  - cli.beauty.js:1323 import("/$bunfs/root/chunk-eprgt5fw.js").main
+  delivered_to:
+  - runtime
+- id: entry_loader
+  title: Entry loader
+  status: CHANGED
+  count: 1
+  stored_bytes: 24477
+  files:
+  - name: cli
+    bytes: 24477
+    module: 6
+  purpose: '24 KB ESM loader: argv fast paths, then main.'
+  reader: Bun entry point
+  loaded_by:
+  - cli.beauty.js:528 Ge()
+  - cli.beauty.js:1327 Ge() call
+  delivered_to:
+  - runtime
+- id: worker_and_wrapper_entries
+  title: Worker and addon-wrapper entry modules
+  status: NEW
+  count: 3
+  stored_bytes: 13701
+  files:
+  - name: src/plugins/functionHooks/hooks-worker/hooks-worker.js
+    bytes: 12331
+    module: 161
+  - name: audio-capture.js
+    bytes: 685
+    module: 9
+    note: no path reference; tentative bundler entry stub
+  - name: clipboard-napi.js
+    bytes: 685
+    module: 11
+    note: no path reference; tentative bundler entry stub
+  purpose: hooks-worker hosts plugin hooks modules in a worker thread named hooks-<uuid8>.
+  reader: new Worker(HOOKS_WORKER_URL)
+  loaded_by:
+  - cli.beauty.js:484469 Knn() picks HOOKS_WORKER_URL, else ../../../hooks-worker/hooks-worker.ts
+  - 'cli.beauty.js:484538 rJo(): new Worker(e, jnn(s, n, r))'
+  delivered_to:
+  - worker thread
+- id: native_addons
+  title: Native N-API addons
+  status: CHANGED
+  count: 2
+  stored_bytes: 1565232
+  files:
+  - name: audio-capture.node
+    bytes: 492368
+    line: 1436
+    module: 8 chunk-t5ave6yk.js
+  - name: clipboard-napi.node
+    bytes: 1072864
+    line: 1474
+    module: 10 chunk-pc0sjb7d.js
+  purpose: clipboard-napi.node (NEW; Rust, x11rb 0.13.2 / wayland-client 0.31.14 / wl-clipboard-rs 0.9.3; set/getLinuxClipboardText) and audio-capture.node (CARRIED; Rust, cpal 0.15.3 + alsa 0.9.1; start/stop
+    recording and playback). image-processor.node from 2.1.197 is REMOVED.
+  reader: Ne = import.meta.require (napi loader 0x0a)
+  loaded_by:
+  - cli.beauty.js:1474 module 10 rAo = C(() => Ne("/$bunfs/root/clipboard-napi.node"))
+  - cli.beauty.js:343490 x() resolver (module 313), used by clipboard class N probe() :343561 when no wl-copy/xclip/xsel and k() :343650 sees a local DISPLAY or WAYLAND_DISPLAY
+  - cli.beauty.js:1436 module 8 nAo = C(() => Ne("/$bunfs/root/audio-capture.node"))
+  - cli.beauty.js:1822427 r() resolver (module 2306), musl fallback :1822436; voice lazy import :1559218
+  delivered_to:
+  - in-process
+  baseline_note: 2.1.197 referenced /$bunfs/root/image-processor.node (:91) and audio-capture.node (:94); fallback list there was x64-linux only (:571723)
+- id: vendored_browser_libs
+  title: Vendored browser libraries (zstd under .js names)
+  status: NEW
+  status_note: The browser bundle assets are new. The highlight.js core was already bundled in 2.1.197 JS (hljs x4, registerLanguage x2, terminal color-diff), so highlight.js as a library is not new.
+  count: 3
+  stored_bytes: 1020600
+  files:
+  - name: chart.umd.min.js
+    bytes: 64021
+    line: 1388700
+    module: 1663 chunk-gm4h4nde.js
+  - name: hljsBundle.generated.min.js
+    bytes: 170760
+    line: 1388723
+    module: 1664 chunk-wwm8xap7.js
+  - name: mermaid.min.js
+    bytes: 785819
+    line: 1770869
+    module: 2194 chunk-qjc3tjgf.js
+  purpose: mermaid v11.16.1 (3,566,058 B decompressed), Chart.js v4.5.1 (208,522 B), highlight.js 11.11.1 with 186 grammars (606,473 B). All three files begin with the zstd magic 28 b5 2f fd.
+  reader: uct() async reader, module 391 :372888
+  loaded_by:
+  - cli.beauty.js:1770869 module 2194 loadMermaidBundleJs (banner :1770870)
+  - cli.beauty.js:1408800 Bb() local preview server serves /_runtime/mermaid-11.16.1.min.js (_Dt :201379)
+  - cli.beauty.js:1388700 module 1663 loadChartBundleJs; consumer Un() :688762 inlines into Artifact HTML on publish
+  - cli.beauty.js:1388723 module 1664 loadHljsBundleJs; consumer Vn() :688859, init script va() :688836
+  - cli.beauty.js:691713 On() hashes the inline scripts of Un() (chart), kxn() (mermaid :689077) and Vn() (hljs) into workshopBlessedHashes
+  - cli.beauty.js:689077 kxn() emits <script src="/_runtime/mermaid-11.16.1.min.js"> (dxs :201380) on the publish path (:691328, :1421092)
+  delivered_to:
+  - browser
+- id: fonts
+  title: Fonts
+  status: NEW
+  count: 2
+  stored_bytes: 25736
+  files:
+  - name: anthropicSans400.woff2.asset
+    bytes: 10980
+    line: 1129853
+    module: 1480 chunk-t3vts5m9.js
+  - name: anthropicSerif400.woff2.asset
+    bytes: 14756
+    line: 1129854
+    module: 1480 chunk-t3vts5m9.js
+  purpose: Anthropic Sans and Anthropic Serif, weight 400, WOFF2. Inlined as base64 @font-face into localhost sign-in result pages.
+  reader: Nyo() direct (Buffer, then base64), module 391 :372897
+  loaded_by:
+  - cli.beauty.js:1129853 module 1480 font paths; b()/x() build @font-face
+  - cli.beauty.js:1129994 yYr() page shell; i0() success/failure wrapper
+  - cli.beauty.js:1582165 XAA IdP /callback handler answers i0({...}) (module 1922)
+  delivered_to:
+  - browser
+  - user
+- id: plugin_sdk_and_mod_templates
+  title: Plugin SDK, state library, mod templates, plugin-test kit
+  status: NEW
+  count: 10
+  stored_bytes: 194349
+  files:
+  - name: state-library.js-wy8y4843.txt
+    bytes: 4060
+    line: 72506
+    module: 104 chunk-nfc1rq84.js
+  - name: kit-modules.js-c792dea0.txt.zst
+    bytes: 13927
+    line: 865398
+    module: 874 chunk-s6bk44mn.js
+  - name: claude-code.d.ts-7e7b76be.txt.zst
+    bytes: 145380
+    line: 974446
+    module: 1120 chunk-aqhmnebz.js
+  - name: band.tsx-1v7nt0yx.txt
+    bytes: 1447
+    line: 1819726
+    module: 2268 chunk-ha2ynhe1.js
+  - name: band-state.d.ts-jt01vrsc.txt
+    bytes: 176
+    line: 1819728
+    module: 2268 chunk-ha2ynhe1.js
+  - name: pane.tsx-9v31e0jz.txt
+    bytes: 1588
+    line: 1819730
+    module: 2268 chunk-ha2ynhe1.js
+  - name: pane-state.d.ts-0gphkymd.txt
+    bytes: 173
+    line: 1819732
+    module: 2268 chunk-ha2ynhe1.js
+  - name: tool-call.ts-tv29hdsd.txt
+    bytes: 701
+    line: 1819734
+    module: 2268 chunk-ha2ynhe1.js
+  - name: reference-6bf44c8c.md.zst
+    bytes: 23281
+    line: 1819736
+    module: 2268 chunk-ha2ynhe1.js
+  - name: SKILL-346aaa9b.md.zst
+    bytes: 3616
+    line: 1819739
+    module: 2268 chunk-ha2ynhe1.js
+  purpose: 'claude-code.d.ts (650,675 B decompressed; plugin API declarations written beside a mod as .claude-plugin/types/claude-code/index.d.ts); state-library.js (the claude-code module: atom/derive/memberOf/read/update);
+    example mods band.tsx, pane.tsx, tool-call.ts plus state .d.ts; plugin-authoring SKILL.md and reference.md; kit-modules.js (plugin test kit).'
+  reader: Ne() for .txt; tt() for .zst
+  loaded_by:
+  - cli.beauty.js:974446 module 1120 PLUGIN_DECLARATIONS_TEXT / pluginDeclarationsOf
+  - cli.beauty.js:72506 module 104 state library -> cPr; vm.SourceTextModule in DAo() :155219 (identifier "claude-code" :70746)
+  - cli.beauty.js:1819726 module 2268 EXAMPLE_* / REFERENCE_MD / SKILL_MD
+  - cli.beauty.js:1536618 plugin-authoring files resolver Ne(e); skill xe :1536654 in built-in plugin cc-plugin-plugin-authoring :1536673
+  - cli.beauty.js:865398 module 874 kit-modules (claude plugin test, entry fast path :594)
+  delivered_to:
+  - disk
+  - plugin VM realm
+  - model
+- id: claude_test_toolkit
+  title: Claude Test plugin toolkit
+  status: NEW
+  count: 30
+  stored_bytes: 289480
+  files:
+  - name: plugin.json-bf5v5g6j.txt
+    bytes: 762
+    line: 1819607
+    module: 2267 chunk-amdd9rxj.js
+  - name: onboarding-0bd7ab6c.md.zst
+    bytes: 11841
+    line: 1819608
+    module: 2267 chunk-amdd9rxj.js
+  - name: ct-auth.mjs-3994515c.txt.zst
+    bytes: 6323
+    line: 1819610
+    module: 2267 chunk-amdd9rxj.js
+  - name: ct.mjs-1415bbd2.txt.zst
+    bytes: 28223
+    line: 1819612
+    module: 2267 chunk-amdd9rxj.js
+  - name: ctbrowser.mjs-ec939aea.txt.zst
+    bytes: 4765
+    line: 1819614
+    module: 2267 chunk-amdd9rxj.js
+  - name: NOTICE-chm3rwx9.txt
+    bytes: 335
+    line: 1819616
+    module: 2267 chunk-amdd9rxj.js
+  - name: allow-tool.mjs-41471569.txt.zst
+    bytes: 7529
+    line: 1819617
+    module: 2267 chunk-amdd9rxj.js
+  - name: config.mjs-a7bf665e.txt.zst
+    bytes: 16179
+    line: 1819619
+    module: 2267 chunk-amdd9rxj.js
+  - name: discover.mjs-86dbed6d.txt.zst
+    bytes: 4211
+    line: 1819621
+    module: 2267 chunk-amdd9rxj.js
+  - name: envreport.mjs-2a6a40b0.txt.zst
+    bytes: 9443
+    line: 1819623
+    module: 2267 chunk-amdd9rxj.js
+  - name: fence-proxy.mjs-e706eaf6.txt.zst
+    bytes: 3973
+    line: 1819625
+    module: 2267 chunk-amdd9rxj.js
+  - name: guard.mjs-cf2a91d4.txt.zst
+    bytes: 4703
+    line: 1819627
+    module: 2267 chunk-amdd9rxj.js
+  - name: hosts.mjs-724sr8hv.txt
+    bytes: 6777
+    line: 1819629
+    module: 2267 chunk-amdd9rxj.js
+  - name: live-page.mjs-cf057e0f.txt.zst
+    bytes: 9261
+    line: 1819630
+    module: 2267 chunk-amdd9rxj.js
+  - name: open-page.mjs-v558kpk1.txt
+    bytes: 8039
+    line: 1819632
+    module: 2267 chunk-amdd9rxj.js
+  - name: psl-data.json-ffeefa5c.txt.zst
+    bytes: 41172
+    line: 1819633
+    module: 2267 chunk-amdd9rxj.js
+  - name: runs.mjs-bffmr2qc.txt
+    bytes: 7150
+    line: 1819635
+    module: 2267 chunk-amdd9rxj.js
+  - name: signin.mjs-e32ba544.txt.zst
+    bytes: 9774
+    line: 1819636
+    module: 2267 chunk-amdd9rxj.js
+  - name: tools-lock.json-2wbc4a0f.txt
+    bytes: 1917
+    line: 1819638
+    module: 2267 chunk-amdd9rxj.js
+  - name: tools.mjs-d77a42b3.txt.zst
+    bytes: 12149
+    line: 1819639
+    module: 2267 chunk-amdd9rxj.js
+  - name: vet.mjs-8072bf8f.txt.zst
+    bytes: 4921
+    line: 1819641
+    module: 2267 chunk-amdd9rxj.js
+  - name: playwright-mcp.mjs-8ae8cb57.txt.zst
+    bytes: 22879
+    line: 1819643
+    module: 2267 chunk-amdd9rxj.js
+  - name: tools-snapshot.json-517c5f68.txt.zst
+    bytes: 3337
+    line: 1819645
+    module: 2267 chunk-amdd9rxj.js
+  - name: spec-format-s2ka4mwv.md
+    bytes: 10240
+    line: 1819647
+    module: 2267 chunk-amdd9rxj.js
+  - name: SKILL-ecyx4ya1.md
+    bytes: 1060
+    line: 1819648
+    module: 2267 chunk-amdd9rxj.js
+  - name: check.mjs-9esx2ea6.txt
+    bytes: 4538
+    line: 1819649
+    module: 2267 chunk-amdd9rxj.js
+  - name: sign-in.mjs-e560d968.txt.zst
+    bytes: 4600
+    line: 1819650
+    module: 2267 chunk-amdd9rxj.js
+  - name: SKILL-2427898d.md.zst
+    bytes: 5754
+    line: 1819681
+    module: 2267 chunk-amdd9rxj.js
+  - name: SKILL-38905837.md.zst
+    bytes: 16109
+    line: 1819683
+    module: 2267 chunk-amdd9rxj.js
+  - name: SKILL-9eb4e8d2.md.zst
+    bytes: 21516
+    line: 1819685
+    module: 2267 chunk-amdd9rxj.js
+  purpose: Built-in plugin claude-test@builtin v0.4.28. It runs plain-language specs from .claude-test/specs/ in a headless, network-fenced Playwright browser. It ships an MCP launcher for @playwright/mcp
+    0.0.79, pinned to Playwright 1.62.1, plus a fence proxy, the Public Suffix List, a sign-in template and 3 SKILL prompts (run/execute/draft).
+  reader: Ne() / tt(), module 2267 INSTALLED_FILES :1819652, SKILL_MD :1819681
+  loaded_by:
+  - cli.beauty.js:1533545 installer Ne (module 1801) writes INSTALLED_FILES, refuses linked/differing files
+  - cli.beauty.js:1533401 MCP server config command "node" .../skills/run/scripts/playwright-mcp.mjs
+  - cli.beauty.js:1533374 plugin id claude-test@builtin; :1533685 cc-plugin-claude-test
+  delivered_to:
+  - disk
+  - subprocess
+  - model
+  - browser
+- id: skill_claude_api
+  title: claude-api skill corpus
+  status: CHANGED
+  count: 103
+  stored_bytes: 795267
+  files:
+  - name: batches-azab338a.md
+    bytes: 409
+    line: 1545667
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-h174sj6q.md
+    bytes: 900
+    line: 1545668
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-6q7kpe6k.md
+    bytes: 2536
+    line: 1545669
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-b3a93009.md.zst
+    bytes: 6863
+    line: 1545670
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-h393f7mp.md
+    bytes: 783
+    line: 1545672
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-prhc6bvx.md
+    bytes: 7619
+    line: 1545673
+    module: 1841 chunk-xsp6hf1x.js
+  - name: examples-3840245f.md.zst
+    bytes: 3068
+    line: 1545674
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-414a382d.md.zst
+    bytes: 3060
+    line: 1545676
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-9r91z451.md
+    bytes: 936
+    line: 1545678
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-vw9pm9vy.md
+    bytes: 1977
+    line: 1545679
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-f3ae3987.md.zst
+    bytes: 3311
+    line: 1545680
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-z3xabcf3.md
+    bytes: 1022
+    line: 1545682
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-78a291cf.md.zst
+    bytes: 3698
+    line: 1545683
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-e6b01b42.md.zst
+    bytes: 5165
+    line: 1545685
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-gjyn8jqt.md
+    bytes: 1198
+    line: 1545687
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-cfszdkfx.md
+    bytes: 2540
+    line: 1545688
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-63298f3f.md.zst
+    bytes: 4318
+    line: 1545689
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-jhkcqra8.md
+    bytes: 651
+    line: 1545691
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-116c4b56.md.zst
+    bytes: 3770
+    line: 1545692
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-f31e88a0.md.zst
+    bytes: 5119
+    line: 1545694
+    module: 1841 chunk-xsp6hf1x.js
+  - name: batches-fqqffaw8.md
+    bytes: 443
+    line: 1545696
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-cbspt4rc.md
+    bytes: 476
+    line: 1545697
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-yaet3h71.md
+    bytes: 2510
+    line: 1545698
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-6fm6xx7t.md
+    bytes: 6550
+    line: 1545699
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-1ym052nm.md
+    bytes: 678
+    line: 1545700
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-5d3257b3.md.zst
+    bytes: 3416
+    line: 1545701
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-a3cc2c9a.md.zst
+    bytes: 4998
+    line: 1545703
+    module: 1841 chunk-xsp6hf1x.js
+  - name: batches-tmdzz8fs.md
+    bytes: 5705
+    line: 1545705
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-0t33d0q1.md
+    bytes: 4487
+    line: 1545706
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-435kbzct.md
+    bytes: 2523
+    line: 1545707
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-9ed2461c.md.zst
+    bytes: 6896
+    line: 1545708
+    module: 1841 chunk-xsp6hf1x.js
+  - name: sdk-upgrade-9f617609.md.zst
+    bytes: 10537
+    line: 1545710
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-fbb1ea6d.md.zst
+    bytes: 3858
+    line: 1545712
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-b376e871.md.zst
+    bytes: 6129
+    line: 1545714
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-57b949e9.md.zst
+    bytes: 4770
+    line: 1545716
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-5s3ke4ay.md
+    bytes: 1676
+    line: 1545718
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-hq1c04z5.md
+    bytes: 4833
+    line: 1545719
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-pjtdae2j.md
+    bytes: 231
+    line: 1545720
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-ja69jv1h.md
+    bytes: 5366
+    line: 1545721
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-4c65891b.md.zst
+    bytes: 4266
+    line: 1545722
+    module: 1841 chunk-xsp6hf1x.js
+  - name: SKILL-1bee3906.md.zst
+    bytes: 33384
+    line: 1545724
+    module: 1841 chunk-xsp6hf1x.js
+  - name: admin-api-9c4787b6.md.zst
+    bytes: 4170
+    line: 1545726
+    module: 1841 chunk-xsp6hf1x.js
+  - name: agent-design-fa62971c.md.zst
+    bytes: 3625
+    line: 1545728
+    module: 1841 chunk-xsp6hf1x.js
+  - name: anthropic-cli-e0b592ee.md.zst
+    bytes: 9365
+    line: 1545730
+    module: 1841 chunk-xsp6hf1x.js
+  - name: claude-platform-on-aws-dy6hstzj.md
+    bytes: 4404
+    line: 1545732
+    module: 1841 chunk-xsp6hf1x.js
+  - name: cost-optimization-4751a9d6.md.zst
+    bytes: 20061
+    line: 1545733
+    module: 1841 chunk-xsp6hf1x.js
+  - name: error-codes-d8bc7037.md.zst
+    bytes: 6689
+    line: 1545735
+    module: 1841 chunk-xsp6hf1x.js
+  - name: build-eval-e9acb85b.md.zst
+    bytes: 20311
+    line: 1545737
+    module: 1841 chunk-xsp6hf1x.js
+  - name: eval-audit-d52687b9.md.zst
+    bytes: 11072
+    line: 1545739
+    module: 1841 chunk-xsp6hf1x.js
+  - name: cost-hillclimb-be195324.md.zst
+    bytes: 12192
+    line: 1545741
+    module: 1841 chunk-xsp6hf1x.js
+  - name: eval-hillclimb-643520d6.md.zst
+    bytes: 24732
+    line: 1545743
+    module: 1841 chunk-xsp6hf1x.js
+  - name: runner-scaffold-q2rf9gg9.mjs
+    bytes: 33142
+    line: 1545745
+    module: 1841 chunk-xsp6hf1x.js
+  - name: build-report-lite-jwtbvm49.mjs
+    bytes: 27329
+    line: 1545746
+    module: 1841 chunk-xsp6hf1x.js
+  - name: SCHEMA-7cf439b0.md.zst
+    bytes: 6348
+    line: 1545747
+    module: 1841 chunk-xsp6hf1x.js
+  - name: live-sources-e2dc1780.md.zst
+    bytes: 5294
+    line: 1545749
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-api-reference-22d3cff7.md.zst
+    bytes: 9278
+    line: 1545751
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-client-patterns-05c93984.md.zst
+    bytes: 4705
+    line: 1545753
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-core-a5f13a57.md.zst
+    bytes: 11004
+    line: 1545755
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-environments-2c396a08.md.zst
+    bytes: 5078
+    line: 1545757
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-events-98177506.md.zst
+    bytes: 9229
+    line: 1545759
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-memory-f07f30d0.md.zst
+    bytes: 4309
+    line: 1545761
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-multiagent-9b6c8c61.md.zst
+    bytes: 19395
+    line: 1545763
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-onboarding-00096344.md.zst
+    bytes: 6936
+    line: 1545765
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-onboarding-from-quickstart-52a0a4e7.md.zst
+    bytes: 7591
+    line: 1545767
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-onboarding-from-url-60dbfae7.md.zst
+    bytes: 12005
+    line: 1545769
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-outcomes-0e4a8bd7.md.zst
+    bytes: 3703
+    line: 1545771
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-overview-1f8e6ff0.md.zst
+    bytes: 5496
+    line: 1545773
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-scheduled-deployments-cb2a93ab.md.zst
+    bytes: 3892
+    line: 1545775
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-self-hosted-sandboxes-e0f7f350.md.zst
+    bytes: 9765
+    line: 1545777
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-tools-7cc8a37b.md.zst
+    bytes: 12743
+    line: 1545779
+    module: 1841 chunk-xsp6hf1x.js
+  - name: managed-agents-webhooks-c9326ad3.md.zst
+    bytes: 4203
+    line: 1545781
+    module: 1841 chunk-xsp6hf1x.js
+  - name: model-migration-64fbe83d.md.zst
+    bytes: 89537
+    line: 1545783
+    module: 1841 chunk-xsp6hf1x.js
+  - name: models-050c0ee0.md.zst
+    bytes: 5099
+    line: 1545785
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-15d274d5.md.zst
+    bytes: 15675
+    line: 1545787
+    module: 1841 chunk-xsp6hf1x.js
+  - name: platform-availability-d8e725b3.md.zst
+    bytes: 3764
+    line: 1545789
+    module: 1841 chunk-xsp6hf1x.js
+  - name: preserved-thinking-migration-92104460.md.zst
+    bytes: 20782
+    line: 1545791
+    module: 1841 chunk-xsp6hf1x.js
+  - name: causes-40c743d9.md.zst
+    bytes: 12690
+    line: 1545793
+    module: 1841 chunk-xsp6hf1x.js
+  - name: prefix_diff-69deb9d3.py.zst
+    bytes: 24379
+    line: 1545795
+    module: 1841 chunk-xsp6hf1x.js
+  - name: drop_block_probe-492dab40.py.zst
+    bytes: 18679
+    line: 1545797
+    module: 1841 chunk-xsp6hf1x.js
+  - name: prompt-audit-467e2f57.md.zst
+    bytes: 18122
+    line: 1545799
+    module: 1841 chunk-xsp6hf1x.js
+  - name: prompt-caching-7e13e9e6.md.zst
+    bytes: 11408
+    line: 1545801
+    module: 1841 chunk-xsp6hf1x.js
+  - name: token-counting-znjwtf00.md
+    bytes: 1591
+    line: 1545803
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-concepts-fdeefa81.md.zst
+    bytes: 15378
+    line: 1545804
+    module: 1841 chunk-xsp6hf1x.js
+  - name: batches-s5ra532b.md
+    bytes: 2586
+    line: 1545806
+    module: 1841 chunk-xsp6hf1x.js
+  - name: files-api-m5wzhchy.md
+    bytes: 2380
+    line: 1545807
+    module: 1841 chunk-xsp6hf1x.js
+  - name: opentelemetry-fhse1j1m.md
+    bytes: 2294
+    line: 1545808
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-4f0b5262.md.zst
+    bytes: 5381
+    line: 1545809
+    module: 1841 chunk-xsp6hf1x.js
+  - name: streaming-a22d82f5.md.zst
+    bytes: 3363
+    line: 1545811
+    module: 1841 chunk-xsp6hf1x.js
+  - name: tool-use-bc33e687.md.zst
+    bytes: 7509
+    line: 1545813
+    module: 1841 chunk-xsp6hf1x.js
+  - name: README-b5333025.md.zst
+    bytes: 4665
+    line: 1545815
+    module: 1841 chunk-xsp6hf1x.js
+  - name: bug-hunter-t77r14b6.md
+    bytes: 8092
+    line: 1545817
+    module: 1841 chunk-xsp6hf1x.js
+  - name: contract-tracker-56hvtgvv.md
+    bytes: 1802
+    line: 1545818
+    module: 1841 chunk-xsp6hf1x.js
+  - name: data-analyst-mftdhs5h.md
+    bytes: 1557
+    line: 1545819
+    module: 1841 chunk-xsp6hf1x.js
+  - name: deep-researcher-kr59y5yh.md
+    bytes: 2426
+    line: 1545820
+    module: 1841 chunk-xsp6hf1x.js
+  - name: explainer-video-maker-sm29032a.md
+    bytes: 4882
+    line: 1545821
+    module: 1841 chunk-xsp6hf1x.js
+  - name: field-monitor-g66mv9dp.md
+    bytes: 2101
+    line: 1545822
+    module: 1841 chunk-xsp6hf1x.js
+  - name: incident-commander-ks44x788.md
+    bytes: 1719
+    line: 1545823
+    module: 1841 chunk-xsp6hf1x.js
+  - name: performance-tuner-6c866b59.md.zst
+    bytes: 4088
+    line: 1545824
+    module: 1841 chunk-xsp6hf1x.js
+  - name: sprint-retro-facilitator-tmga9swn.md
+    bytes: 2087
+    line: 1545826
+    module: 1841 chunk-xsp6hf1x.js
+  - name: structured-extractor-rec1wxww.md
+    bytes: 1537
+    line: 1545827
+    module: 1841 chunk-xsp6hf1x.js
+  - name: support-agent-drb7j85g.md
+    bytes: 1477
+    line: 1545828
+    module: 1841 chunk-xsp6hf1x.js
+  - name: support-to-eng-escalator-qqj4c1c7.md
+    bytes: 1838
+    line: 1545829
+    module: 1841 chunk-xsp6hf1x.js
+  - name: watchlist-scanner-kfkrzjrr.md
+    bytes: 5638
+    line: 1545830
+    module: 1841 chunk-xsp6hf1x.js
+  purpose: Per-language Claude API / Managed Agents docs, shared references (models, migration, prompt caching, evals, admin API), 13 managed-agents quickstarts, and 4 executable helpers (runner-scaffold.mjs,
+    build-report-lite.mjs, prefix_diff.py, drop_block_probe.py). Docs carry {{OPUS_ID}}-style placeholders filled from SKILL_MODEL_VARS.
+  reader: Ne() / tt(), module 1841 SKILL_FILES :1545867, SKILL_MODEL_VARS :1545846
+  loaded_by:
+  - cli.beauty.js:785474 A8s() registers claude-api (Zs :785477)
+  - cli.beauty.js:785273 A() applies SKILL_MODEL_VARS to every .md before extraction
+  - cli.beauty.js:785488 tengu_claude_api_skill_loaded
+  delivered_to:
+  - model
+  - disk
+  - subprocess (only if the model runs the helpers)
+  baseline_note: '"Building LLM-Powered Applications" inlined once in 2.1.197 cli.min.js, 0 in 2.1.300 JS (MOVED); hillclimb / preserved-thinking-migration / managed-agents-quickstarts absent in 2.1.197
+    (NEW)'
+- id: skill_claude_code_docs
+  title: claude-code-docs skill corpus
+  status: CHANGED
+  count: 6
+  stored_bytes: 69513
+  files:
+  - name: plugin-eval-quickref-e95bcd1b.md.zst
+    bytes: 4688
+    line: 372930
+    module: 392 chunk-tzp90jya.js
+  - name: claude-tag-dht2qzjm.md
+    bytes: 5840
+    line: 1822360
+    module: 2304 chunk-kqsnmm7x.js
+  - name: live-sources-pvws3ftv.md
+    bytes: 6193
+    line: 1822361
+    module: 2304 chunk-kqsnmm7x.js
+  - name: plugin-eval-8fcbd81e.md.zst
+    bytes: 28506
+    line: 1822362
+    module: 2304 chunk-kqsnmm7x.js
+  - name: recent-changes-g7ehqj27.md
+    bytes: 9970
+    line: 1822364
+    module: 2304 chunk-kqsnmm7x.js
+  - name: SKILL-0vb5xk0r.md
+    bytes: 14316
+    line: 1822365
+    module: 2304 chunk-kqsnmm7x.js
+  purpose: '"Claude Code Configuration Guide" prompt plus references claude-tag, live-sources, plugin-eval, plugin-eval-quickref and recent-changes. The quickref (module 392) is also appended by nlr().'
+  reader: Ne() / tt(), module 2304 :1822360-1822372, module 392 gLn :372931
+  loaded_by:
+  - cli.beauty.js:1545474 A = "claude-code-docs" (module 1839), Zs :1545573
+  - cli.beauty.js:493318 nlr() embeds gLn
+  delivered_to:
+  - model
+  - disk
+- id: artifact_skills_and_templates
+  title: Artifact / design / slides skills and templates
+  status: NEW
+  count: 37
+  stored_bytes: 529473
+  files:
+  - name: SKILL-d7191b6b.md.zst
+    bytes: 15933
+    line: 1387912
+    module: 1658 chunk-8a269dm1.js
+  - name: SKILL_COMPOSED-a8900b24.md.zst
+    bytes: 12171
+    line: 1387914
+    module: 1658 chunk-8a269dm1.js
+  - name: template.html-f851b5da.txt.zst
+    bytes: 24337
+    line: 1387916
+    module: 1658 chunk-8a269dm1.js
+  - name: SKILL-e92179a2.md.zst
+    bytes: 14930
+    line: 1388669
+    module: 1662 chunk-57sywrng.js
+  - name: artifact-workshop.html-a79fa64e.txt.zst
+    bytes: 31835
+    line: 1388671
+    module: 1662 chunk-57sywrng.js
+  - name: workshop-page.html-22624ec4.txt.zst
+    bytes: 34497
+    line: 1388673
+    module: 1662 chunk-57sywrng.js
+  - name: appifact_sdk.js-852e8bcb.txt.zst
+    bytes: 8030
+    line: 1426133
+    module: 1692 chunk-x161r071.js
+  - name: SKILL-h8rn0xak.md
+    bytes: 6409
+    line: 1542614
+    module: 1822 chunk-0ngfk9wb.js
+  - name: template.html-101715f9.txt.zst
+    bytes: 27705
+    line: 1542615
+    module: 1822 chunk-0ngfk9wb.js
+  - name: SKILL-7f2555bf.md.zst
+    bytes: 6393
+    line: 1542643
+    module: 1823 chunk-63vspk0f.js
+  - name: template.html-af756034.txt.zst
+    bytes: 41562
+    line: 1542645
+    module: 1823 chunk-63vspk0f.js
+  - name: board.mjs-0bf8864f.txt.zst
+    bytes: 28340
+    line: 1542647
+    module: 1823 chunk-63vspk0f.js
+  - name: SKILL-8e6c8b5d.md.zst
+    bytes: 9426
+    line: 1542672
+    module: 1824 chunk-3tsxnrt9.js
+  - name: template.html-38b74715.txt.zst
+    bytes: 89802
+    line: 1542674
+    module: 1824 chunk-3tsxnrt9.js
+  - name: merge-state.mjs-7a4f2728.txt.zst
+    bytes: 33600
+    line: 1542676
+    module: 1824 chunk-3tsxnrt9.js
+  - name: SKILL-b0897508.md.zst
+    bytes: 4877
+    line: 1542701
+    module: 1825 chunk-2js44j5x.js
+  - name: SKILL-kyber1ah.md
+    bytes: 4057
+    line: 1542752
+    module: 1827 chunk-8fzwkd75.js
+  - name: SKILL-5vqnvygj.md
+    bytes: 5565
+    line: 1542775
+    module: 1828 chunk-zf5ffzvk.js
+  - name: template.html-cad26093.txt.zst
+    bytes: 4134
+    line: 1542776
+    module: 1828 chunk-zf5ffzvk.js
+  - name: SKILL-sq87gt02.md
+    bytes: 5847
+    line: 1542778
+    module: 1828 chunk-zf5ffzvk.js
+  - name: template.html-j5g90adz.txt
+    bytes: 6670
+    line: 1542779
+    module: 1828 chunk-zf5ffzvk.js
+  - name: SKILL-z3x847gz.md
+    bytes: 5714
+    line: 1542780
+    module: 1828 chunk-zf5ffzvk.js
+  - name: template.html-268183fd.txt.zst
+    bytes: 3696
+    line: 1542781
+    module: 1828 chunk-zf5ffzvk.js
+  - name: SKILL-fjp06kkf.md
+    bytes: 6887
+    line: 1542900
+    module: 1831 chunk-ypyaac01.js
+  - name: decisions-script.html-e58174c4.txt.zst
+    bytes: 19326
+    line: 1542901
+    module: 1831 chunk-ypyaac01.js
+  - name: component.css-02637b0d.txt.zst
+    bytes: 3536
+    line: 1542903
+    module: 1831 chunk-ypyaac01.js
+  - name: tokens.css-6f9090cf.txt.zst
+    bytes: 6109
+    line: 1542905
+    module: 1831 chunk-ypyaac01.js
+  - name: skeleton.html-893t268n.txt
+    bytes: 6334
+    line: 1542907
+    module: 1831 chunk-ypyaac01.js
+  - name: theme-script.html-zm5eq8m1.txt
+    bytes: 1884
+    line: 1542908
+    module: 1831 chunk-ypyaac01.js
+  - name: design-6m4nsdef.md
+    bytes: 11312
+    line: 1545616
+    module: 1840 chunk-xn1qetnk.js
+  - name: designHowTo-p8zjfw0e.md
+    bytes: 6430
+    line: 1545617
+    module: 1840 chunk-xn1qetnk.js
+  - name: designTwoSteps-g0bev2xr.md
+    bytes: 4671
+    line: 1545618
+    module: 1840 chunk-xn1qetnk.js
+  - name: slides-zdpeg77q.md
+    bytes: 11726
+    line: 1545619
+    module: 1840 chunk-xn1qetnk.js
+  - name: slidesHowTo-09m4dbj2.md
+    bytes: 3013
+    line: 1545620
+    module: 1840 chunk-xn1qetnk.js
+  - name: slidesTwoSteps-1shjmnfb.md
+    bytes: 4170
+    line: 1545621
+    module: 1840 chunk-xn1qetnk.js
+  - name: SKILL-159ef46e.md.zst
+    bytes: 8807
+    line: 1545977
+    module: 1842 chunk-48rdarmk.js
+  - name: artifact-plan.html-80a36a32.txt.zst
+    bytes: 9738
+    line: 1770893
+    module: 2195 chunk-3h1abadt.js
+  purpose: 'SKILL text and HTML/CSS/JS templates for claude.ai Artifacts: artifact-design, artifact-diagramming, artifact-report / data-table / explainer, doc, whiteboard (shared and live, with board.mjs
+    / merge-state.mjs helpers), prototype, artifact-components (decision component), workshop, artifact-pr-review (legacy and composed lanes), PLAN_TEMPLATE, the AppifactRepl SDK, and design/slides REPL-route
+    instructions.'
+  reader: Ne() / tt() across 13 host modules
+  loaded_by:
+  - cli.beauty.js:310231 skill-name constants (artifact-design, workshop, whiteboard, prototype, ...)
+  - cli.beauty.js:786664 workshop; :786695 artifact-components; :786727 artifact-design; :786744 artifact-diagramming; :786790 artifact-{report,data-table,explainer}
+  - cli.beauty.js:789543 doc; :789590 whiteboard; :789625 prototype; :789760 artifact-pr-review
+  - cli.beauty.js:1403111 PLAN_TEMPLATE in Vc() publish path; :1403077 WORKSHOP_TEMPLATE
+  - cli.beauty.js:1426190 Mn() AppifactRepl spawns node -e <sdk> (:1425956), FD CLAUDE_CODE_ARTIFACT_FD :1425675
+  - cli.beauty.js:779062 rlr() / :779078 SQr() / :929696 V8o() REPL-route text when artifactReplToolPresent()
+  delivered_to:
+  - model
+  - browser
+  - disk
+  - subprocess
+  baseline_note: artifact-design description existed (inlined) in 2.1.197; every other family is absent from 2.1.197 cli.min.js
+- id: skill_dataviz
+  title: dataviz skill
+  status: NEW
+  count: 10
+  stored_bytes: 87964
+  files:
+  - name: anti-patterns-c1rmzbdk.md
+    bytes: 12298
+    line: 1542855
+    module: 1830 chunk-1kwsvhhf.js
+  - name: choosing-a-form-0b6fjqkn.md
+    bytes: 6170
+    line: 1542856
+    module: 1830 chunk-1kwsvhhf.js
+  - name: color-formula-pd33jx9s.md
+    bytes: 16300
+    line: 1542857
+    module: 1830 chunk-1kwsvhhf.js
+  - name: components-vtwwx2hf.md
+    bytes: 4196
+    line: 1542858
+    module: 1830 chunk-1kwsvhhf.js
+  - name: interaction-d4xwjtb3.md
+    bytes: 3741
+    line: 1542859
+    module: 1830 chunk-1kwsvhhf.js
+  - name: marks-and-anatomy-c3r2f4ya.md
+    bytes: 12058
+    line: 1542860
+    module: 1830 chunk-1kwsvhhf.js
+  - name: palette-98979866.md.zst
+    bytes: 4282
+    line: 1542861
+    module: 1830 chunk-1kwsvhhf.js
+  - name: SKILL-8zd8x5rj.md
+    bytes: 16068
+    line: 1542863
+    module: 1830 chunk-1kwsvhhf.js
+  - name: validate_palette.js-17457a86.txt.zst
+    bytes: 6825
+    line: 1822134
+    module: 2299 chunk-hajmqf1m.js
+  - name: validate_palette.py-de1361f5.txt.zst
+    bytes: 6026
+    line: 1822155
+    module: 2300 chunk-1n1835ek.js
+  purpose: 'Brand-neutral chart/dashboard design method: SKILL.md, 7 references and palette validators in JS and Python.'
+  reader: Ne() / tt(); validators via import.meta.require of modules 2299/2300 (:1542865-1542866)
+  loaded_by:
+  - cli.beauty.js:788694 Ro() registers dataviz (Czn :310237)
+  - cli.beauty.js:786722 artifact-design dataviz callout gated by tengu_cobalt_plinth_dataviz (default false)
+  delivered_to:
+  - model
+  - disk
+  - subprocess (node/python validators, if run)
+- id: skill_design_sync
+  title: design-sync converter toolkit
+  status: CHANGED
+  count: 26
+  stored_bytes: 229517
+  files:
+  - name: detect.mjs-4ep12q1p.txt
+    bytes: 1471
+    line: 1542266
+    module: 1820 chunk-8yp1vh98.js
+  - name: source-kit.mjs-51mswsdh.txt
+    bytes: 7500
+    line: 1542269
+    module: 1820 chunk-8yp1vh98.js
+  - name: css-fallback.mjs-75zwvs8w.txt
+    bytes: 5462
+    line: 1542272
+    module: 1820 chunk-8yp1vh98.js
+  - name: preview-gen-storybook.mjs-yedg6ts5.txt
+    bytes: 6916
+    line: 1542275
+    module: 1820 chunk-8yp1vh98.js
+  - name: http-serve.mjs-jyx95bas.txt
+    bytes: 2054
+    line: 1542278
+    module: 1820 chunk-8yp1vh98.js
+  - name: probe.mjs-24tedw09.txt
+    bytes: 7074
+    line: 1542281
+    module: 1820 chunk-8yp1vh98.js
+  - name: SKILL-a98d25a2.md.zst
+    bytes: 21709
+    line: 1542283
+    module: 1820 chunk-8yp1vh98.js
+  - name: SKILL-b6859017.md.zst
+    bytes: 10751
+    line: 1542285
+    module: 1820 chunk-8yp1vh98.js
+  - name: SKILL-76b8b2a9.md.zst
+    bytes: 24466
+    line: 1542287
+    module: 1820 chunk-8yp1vh98.js
+  - name: previews.mjs-8fcda441.txt.zst
+    bytes: 3696
+    line: 1821777
+    module: 2282 chunk-88st16pg.js
+  - name: docs.mjs-0d218ce7.txt.zst
+    bytes: 5278
+    line: 1821798
+    module: 2283 chunk-qhzrcxyz.js
+  - name: preview-rebuild.mjs-88e389b0.txt.zst
+    bytes: 5898
+    line: 1821819
+    module: 2284 chunk-ghp5phcp.js
+  - name: compare.mjs-4b810a57.txt.zst
+    bytes: 15598
+    line: 1821840
+    module: 2285 chunk-qbn79e08.js
+  - name: capture.mjs-9e2f2f8b.txt.zst
+    bytes: 5996
+    line: 1821861
+    module: 2286 chunk-qw3tnw7j.js
+  - name: sync-hashes.mjs-a0844915.txt.zst
+    bytes: 4162
+    line: 1821882
+    module: 2287 chunk-mvz4n7wf.js
+  - name: remote-diff.mjs-a2ecedbc.txt.zst
+    bytes: 4728
+    line: 1821903
+    module: 2288 chunk-hym343at.js
+  - name: resync.mjs-4ec2827e.txt.zst
+    bytes: 8343
+    line: 1821924
+    module: 2289 chunk-jw0z16c3.js
+  - name: package-validate.mjs-3a0e4e2a.txt.zst
+    bytes: 17379
+    line: 1821945
+    module: 2290 chunk-ywdcmbvw.js
+  - name: common.mjs-21a45017.txt.zst
+    bytes: 5366
+    line: 1821966
+    module: 2291 chunk-1dhj0a3f.js
+  - name: bundle.mjs-c7466167.txt.zst
+    bytes: 6001
+    line: 1821987
+    module: 2292 chunk-gzha6v35.js
+  - name: dts.mjs-59972049.txt.zst
+    bytes: 10697
+    line: 1822008
+    module: 2293 chunk-27bw0wyf.js
+  - name: css.mjs-0d869c37.txt.zst
+    bytes: 3497
+    line: 1822029
+    module: 2294 chunk-8n7gvcdk.js
+  - name: source-storybook.mjs-125aecbd.txt.zst
+    bytes: 7028
+    line: 1822050
+    module: 2295 chunk-kctydqz0.js
+  - name: story-imports.mjs-c9db5303.txt.zst
+    bytes: 6196
+    line: 1822071
+    module: 2296 chunk-s800d4gs.js
+  - name: emit.mjs-7951914b.txt.zst
+    bytes: 13557
+    line: 1822092
+    module: 2297 chunk-j5pznrqh.js
+  - name: package-build.mjs-5c9a3b66.txt.zst
+    bytes: 18694
+    line: 1822113
+    module: 2298 chunk-s4fgfyhn.js
+  purpose: 'Skill and .mjs converter that bundle a React design system (Storybook or bare package) and upload it to claude.ai/design: package-build/validate/capture, resync, lib/* and storybook/compare|http-serve|probe.'
+  reader: Ne() / tt() in module 1820; 17 one-asset modules 2282-2298 pulled by import.meta.require (:1542290-1542312)
+  loaded_by:
+  - cli.beauty.js:789031 Go() registers design-sync (gate WF, policyGate L$e, disableModelInvocation)
+  - cli.beauty.js:1542314 SKILL_FILES map ye
+  delivered_to:
+  - model
+  - disk
+  - subprocess (node .ds-sync/*.mjs, run by the model)
+  baseline_note: inlined in 2.1.197 ("Storybook source shape" 1 occurrence; design-sync 132)
+- id: skill_cowork_plugin
+  title: cowork-plugin skill
+  status: CHANGED
+  count: 5
+  stored_bytes: 25347
+  files:
+  - name: component-schemas-7fabf82f.md.zst
+    bytes: 4407
+    line: 1542820
+    module: 1829 chunk-2hc2e5t2.js
+  - name: example-plugins-9n8v6pe1.md
+    bytes: 7976
+    line: 1542822
+    module: 1829 chunk-2hc2e5t2.js
+  - name: mcp-servers-chmkz450.md
+    bytes: 4132
+    line: 1542823
+    module: 1829 chunk-2hc2e5t2.js
+  - name: search-strategies-4qam2bp6.md
+    bytes: 1629
+    line: 1542824
+    module: 1829 chunk-2hc2e5t2.js
+  - name: SKILL-0e9ec89e.md.zst
+    bytes: 7203
+    line: 1542825
+    module: 1829 chunk-2hc2e5t2.js
+  purpose: '"Cowork Plugin Authoring" SKILL.md and 4 references (component-schemas, example-plugins, mcp-servers, search-strategies).'
+  reader: Ne() / tt(), module 1829
+  loaded_by:
+  - cli.beauty.js:788665 Io() registers Rzn="cowork-plugin" (userInvocable false; I_() || cW())
+  delivered_to:
+  - model
+  - disk
+  baseline_note: inlined in 2.1.197 (MOVED)
+- id: skills_run_verify
+  title: run / run-skill-generator / verify skills
+  status: CHANGED
+  count: 12
+  stored_bytes: 42975
+  files:
+  - name: cli-f091jpwx.md
+    bytes: 1939
+    line: 1542725
+    module: 1826 chunk-ezhpamkz.js
+  - name: server-6cyhjq09.md
+    bytes: 1971
+    line: 1542726
+    module: 1826 chunk-ezhpamkz.js
+  - name: SKILL-cf37e4b8.md.zst
+    bytes: 5499
+    line: 1542727
+    module: 1826 chunk-ezhpamkz.js
+  - name: cli-40vh1c3p.md
+    bytes: 1542
+    line: 1822179
+    module: 2301 chunk-z7gggtph.js
+  - name: electron-8035775b.md.zst
+    bytes: 5620
+    line: 1822180
+    module: 2301 chunk-z7gggtph.js
+  - name: library-yywvyb11.md
+    bytes: 2032
+    line: 1822182
+    module: 2301 chunk-z7gggtph.js
+  - name: playwright-g4wwbqeh.md
+    bytes: 3534
+    line: 1822183
+    module: 2301 chunk-z7gggtph.js
+  - name: server-z4ytjptt.md
+    bytes: 3316
+    line: 1822184
+    module: 2301 chunk-z7gggtph.js
+  - name: tui-93b0fcsh.md
+    bytes: 3021
+    line: 1822185
+    module: 2301 chunk-z7gggtph.js
+  - name: SKILL-9ddmsnpa.md
+    bytes: 3591
+    line: 1822186
+    module: 2301 chunk-z7gggtph.js
+  - name: SKILL-e3d212e9.md.zst
+    bytes: 6814
+    line: 1822217
+    module: 2302 chunk-tdmgvye3.js
+  - name: template-eg8004mh.md
+    bytes: 4096
+    line: 1822219
+    module: 2302 chunk-tdmgvye3.js
+  purpose: SKILL.md files plus example run recipes (cli, electron, library, playwright, server, tui), a run-skill template, and verify examples.
+  reader: Ne() / tt(), modules 2301, 2302, 1826
+  loaded_by:
+  - cli.beauty.js:1543286 run (module 1833)
+  - cli.beauty.js:1543490 run-skill-generator (module 1834)
+  - cli.beauty.js:790520 verify En()
+  delivered_to:
+  - model
+  - disk
+  baseline_note: descriptions inlined in 2.1.197 (MOVED)
+- id: prompt_text_assets
+  title: Prompt text outside skills
+  status: CHANGED
+  count: 6
+  stored_bytes: 48436
+  files:
+  - name: simple_plan-s5yyk7xh.txt
+    bytes: 1826
+    line: 385496
+    module: 424 chunk-538n62w8.js
+  - name: visual_plan-9bza2qe2.txt
+    bytes: 2673
+    line: 385499
+    module: 424 chunk-538n62w8.js
+  - name: three_subagents_with_critique-bd1egk7q.txt
+    bytes: 1902
+    line: 385502
+    module: 424 chunk-538n62w8.js
+  - name: permissions_external-df98b90a.txt.zst
+    bytes: 31683
+    line: 1031394
+    module: 1252 chunk-qhwsty1z.js
+  - name: loopAutonomousPreamble-07qcyhv4.md
+    bytes: 4972
+    line: 1454104
+    module: 1734 chunk-bgmpngyq.js
+  - name: loopAutonomousPreamblePersistent-3zqtkrvg.md
+    bytes: 5380
+    line: 1454105
+    module: 1734 chunk-bgmpngyq.js
+  purpose: Ultraplan remote-planning reminders (simple_plan, visual_plan, three_subagents_with_critique), /loop autonomous preambles (normal and persistent), and the auto-mode permission-classifier template.
+  reader: Ne() (txt/md); tt() (permissions_external .zst)
+  loaded_by:
+  - cli.beauty.js:475103 T7t table; uVe() :475114 picks tengu_ultraplan_prompt_identifier (default "simple_plan")
+  - cli.beauty.js:1454112 L() picks persistent preamble when CLAUDE_CODE_LOOP_PERSISTENT or tengu_kairos_loop_persistent (default false) (:1454107)
+  - cli.beauty.js:455108 pqe -> <permissions_template> substitution :455356; CEo() :431556
+  delivered_to:
+  - model
+  baseline_note: all three were inlined in 2.1.197 (MOVED)

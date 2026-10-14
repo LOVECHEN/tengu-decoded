@@ -287,16 +287,59 @@ The runner (module 432 `chunk-1hbnxc7y.js`) calls these against the worker `api_
 | `/v1/code/sessions/{id}/worker/register` | POST | `{session_id}` → `worker_epoch` (`:600644`) |
 | `/v1/code/sessions/{id}/worker/events` | POST | `{worker_epoch, events:[{payload}]}` (`:600659`) |
 | `/v1/code/sessions/{id}/worker` | PUT | Worker status / connection status (`:600674`) |
-| `/v1/code/sessions/{id}/worker/heartbeat` | POST | `{worker_epoch}` (`:600692`) |
+| `/v1/code/sessions/{id}/worker/heartbeat` | POST | Runner client sends `{worker_epoch}` only (`:600692`). The Remote Control transport sends a richer body: see [§3.1.1](#311-worker-heartbeat-two-senders-one-endpoint) |
 | `/v1/code/sessions/{id}/worker/diagnostics` | POST | Diagnostic log lines (`:600705`) |
 | `/v1/code/sessions/{id}/worker/otlp/{metrics,customer/metrics,customer/logs}` | POST | OTLP relay through CCR (`:194053`) |
 | `/v1/code/sessions/{id}/worker/channels/{ch}/files:write` | POST | Project-files write (`:368330`) |
 | `${sessionUrl}/worker/{route}` (route ∈ `web-fetch`, `web-search`) | POST | **CHANGED:** generic proxy `voo()` (`:488975`, `:489094`, `:739354`); base is `ccrSessionUrl()` or `${ANTHROPIC_BASE_URL}/v1/code/sessions/{id}` (`:488991-488993`) |
 
-Relative worker paths still exist for the older transport: `/worker/register` (`:1044396`),
+Relative worker paths are used by the `CCRClient` transport (module 1319 `chunk-tvq5gpwg.js`), which the
+Remote Control bridge (module 1320 `chunk-ce99px70.js`) configures: `/worker/register` (`:1044396`),
 `/worker/events`, `/worker/events/delivery`, `/worker/heartbeat` and `/worker/internal-events`
 (`:1045259-1045262`). New relative paths: `/worker/skill-manifest` (`:285603`),
 `/worker/record-created-pr` (`:368274`) and `/worker/synced_file` (`:1002140`).
+
+#### 3.1.1 Worker heartbeat: two senders, one endpoint
+
+`POST /v1/code/sessions/{id}/worker/heartbeat` has two senders in 2.1.300 with different bodies.
+
+| Sender | Body | Evidence |
+|---|---|---|
+| Runner client (`[runner:api]`, module 432) | `{worker_epoch}` | `:600692` |
+| `CCRClient.sendHeartbeat()` (module 1319), used by Remote Control | `{session_id, worker_epoch}` plus, when probe support is on, `supports_heartbeat_probe: true`, `current_interval_seconds`, and `idle_seconds` if the idle tracker has a sample | `:1046420-1046450` |
+
+A live capture from a Remote Control session on CLI 2.1.289, contributed by
+[@Mearman](https://github.com/Mearman) in [#3](https://github.com/wtfwhs/tengu-decoded/issues/3), matches the
+`CCRClient` body field for field:
+
+```json
+{"session_id":"cse_<id>","worker_epoch":1,"supports_heartbeat_probe":true,"current_interval_seconds":20,"idle_seconds":7}
+```
+
+What the 2.1.300 source says about each part:
+
+- **Probe fields are gated.** `advertiseHeartbeatProbeSupport` comes from `k("tengu_ccr_idle_heartbeat", false)`
+  (`:1051142`, passed in at `:1051166`) and is forced off for outbound-only transports (`F = !e.outboundOnly`,
+  `:1049036`, applied at `:1049068`). The capture therefore implies that flag was on for that session.
+- **Interval and jitter are remotely tunable.** The bridge reads the GrowthBook dynamic config
+  `tengu_bridge_repl_v2_config` (`Do()`, `:1050641`). Its defaults are `heartbeat_interval_ms: 20000` and
+  `heartbeat_jitter_fraction: 0.1` (`:1050610-1050611`), passed to the client at `:1051161`. If no interval is
+  supplied, `CCRClient` itself falls back to `lt = 20000` ms (`:1045125`). The 20 s cadence in the capture is the
+  default; `current_interval_seconds` reports the interval currently in force, rounded to seconds (`:1046446`).
+- **`idle_seconds`** comes from `idleTracker.sampleIdleSeconds()` (`:1047978`). The capture saw it count up
+  between beats (7, then 26). This is consistent with an idle counter, but how the tracker resets is not traced here.
+- **Request timeout** is `max(5 s, min(15 s, interval × (1 − jitter) − 5 s))` (`:1046452`). With the defaults that
+  is 13 s.
+- **Beat reasons.** Besides the regular cadence, `sendHeartbeat(reason)` handles `probe`, `resync`,
+  `resync_stale`, `reactivate`, `socket` and `socket_ended`, gated by `tengu_ccr_reconnect_beat`,
+  `tengu_ccr_reactivation_beat` and `tengu_ccr_skip_redundant_heartbeat` (all default `false`).
+- **Headers.** The capture reports a worker JWT bearer, `anthropic-version: 2023-06-01` and
+  `anthropic-client-platform: claude_code_cli`. The `anthropic-version: 2023-06-01` header, the
+  `anthropic-client-platform` header and the string `claude_code_cli` all occur in the 2.1.300 source; how the
+  headers (including the bearer token) are assembled for this request was not traced.
+
+`supports_heartbeat_probe`, `current_interval_seconds` and `idle_seconds` occur 0 times in 2.1.197, so the richer
+body is new since then (somewhere between 2.1.197 and 2.1.289).
 
 ### 3.2 Bridge environments (module 1379 `chunk-xtarwp8w.js`)
 Headers: `Bearer`, `anthropic-beta: environments-2025-11-01` (`bPo.header`),

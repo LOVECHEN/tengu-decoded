@@ -22,3 +22,8 @@ build/
 # Environment
 .env
 .env.*
+
+# Regenerable analysis artifacts (see versions/<version>/bundle/README.md)
+versions/2.1.300/bundle/cli.beauty.js
+versions/2.1.300/data/raw/strings-full.txt
+versions/2.1.300/data/raw/strings-long-prompts.txt

@@ -1,0 +1,58 @@
+version: "2.1.300"
+build_timestamp: "2026-10-14T12:54:55Z"
+git_sha: "c6733ae1276880507ca0c5b053ae18fb0df090d6"
+analysis_date: "2026-10-15"
+platform: "linux-x86_64"
+binary_path: "~/.local/share/claude/versions/2.1.300"
+binary_format: "ELF"
+binary_size_bytes: 266972344
+runtime: "Bun v1.4.3 (compiled standalone executable)"
+analyst: "whs"
+analysis_method: "claude-code-self-analysis + bun-module-graph-extraction + multi-agent-workflow"
+claude_code_version_used: "2.1.300"
+model_used: "claude-opus-5-5"
+notes: >-
+  Deep analysis going beyond strings(). Packaging changed since 2.1.197: the application is no longer a
+  single CommonJS bundle but code-split ESM. The ELF `.bun` section (file offset 0x5c93000, 169,843,365
+  bytes, ending in the `---- Bun! ----` trailer) embeds 2,651 files, including 2,395 `chunk-*.js` modules
+  and a 24,477-byte `cli` entry loader. bundle/extract.py parses Bun's module table and concatenates the
+  2,401 application JS modules into cli.min.js with per-module separators; non-JS assets go to
+  bundle/modules/. The beautified cli.beauty.js (1,857,789 lines) is not committed; bundle/README.md has
+  the deterministic regeneration command and its SHA-256. The 14 topic docs were produced by a multi-agent
+  workflow (one specialist per topic, each adversarially verified against the source), then an overview
+  and comparison were synthesised.
+extraction:
+  strings_tool: "GNU strings -n 6 -> 566,014 lines"
+  module_graph: ".bun ELF section -> 2,651 records x 52 bytes, entry point id 6 (/$bunfs/root/cli)"
+  concatenated: "cli.min.js (46,253,541 bytes, 56,440 lines, 2,401 modules)"
+  beautified: "js-beautify 1.15.1 -> cli.beauty.js (60,301,182 bytes, 1,857,789 lines; regenerated, not committed)"
+  assets: "bundle/modules/ (389 files incl. decompressed .zst siblings), bundle/manifest.tsv"
+accessors_this_build:
+  feature_flag_get: "k(name, default)"                      # was it in 2.1.197
+  feature_flag_get_with_source: "vn(name, default) -> {value, source}"
+  feature_flag_session_pinned: "vr(name, default)"
+  feature_flag_wrapper: "MG(name, default, _)"              # was J7
+  feature_flag_bool_async: "rb(name) / V9e(name)"           # was QYr / $U
+  dynamic_config: "KC / Mj"
+  telemetry_event_fire: "i(eventName, metadata) / Js(...) async"   # was q
+  telemetry_event_1p: "AA / NNt"
+  telemetry_event_datadog: "_0t (allowlisted names only)"
+  user_id_generator: "_M()"                                 # was vW
+  machine_id_generator: "Umt()"                             # was z5t
+  summon_sid_key_generator: "rPo()  (new; HMAC key, never transmitted)"
+  remote_control_machine_id: "f7s()  (new; randomUUID, sent as machine_id to /v1/environments/bridge)"
+  provider_plane_selector: "Ie()"                           # was yr
+  tool_factory: "Jt"                                        # was Ys
+headline_deltas_vs_2_1_197:
+  note: "2.1.197 figures are same-method recounts; published 2.1.197 figures in parentheses"
+  feature_flags: "251 (243) -> 704"
+  telemetry_events: "1,181 (1,163) -> 1,944"
+  builtin_tools: "49 -> 84"
+  env_vars: "526 -> 1,018 (946 CLAUDE_* + 72 ANTHROPIC_*)"
+  api_path_templates: "177 (164) -> 347"
+  slash_commands: "96 (93) -> 106"
+  model_ids: "61 -> 62 (8 new, 7 removed)"
+  runtime: "Bun 1.4.0 -> Bun 1.4.3"
+  packaging: "single CommonJS bundle -> code-split ESM (2,651 embedded files)"
+  provider_planes: "+ anthropicGoogleCloud"
+  install_identifiers: "2 (userID, machineID) -> 4 (+ summonSidKey, remoteControlMachineId) + ECDSA P-256 device key"

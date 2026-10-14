@@ -19,6 +19,7 @@ published product.
 
 | Version | Build Date | Platform | Status |
 |---------|-----------|----------|--------|
+| [**2.1.300**](versions/2.1.300/) | 2026-10-14 | Linux x86-64 | Complete (deep) |
 | [**2.1.197**](versions/2.1.197/) | 2026-06-29 | Linux x86-64 | Complete (deep) |
 | [**2.1.169**](versions/2.1.169/) | 2026-06-08 | Linux x86-64 | Complete (deep) |
 | [**2.1.32**](versions/2.1.32/) | 2026-02-05 | Linux x86-64 | Complete |
@@ -26,9 +27,24 @@ published product.
 See [versions/README.md](versions/README.md) for the full version index, and the
 [comparisons/](comparisons/) directory for cross-version diffs
 ([2.1.32 → 2.1.169](comparisons/2.1.32-to-2.1.169.md),
-[2.1.169 → 2.1.197](comparisons/2.1.169-to-2.1.197.md)).
+[2.1.169 → 2.1.197](comparisons/2.1.169-to-2.1.197.md),
+[2.1.197 → 2.1.300](comparisons/2.1.197-to-2.1.300.md)).
 
-> **Latest (v2.1.197):** a deep, bundle-extracted analysis (**Bun v1.4.0**, ~733k beautified lines).
+> **Latest (v2.1.300):** the first build whose **packaging** changed. The single CommonJS bundle became
+> **code-split ESM**: 2,651 files embedded in the binary's `.bun` section (2,395 lazily loaded chunks, a
+> 24 KB entry loader, bundled skills, templates, native addons and fonts), on **Bun v1.4.3**. Extraction now
+> parses Bun's module table ([`extract.py`](versions/2.1.300/bundle/extract.py)). Against same-method
+> recounts of 2.1.197: **704 feature flags** (251), **1,944 telemetry events** (1,181), **84 built-in tools**
+> (49), **1,018 env vars** (526), **347 API path templates** (177). Flags are now read through a class that
+> reports each value's source, with session-pinned reads. New provider plane **`anthropicGoogleCloud`**;
+> **`claude-opus-5-5`** is the compiled default on first-party. The Haiku-based Bash prefix classifier is
+> **gone** (Bash safety checks are deterministic). Install identifiers go from 2 to **4**, all random
+> (new: `summonSidKey`, never sent; `remoteControlMachineId`, sent to the remote-control bridge), plus a new
+> per-account ECDSA device key. See the [overview](versions/2.1.300/overview.md), the new
+> [embedded-assets](versions/2.1.300/embedded-assets.md) report and the
+> [2.1.197 → 2.1.300 comparison](comparisons/2.1.197-to-2.1.300.md).
+
+> **v2.1.197:** a deep, bundle-extracted analysis (**Bun v1.4.0**, ~733k beautified lines).
 > Where 2.1.169 was a tectonic shift, **2.1.197 is a consolidation release** — the same cloud
 > agent-fabric, renamed and re-gated, with new managed-resource families bolted on. Headline deltas vs
 > 2.1.169: **243 feature flags** (+25), **1086 → 1163 telemetry events**, **49 built-in tools**,
@@ -88,6 +104,31 @@ versions/<version>/
 | [Glossary](docs/glossary.md) | Internal codenames (tengu, marble, copper, coral, grove, kairos, harbor, …) |
 | [Architecture Overview](docs/architecture-overview.md) | How this repository is organized |
 | [How to Analyze](docs/how-to-analyze.md) | Step-by-step guide for analyzing a new version |
+
+### Version 2.1.300 Reports
+
+| Report | Description |
+|--------|-------------|
+| [Overview](versions/2.1.300/overview.md) | Build metadata, the ESM code-split packaging change, headline counts |
+| [**Device Fingerprinting**](versions/2.1.300/device-fingerprinting.md) | **Deep-dive**: four install identifiers + device key, and exactly where each leaves the machine |
+| [**Embedded Assets**](versions/2.1.300/embedded-assets.md) | **New**: the 2,651 files in the binary (chunks, skills, templates, `.mjs` toolkit, native addons) |
+| [Feature Flags](versions/2.1.300/feature-flags.md) | All 704 flags and the provenance-aware resolver class |
+| [Plan and Tier Gating](versions/2.1.300/plan-tier-gating.md) | Subscription types, model access, usage credits |
+| [API Endpoints](versions/2.1.300/api-endpoints.md) | 347 path templates: inference, cloud backend, self-hosted runners, org admin, Google Cloud plane |
+| [Telemetry](versions/2.1.300/telemetry.md) | 1,944 events, the capped pre-sink queue, backends and controls |
+| [System Prompt](versions/2.1.300/system-prompt.md) | Composer, section builders, text diffed against 2.1.197 |
+| [Tool Definitions](versions/2.1.300/tool-definitions.md) | 84 tools (`Jt` factory), schemas, permission modes |
+| [Security Model](versions/2.1.300/security-model.md) | Deterministic Bash checks (LLM prefix classifier removed), auto-mode classifier, sandboxing |
+| [Architecture](versions/2.1.300/architecture.md) | Code-split ESM, hooks worker, native addons, daemon, teams, bridge, mods |
+| [Model References](versions/2.1.300/model-references.md) | Model catalog, Claude 5.5 defaults, remote signed catalog |
+| [Environment Variables](versions/2.1.300/environment-variables.md) | 1,018 `CLAUDE_*`/`ANTHROPIC_*` vars |
+| [Hidden Commands](versions/2.1.300/hidden-commands.md) | 106 slash commands incl. hidden and gated |
+| [Codenames](versions/2.1.300/codenames.md) | Codename families (incl. new ones such as `violin`) |
+
+Structured datasets: [`versions/2.1.300/data/`](versions/2.1.300/data/). The extracted module graph is in
+[`bundle/`](versions/2.1.300/bundle/); from 2.1.300 the beautified `cli.beauty.js` is **not committed**:
+regenerate it with the command in [`bundle/README.md`](versions/2.1.300/bundle/README.md), which also lists
+the SHA-256 to check it against.
 
 ### Version 2.1.197 Reports
 
@@ -191,4 +232,5 @@ See [docs/methodology.md](docs/methodology.md) for the full extraction guide and
 
 Cross-version diffs live in [`comparisons/`](comparisons/) — see
 [2.1.32 → 2.1.169](comparisons/2.1.32-to-2.1.169.md) and
-[2.1.169 → 2.1.197](comparisons/2.1.169-to-2.1.197.md).
+[2.1.169 → 2.1.197](comparisons/2.1.169-to-2.1.197.md) and
+[2.1.197 → 2.1.300](comparisons/2.1.197-to-2.1.300.md).

@@ -1,0 +1,859 @@
+# Slash commands - Claude Code 2.1.300
+# Build 2026-10-14T12:54:55Z | GIT_SHA c6733ae1276880507ca0c5b053ae18fb0df090d6 | Bun v1.4.3
+#
+# Source of truth: module 424 chunk-538n62w8.js (cli.beauty.js 379693-595167) plus lazy command chunks
+# (modules 1219-1229, 1021358-1022760). Readable re-export map: module 1863 chunk-gvp2dw01.js (1553451).
+#   getCommands rf (477227) -> a3o (477230): keeps cmd iff G_e(cmd) && mc(cmd) (477239)
+#   getBuiltinCommands xY (477116) -> lG (477077) -> buildBuiltinCommandTable mus (476930)
+#   getRuntimeGatedBuiltinCommands fus (476926) over HQt()/IX() groups (476887/476921)
+#   isCommandEnabled mc (231719): policyGate (qmo 231724 -> U4n 70128, fail-closed) then isEnabled?.() ?? true
+#   meetsAvailabilityRequirement G_e (417561): claude-ai | console | console-profile (NEW)
+#
+# Count (canonical, _facts.md 1.6): 106 distinct literal name: on type local/local-jsx/prompt objects
+# (2.1.197 recount 96; published 93). NEW 14, gone 4. Identifier-named hidden commands
+# (/low-priority, /limit-reset, /claim-credit, /vim, /commit-push-pr, upsell stubs) are outside the count.
+#
+# Status semantics:
+#   enabled      -> no isEnabled (or always true), not hidden
+#   conditional  -> isEnabled / isHidden / availability / policyGate depends on flag, policy, auth, mode, env
+#   hidden       -> isHidden true (runnable, unlisted)
+#   disabled     -> isEnabled: () => !1
+#   compiled-off -> gate hard-coded false (function returning !1)
+#   tombstone    -> hidden command whose call only says the feature was removed
+#   upsell-stub  -> rG() wrapper (hidden, Claude for Enterprise upsell)
+#   skill        -> registered via registerBundledSkill Zs (365324), not a registry object
+#   absent       -> no command object in 2.1.300
+#
+# Gate helpers (2.1.300 -> 2.1.197 analogue):
+#   we()   headless: !launchOptions.isInteractive()  [2598, module 19; alias getIsNonInteractiveSession 878167] (was Cr())
+#   Un()   remote workspace                          [2604; alias getIsRemoteMode]                          (was _a())
+#   Sc()   repl bridge active                        [2604; alias isReplBridgeActive]
+#   kt()   claude.ai subscriber OAuth                [130788; alias isClaudeAISubscriber 1041805]           (was Ao())
+#   on(p)  org policy allowed                        [160130; alias isPolicyAllowed 1042297]                (was js(cap))
+#   Jn()   Ie() === firstParty                       [21740]
+#   ra()   coordinator mode                          [199545]                                               (was Jv())
+#   Lt()   Un() || thin-client transport             [48032]
+#   Ct()   essential-traffic mode                    [10169]
+#   k(f,d) GrowthBook getFeatureValue_CACHED_MAY_BE_STALE [142865]                                         (was it())
+registry_total:
+  canonical_2_1_300: 106
+  canonical_2_1_197_recount: 96
+  published_2_1_197: 93
+  delta: '+10'
+  new:
+  - __remote-workflow
+  - artifacts
+  - auto-mode-setup
+  - bug
+  - cloud-plugins
+  - design-consent
+  - design-revoke
+  - import
+  - list-agents
+  - output-style
+  - restart
+  - skill-doctor
+  - subtask
+  - workflow-launch-exec
+  gone:
+  - doctor
+  - init-verifiers
+  - review
+  - update
+  new_identifier_named:
+  - low-priority
+  - limit-reset
+  - claim-credit
+active_commands:
+- name: /help
+  aliases: []
+  status: enabled
+  line: 458168
+  notes: local-jsx; immediate only in fullscreen
+- name: /config
+  aliases:
+  - /settings
+  status: enabled
+  line: 458045
+  notes: local-jsx; headless local twin nKe (458056) isEnabled we(), isHidden !we()
+- name: /login
+  aliases: []
+  status: conditional
+  line: 458561
+  notes: 'factory u2t(); isEnabled: () => !DISABLE_LOGIN_COMMAND; fleetHostCall login'
+- name: /logout
+  aliases: []
+  status: conditional
+  line: 458572
+  delta: 'CHANGED: runtime-gated group'
+  notes: 'isEnabled: () => !DISABLE_LOGOUT_COMMAND; only in the table when IX(logout) is open: !Oee() || Wx(Fr()) (first-party, or pinned gateway auth)'
+- name: /clear
+  aliases:
+  - /reset
+  - /new
+  status: enabled
+  line: 457799
+  notes: supportsNonInteractive; previous session stays on disk
+- name: /compact
+  aliases: []
+  status: conditional
+  line: 458003
+  notes: 'isEnabled: () => !DISABLE_COMPACT'
+- name: /autocompact
+  aliases: []
+  status: conditional
+  line: 458014
+  notes: interactive isEnabled !we(); local twin Ihe (458026) isEnabled we() || Un()
+- name: /resume
+  aliases:
+  - /continue
+  status: enabled
+  line: 458699
+  notes: ''
+- name: /memory
+  aliases: []
+  status: enabled
+  line: 458140
+  notes: ''
+- name: /model
+  aliases: []
+  status: enabled
+  line: 476374
+  notes: dual variants; headless LVe (476362)
+- name: /plan
+  aliases: []
+  status: enabled
+  line: 475714
+  notes: ''
+- name: /permissions
+  aliases:
+  - /allowed-tools
+  status: enabled
+  line: 475705
+  notes: ''
+- name: /hooks
+  aliases: []
+  status: enabled
+  line: 475783
+  notes: ''
+- name: /skills
+  aliases: []
+  status: enabled
+  line: 458786
+  notes: ''
+- name: /mcp
+  aliases: []
+  status: enabled
+  line: 458619
+  notes: local-jsx thinClientDispatch twin; headless Dhe (458606)
+- name: /status
+  aliases: []
+  status: enabled
+  line: 458794
+  notes: ''
+- name: /ide
+  aliases: []
+  status: enabled
+  line: 458178
+  notes: ''
+- name: /add-dir
+  aliases: []
+  status: enabled
+  line: 453321
+  notes: local-jsx twin; headless Dze (453308) isEnabled we() && lzs()
+- name: /cd
+  aliases: []
+  status: enabled
+  line: 457792
+  notes: ''
+- name: /theme
+  aliases: []
+  status: enabled
+  line: 475688
+  notes: ''
+- name: /color
+  aliases: []
+  status: enabled
+  line: 457810
+  notes: dual; headless Aqe (457822)
+- name: /rename
+  aliases:
+  - /name
+  status: enabled
+  line: 458673
+  notes: dual; headless yKe (458685)
+- name: /copy
+  aliases: []
+  status: enabled
+  line: 457836
+  notes: ''
+- name: /diff
+  aliases: []
+  status: conditional
+  line: 458130
+  notes: 'isEnabled: () => !M0n()'
+- name: /export
+  aliases: []
+  status: enabled
+  line: 476352
+  notes: ''
+- name: /rewind
+  aliases:
+  - /checkpoint
+  - /undo
+  status: enabled
+  line: 475891
+  notes: ''
+- name: /keybindings
+  aliases: []
+  status: conditional
+  line: 458526
+  notes: 'isEnabled: n9() = k(''tengu_keybinding_customization_release'', true)'
+- name: /statusline
+  aliases: []
+  status: enabled
+  line: 476658
+  notes: type prompt; disableNonInteractive
+- name: /terminal-setup
+  aliases: []
+  status: enabled
+  line: 459860
+  notes: ''
+- name: /exit
+  aliases:
+  - /quit
+  status: enabled
+  line: 476196
+  notes: dual; headless nQt (476212); in a bg session the description says detach
+- name: /btw
+  aliases: []
+  status: enabled
+  line: 457754
+  notes: local-jsx immediate; NEW property keepsScrollPosition
+- name: /context
+  aliases: []
+  status: conditional
+  line: 458113
+  notes: interactive isEnabled !we() && !n2t() (n2t returns false); headless Ohe (458117)
+- name: /init
+  aliases: []
+  status: enabled
+  line: 458505
+  notes: type prompt
+- name: /output-style
+  aliases: []
+  status: conditional
+  line: 458093
+  delta: NEW
+  notes: 'isEnabled: () => we() || !Rbe(); Rbe = k(''tengu_maple_sundial'', false)'
+- name: /usage
+  aliases:
+  - /cost
+  - /stats
+  status: enabled
+  line: 475645
+  notes: dual; headless fVe (475656)
+- name: /usage-credits
+  aliases: []
+  status: conditional
+  line: 476433
+  notes: fI() && !we() / fI() && we(); fI = !DISABLE_EXTRA_USAGE_COMMAND && (uM() !== null || VYs())
+- name: /passes
+  aliases: []
+  status: conditional
+  line: 475755
+  notes: 'isHidden getter: !eligible || !hasCache (odt 334983)'
+- name: /privacy-settings
+  aliases: []
+  status: conditional
+  line: 475773
+  notes: 'isEnabled: c5() = kt() && Rr() !== null && VE(Rr())'
+- name: /upgrade
+  aliases: []
+  status: conditional
+  line: 476422
+  notes: availability claude-ai; isEnabled ffe() = !k('tengu_idle_amber_finch') && !DISABLE_UPGRADE_COMMAND && Rr() !== 'enterprise'
+- name: /plugin
+  aliases:
+  - /plugins
+  - /marketplace
+  status: enabled
+  line: 475854
+  notes: ''
+- name: /reload-plugins
+  aliases: []
+  status: enabled
+  line: 475867
+  notes: ''
+- name: /reload-skills
+  aliases: []
+  status: enabled
+  line: 475878
+  notes: ''
+- name: /advisor
+  aliases: []
+  status: conditional
+  line: 476061
+  notes: gk() = _It() && (CLAUDE_CODE_ENABLE_EXPERIMENTAL_ADVISOR_TOOL || k('tengu_sage_compass2').enabled); headless MVe (476078)
+- name: /background
+  aliases:
+  - /bg
+  status: conditional
+  line: 1021384
+  delta: 'CHANGED: runtime-gated group'
+  notes: 'isEnabled true; in table only when fleetBackground open: mv() = not CLAUDE_CODE_DISABLE_AGENT_VIEW / disableAgentView'
+- name: /stop
+  aliases: []
+  status: conditional
+  line: 1021543
+  notes: isEnabled $t() || cnt() !== null; headless twin (1021550) isEnabled $t; fleetBackground group
+- name: /fork
+  aliases: []
+  status: conditional
+  line: 475810
+  delta: 'CHANGED: runtime-gated variants'
+  notes: 'two objects: when fleetFork open (mv() && !IS_DEMO) L7t (475818) copies into a new bg session; when closed O7t (475810) spawns a bg agent; both isEnabled !ra()'
+- name: /subtask
+  aliases: []
+  status: conditional
+  line: 475825
+  delta: NEW
+  notes: isEnabled !ra(); fleetFork group open only
+- name: /branch
+  aliases: []
+  status: enabled
+  line: 475802
+  notes: ''
+- name: /tasks
+  aliases:
+  - /bashes
+  status: enabled
+  line: 458804
+  notes: ''
+- name: /workflows
+  aliases: []
+  status: conditional
+  line: 1022237
+  notes: isEnabled Pg() = gvo() === undefined (managed settings, org policy, availability, enableWorkflows)
+- name: /list-agents
+  aliases:
+  - /peers
+  status: conditional
+  line: 1021358
+  delta: NEW
+  notes: 'isEnabled Gi(): CLAUDE_CODE_HARBOR_KITE env override, else k(''tengu_harbor_kite'', true) (+ tengu_harbor_kite_win on Windows)'
+- name: /session
+  aliases:
+  - /remote
+  status: conditional
+  line: 458751
+  notes: isEnabled Un(); isHidden !zA('fanout')
+- name: /remote-control
+  aliases:
+  - /rc
+  status: conditional
+  line: 1022709
+  notes: isHidden !qR(); isEnabled qR() || (signed-out with no key/token && !Nz() && !isC4EUpsellCommandEnabled()); qR = !Nz() && !q0() && Tct()
+- name: /remote-env
+  aliases: []
+  status: conditional
+  line: 476387
+  delta: 'CHANGED: console-profile + policyGate'
+  notes: availability claude-ai, console-profile; isEnabled kt() || RNt(); policyGate allow_remote_sessions; isHidden !mc(this)
+- name: /teleport
+  aliases:
+  - /tp
+  status: conditional
+  line: 459237
+  delta: 'CHANGED: console-profile + policyGate'
+  notes: availability claude-ai, console-profile; isEnabled kt() || RNt(); policyGate allow_remote_sessions
+- name: /autofix-pr
+  aliases: []
+  status: conditional
+  line: 457738
+  delta: CHANGED
+  notes: availability claude-ai, console-profile; isEnabled jKt() && !we(); jKt = (kt() || RNt()) && on('allow_remote_sessions')
+- name: /ultraplan
+  aliases: []
+  status: conditional
+  line: 475632
+  notes: availability claude-ai; $V() = k('tengu_ultraplan_config',null)?.enabled && Tct() && !Un()
+- name: /ultrareview
+  aliases: []
+  status: conditional
+  line: 458730
+  notes: U0() = sOt() && Tct(); headless w2t (458738)
+- name: /web-setup
+  aliases: []
+  status: conditional
+  line: 368543
+  delta: CHANGED
+  notes: availability claude-ai; ixe() = !Ct() && on('allow_remote_sessions') && on('allow_quick_web_setup'); tengu_cobalt_lantern removed
+- name: /install-github-app
+  aliases: []
+  status: conditional
+  line: 458584
+  notes: availability claude-ai, console; !DISABLE_INSTALL_GITHUB_APP_COMMAND
+- name: /install-slack-app
+  aliases: []
+  status: conditional
+  line: 458592
+  delta: unchanged
+  notes: 'availability claude-ai only; no isEnabled, no isHidden. Same in 2.1.197 (506168, lGl in yen); the isEnabled false + hidden object after it is a separate stub'
+- name: /mobile
+  aliases:
+  - /ios
+  - /android
+  status: enabled
+  line: 458628
+  delta: unchanged
+  notes: 'no gate at all; in REMOTE_SAFE. Same in 2.1.197 (524099, Qjo in yen and Zcr); the isEnabled false + hidden object after it is a separate stub'
+- name: /chrome
+  aliases: []
+  status: conditional
+  line: 476041
+  delta: 'CHANGED: policyGate'
+  notes: availability claude-ai; isEnabled !we() && sA() (on('allow_claude_browser_extension')); policyGate allow_claude_browser_extension
+- name: /effort
+  aliases: []
+  status: enabled
+  line: 476694
+  notes: dual; headless jVe (476707)
+- name: /goal
+  aliases: []
+  status: conditional
+  line: 1022094
+  notes: local-jsx enabled; headless twin (1022101) isEnabled we() || Un()
+- name: /focus
+  aliases: []
+  status: enabled
+  line: 476734
+  notes: dual; headless zVe (476788) advertisedOnHostedSessions
+- name: /brief
+  aliases: []
+  status: conditional
+  line: 1022527
+  notes: 'isEnabled: a().enable_slash_command; a() parses k(''tengu_kairos_brief_config'')'
+- name: /recap
+  aliases: []
+  status: enabled
+  line: 1022057
+  delta: 'CHANGED: ungated'
+  notes: 'no isEnabled; 2.1.197 gate it(tengu_sedge_lantern, !0) (572207) removed (exact name 0 occurrences; tengu_sedge_lantern_config remains at 1367304)'
+- name: /voice
+  aliases: []
+  status: conditional
+  line: 458643
+  delta: 'CHANGED: hidden-only gate'
+  notes: availability claude-ai; no isEnabled; isHidden !rdt(); rdt = ywr() && on('allow_voice_mode')
+- name: /tui
+  aliases: []
+  status: enabled
+  line: 475698
+  notes: ''
+- name: /scroll-speed
+  aliases: []
+  status: conditional
+  line: 458775
+  notes: terminal-dependent isEnabled
+- name: /fast
+  aliases: []
+  status: conditional
+  line: 475724
+  notes: isHidden !jo(); jo = firstParty && !CLAUDE_CODE_DISABLE_FAST_MODE; headless yVe (475740)
+- name: /sandbox
+  aliases: []
+  status: conditional
+  line: 476026
+  notes: isHidden unless sandbox platform supported and enabled
+- name: /insights
+  aliases: []
+  status: conditional
+  line: 476865
+  delta: 'CHANGED: policyGate'
+  notes: type prompt; policyGate allow_insights
+- name: /powerup
+  aliases: []
+  status: enabled
+  line: 458656
+  notes: ''
+- name: /release-notes
+  aliases: []
+  status: enabled
+  line: 458666
+  notes: ''
+- name: /team-onboarding
+  aliases: []
+  status: conditional
+  line: 459188
+  delta: 'CHANGED: policyGate replaces isEnabled'
+  notes: type prompt; policyGate allow_team_onboarding
+- name: /security-review
+  aliases: []
+  status: enabled
+  line: 459820
+  notes: F2t() builtin prompt factory; name passed as argument so outside the canonical count
+- name: /setup-bedrock
+  aliases: []
+  status: conditional
+  line: 458707
+  notes: isHidden !CLAUDE_CODE_USE_BEDROCK; NEW isEnabled _ee('bedrock') === undefined
+- name: /setup-vertex
+  aliases: []
+  status: conditional
+  line: 458716
+  notes: isHidden !CLAUDE_CODE_USE_VERTEX; NEW isEnabled _ee('vertex') === undefined
+- name: /feedback
+  aliases: []
+  status: enabled
+  line: 457769
+  notes: Send feedback to Anthropic or report a bug
+- name: /bug
+  aliases:
+  - /share
+  status: enabled
+  line: 457781
+  delta: NEW
+  notes: Report a bug or share your conversation
+- name: /artifacts
+  aliases: []
+  status: conditional
+  line: 457720
+  delta: NEW
+  notes: isEnabled sM() && zc() === null; runsBesideTurns k('tengu_cobalt_plinth_sainfoin', false)
+- name: /import
+  aliases: []
+  status: conditional
+  line: 458224
+  delta: NEW
+  notes: tRe() = k('tengu_import', false); headless r2t (458235)
+- name: /auto-mode-setup
+  aliases: []
+  status: conditional
+  line: 457709
+  delta: NEW
+  notes: interactive Tqe() && !we(); headless vqe (457697) wqe() && we()
+- name: /cloud-plugins
+  aliases: []
+  status: conditional
+  line: 453330
+  delta: NEW
+  notes: Nrn() && !CLAUDE_CODE_DISABLE_PLUGIN_FORWARDING
+- name: /skill-doctor
+  aliases: []
+  status: conditional
+  line: 475669
+  delta: NEW
+  notes: 'skillDoctor group: k(''tengu_lantern_prism'', false) || CLAUDE_CODE_LANTERN_PRISM; headless Gye (475676)'
+- name: /restart
+  aliases:
+  - /update
+  status: conditional
+  line: 476333
+  delta: NEW
+  notes: lQt() = cQt() (TTY, macOS/linux, not bg/remote) && v6o() (tengu_fancy_wand); bridge-safe set but Cit excludes it
+- name: /design-login
+  aliases: []
+  status: conditional
+  line: 458554
+  delta: CHANGED
+  notes: WF() = on('allow_design_sync') && !Ct() && Jn(); policyGate allow_design_sync; tengu_slate_quill removed
+- name: /stickers
+  aliases: []
+  status: enabled
+  line: 476045
+  notes: opens stickermule.com/claudecode
+hidden_commands:
+- name: /radio
+  aliases: []
+  status: enabled
+  line: 476053
+  delta: 'CHANGED: ungated (was flag-gated)'
+  notes: 'EASTER EGG. No isEnabled, no isHidden; opens https://clau.de/radio (chunk-sm6xwabv.js 937062). tengu_velvet_static: 0 occurrences in 2.1.300'
+- name: /heapdump
+  aliases: []
+  status: hidden
+  line: 475898
+  delta: 'CHANGED: policyGate'
+  notes: isHidden true; supportsNonInteractive; fleetHostCall performHeapDump; policyGate allow_heap_dump
+- name: /low-priority
+  aliases: []
+  status: hidden
+  line: 476489
+  delta: NEW
+  notes: name const fve (177349). isEnabled kt() && (iL() || Ept()); Ept = k('tengu_toasty_breeze',{}).enabled
+- name: /limit-reset
+  aliases: []
+  status: hidden
+  line: 476637
+  delta: NEW
+  notes: name const R7 (476498). isEnabled kt() && (oRe() || rue()); tengu_nifty_lemur / tengu_cedar_ember .enabled
+- name: /claim-credit
+  aliases: []
+  status: hidden
+  line: 476647
+  delta: NEW
+  notes: name const tws (335612). isEnabled kt() && !bie() && lFn() !== null; lFn reads tengu_swift_lynx
+- name: /pro-trial-expired
+  aliases: []
+  status: hidden
+  line: 476472
+  notes: isHidden true; no isEnabled
+- name: /rate-limit-options
+  aliases: []
+  status: conditional
+  line: 476479
+  delta: CHANGED
+  notes: isEnabled kt() || false; isHidden no longer set
+- name: /extra-usage
+  aliases: []
+  status: hidden
+  line: 476453
+  notes: Renamed to /usage-credits; fI() gate; headless HVe (476463)
+- name: /pause-memory
+  aliases:
+  - /memory-pause
+  - /toggle-memory
+  status: disabled
+  line: 458148
+  notes: 'isEnabled: () => !1; isHidden getter !P7t() && IS_DEMO'
+- name: /loops
+  aliases: []
+  status: disabled
+  line: 475794
+  notes: 'isEnabled: () => !1'
+- name: /wellbeing
+  aliases:
+  - /breaks
+  - /break-reminder
+  - /downtime
+  status: disabled
+  line: 476722
+  notes: 'isEnabled: () => !1'
+- name: /version
+  aliases: []
+  status: disabled
+  line: 475926
+  notes: 'local-jsx and local (475952) both isEnabled: () => !1'
+- name: /desktop
+  aliases:
+  - /app
+  status: compiled-off
+  line: 457853
+  delta: CHANGED gate, still off
+  notes: Ebe() = lWo() && !Lt(); lWo returns !1 (457845); allow_desktop_handoff check gone
+- name: /daemon
+  aliases: []
+  status: compiled-off
+  line: 1022742
+  delta: 'unchanged status (off in 2.1.197 too: ...qcr && jce() with jce() returning !1, 2.1.197:581712/145700); CHANGED mechanism'
+  notes: object ungated, but only in table via IX(daemon) whose open() j8() returns !1 (368789). Name reserved via fus()
+- name: /agents
+  aliases: []
+  status: tombstone
+  line: 475843
+  delta: 'CHANGED: was active in 2.1.197'
+  notes: isHidden true; call prints 'The /agents wizard has been removed.'
+- name: /vim
+  aliases: []
+  status: hidden
+  line: 458088
+  notes: e2t redirect 'Editor mode moved to /config'; isEnabled Rbe() = tengu_maple_sundial
+- name: /output-style (redirect)
+  aliases: []
+  status: hidden
+  line: 458088
+  notes: e2t redirect copy; same tengu_maple_sundial gate
+- name: /__remote-workflow
+  aliases: []
+  status: hidden
+  line: 476398
+  delta: NEW
+  notes: server-launched sessions only; disableModelInvocation
+- name: /workflow-launch-exec
+  aliases: []
+  status: hidden
+  line: 476410
+  delta: NEW
+  notes: workflow_launch event sessions only; disableModelInvocation
+- name: /design-consent
+  aliases: []
+  status: hidden
+  line: 458534
+  delta: NEW
+  notes: isEnabled WF(); policyGate allow_design_sync
+- name: /design-revoke
+  aliases: []
+  status: hidden
+  line: 458544
+  delta: NEW
+  notes: isEnabled WF(); policyGate allow_design_sync
+- name: /commit-push-pr
+  aliases: []
+  status: absent
+  line: 457965
+  notes: object mWo exists (name const Qvo 310245) but its table entry JKt is only in the never-read RNa list; not in mus()
+- name: /doctor
+  aliases:
+  - /checkup
+  status: skill
+  line: 789214
+  delta: MOVED
+  notes: MOVED to registerBundledSkill; !DISABLE_DOCTOR_COMMAND; survivesBundledKillSwitch
+- name: /review
+  aliases: []
+  status: absent
+  line: 788507
+  delta: REMOVED (alias)
+  notes: REMOVED as a prompt command; now alias of the /code-review bundled skill
+- name: /update
+  aliases: []
+  status: absent
+  line: 476335
+  delta: REMOVED (alias)
+  notes: REMOVED as a command; now alias of /restart
+- name: /init-verifiers
+  aliases: []
+  status: absent
+  line: null
+  delta: REMOVED
+  notes: 'REMOVED: 0 occurrences in 2.1.300'
+skill_commands:
+- name: /loop
+  aliases:
+  - /proactive
+  line: 1544194
+  notes: isEnabled PC() = !CLAUDE_CODE_DISABLE_CRON && MG('tengu_kairos_cron', true)
+- name: /schedule
+  aliases:
+  - /routines
+  line: 1544978
+  delta: CHANGED gate
+  notes: Jn() && kt() && !CLAUDE_CODE_REMOTE && on('allow_routines'); policyGate allow_remote_sessions; tengu_surreal_dali removed
+- name: /doctor
+  aliases:
+  - /checkup
+  line: 789214
+  delta: MOVED from registry
+  notes: '!DISABLE_DOCTOR_COMMAND'
+- name: /code-review
+  aliases:
+  - /review
+  line: 788505
+  delta: CHANGED (gains review alias)
+  notes: subcommands ultra -> ultrareview
+- name: /setup-claude
+  aliases:
+  - /setup-cowork
+  line: 1543704
+  delta: NEW
+  notes: I_() || cW()
+- name: /commit
+  aliases: []
+  line: 788629
+  delta: NEW
+  notes: rOr()
+- name: /pr
+  aliases: []
+  line: 789725
+  delta: NEW
+  notes: rOr()
+- name: /explain-usage
+  aliases: []
+  line: 789256
+  delta: NEW
+  notes: I_() || cW()
+- name: /workflow-authoring
+  aliases: []
+  line: 1379699
+  delta: NEW
+  notes: Pg()
+- name: /slides
+  aliases: []
+  line: 784869
+  delta: NEW
+  notes: policyKey allow_cobalt_plinth_juniper
+- name: /artifact-report, /artifact-data-table, /artifact-explainer
+  aliases: []
+  line: 786790
+  delta: NEW
+  notes: loop over Jn kinds; isEnabled Yvo
+- name: /doc
+  aliases: []
+  line: 789543
+  delta: NEW
+  notes: loop over zs; isEnabled Vs
+- name: /dataviz, /whiteboard, /prototype, /workshop, /artifact-capabilities, /artifact-diagramming, /artifact-components, /artifact-pr-review
+  aliases: []
+  line: 786563
+  delta: NEW
+  notes: artifact-family skills; consts 310230-310251
+- name: /artifact-design, /batch, /claude-in-chrome, /cowork-plugin, /debug, /design, /design-sync, /fewer-permission-prompts, /keybindings-help, /memory-types, /simplify, /verify, /update-config, /claude-api,
+    /claude-code-docs, /run, /run-skill-generator
+  aliases: []
+  line: 786727
+  delta: UNCHANGED (present in 2.1.197 Bd list)
+  notes: keybindings-help, memory-types, artifact-design and cowork-plugin register with userInvocable false
+upsell_stub_commands:
+  wrapper: rG (476129)
+  gate: Z7t (476097) = !kt() && kit() && !we() && k('tengu_c4e_slash_upsell', false)
+  variants: 'NEW _6o (476114): policy_disabled | signed_out | c4e'
+  event: tengu_c4e_slash_upsell_shown
+  set_line: 476159
+  commands:
+  - /ultraplan
+  - /ultrareview
+  - /teleport (/tp)
+  - /remote-control (/rc)
+  - /schedule (/routines)
+  - /autofix-pr
+  delta: set unchanged; remote-control stub gains managedDisabled Nz()
+availability_gating:
+  function: G_e (417561)
+  values_seen:
+  - claude-ai
+  - console
+  - console-profile
+  claude-ai: kt()
+  console: '!kt() && !Oee() && Si()'
+  console-profile: 'NEW: Xae() === ''user_oauth'' && OU()'
+  commandsOffHere: NEW hook wr().commandsOffHere, initialised void 0 (47367) and never assigned
+policy_gating:
+  mechanism: NEW policyGate property, checked by mc -> qmo -> U4n -> verdict.commandPolicyGateAllows; fail-closed
+  occurrences:
+    2.1.197: 0
+    2.1.300: 35
+  keys_on_commands:
+  - allow_remote_sessions
+  - allow_design_sync
+  - allow_heap_dump
+  - allow_insights
+  - allow_team_onboarding
+  - allow_claude_browser_extension
+runtime_gated_groups:
+  fleetFork: mv() && !IS_DEMO -> [/fork (copy), /subtask] else [/fork (spawn)]
+  fleetBackground: mv() -> [/background, /stop]
+  daemon: j8() returns false -> [] (daemon compiled off)
+  skillDoctor: L0() -> [/skill-doctor x2]
+  logout: '!Oee() || Wx(Fr()) -> [/logout]'
+command_filtering_pipeline:
+  REMOTE_SAFE_COMMANDS: Hmr (476933)
+  BRIDGE_SAFE_COMMANDS: kHn (476934)
+  filterCommandsForRemoteMode: Mso (476961)
+  isBridgeSafeCommand: 'Cit (476936): never local-jsx; prompt unless disableBridgeInvocation; restart excluded explicitly'
+  bridge_twin_lookup: H4e (476949) via thinClientDispatch 'twin'
+  INTERNAL_ONLY_COMMANDS: RNa (476884) - tentative mapping; defined but never read
+  ANT_GATED_COMMANDS: CNa (476885) - tentative mapping; all six members null, so empty; never read
+symbol_renames:
+  getCommands: gA -> rf
+  getBuiltinCommands: EVo/yen -> xY/lG/mus
+  isCommandEnabled: rx -> mc
+  meetsAvailabilityRequirement: VTt -> G_e
+  REMOTE_SAFE_COMMANDS: Zcr -> Hmr
+  BRIDGE_SAFE_COMMANDS: TVo -> kHn
+  upsell_wrapper: uTt -> rG
+  headless_gate: Cr -> we
+  remote_gate: _a -> Un
+  first_party_gate: Ao -> kt
+  capability_gate: js -> on
+  coordinator_gate: Jv -> ra

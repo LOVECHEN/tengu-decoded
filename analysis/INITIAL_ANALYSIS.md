@@ -1,132 +1,90 @@
-# Initial Content Analysis
+# 初始内容分析
 
-Baseline inspected: upstream `main` at
-`068b7a24325bbf92af5f024bdb9525a654251155`, observed and archived on
-2026-10-29 as
-`archive/heads/main/20261029T121832Z-068b7a24325b`.
+分析基线：上游 `main` 的
+`068b7a24325bbf92af5f024bdb9525a654251155`，于 2026-10-29 被观测并归档为
+`archive/heads/main/20261029T121832Z-068b7a24325b`。
 
-## What the repository contains
+## 仓库内容
 
-This is a versioned reverse-engineering corpus for four Linux x86-64 Claude
-Code builds: 2.1.32, 2.1.169, 2.1.197, and 2.1.300. It contains three distinct
-evidence layers:
+这是一套按版本组织的 Claude Code 逆向语料，覆盖四个 Linux x86-64 构建：
+2.1.32、2.1.169、2.1.197 与 2.1.300。内容分为三层：
 
-1. Extracted primary material: raw strings, carved or reconstructed JavaScript,
-   Bun module manifests, embedded assets, and native addons.
-2. Structured indexes: YAML inventories for flags, telemetry events, tools,
-   commands, models, endpoints, environment variables, security checks, and
-   identity flows.
-3. Interpretive reports: per-version technical analyses and cross-version
-   comparisons.
+1. **一手提取材料**：原始字符串、切出或重建的 JavaScript、Bun 模块清单、嵌入资源与原生扩展。
+2. **结构化索引**：以 YAML 盘点功能标志、遥测事件、工具、命令、模型、端点、环境变量、安全检查与身份流。
+3. **解释性报告**：按版本拆分的技术分析与跨版本比较。
 
-The strongest evidence is the extracted source and manifests. The prose reports
-are useful indexes but should be treated as claims to verify against those
-artifacts, especially where they label an inference as tentative.
+证据强度从高到低依次是：可重现的提取源码与清单、结构化索引、解释性文章。文章适合定位线索，
+但关键结论仍应回到提取物和调用点验证，特别是标注为推断的部分。
 
-## Corpus and provenance
+## 语料与溯源
 
-The repository has 527 tracked paths under `versions/`. The largest primary
-artifacts are:
+`versions/` 下共有 527 个已跟踪路径。主要一手产物如下：
 
-| Artifact | Role | Locally verified SHA-256 |
+| 产物 | 作用 | 本地校验的 SHA-256 |
 |---|---|---|
-| `versions/2.1.169/bundle/cli.min.js` | 16.5 MB carved Bun CommonJS source | `640946f13b684166b29175d18ce9aad0e5d911926078eb53f8b297f4a4b2fe7c` |
-| `versions/2.1.197/bundle/cli.min.js` | 18.1 MB carved Bun CommonJS source | `2d5d978b89c834e54bd75fae94dbb4bc4ef222c895fac3f1df56672aea77153a` |
-| `versions/2.1.300/bundle/cli.min.js` | 46.3 MB concatenation of 2,401 ESM modules | `cb3807a756a304ce64e95fb9755b264d021c364a399b8e401ea8a5b22f137a31` |
+| `versions/2.1.169/bundle/cli.min.js` | 16.5 MB，从 Bun CommonJS 构建切出的源码 | `640946f13b684166b29175d18ce9aad0e5d911926078eb53f8b297f4a4b2fe7c` |
+| `versions/2.1.197/bundle/cli.min.js` | 18.1 MB，从 Bun CommonJS 构建切出的源码 | `2d5d978b89c834e54bd75fae94dbb4bc4ef222c895fac3f1df56672aea77153a` |
+| `versions/2.1.300/bundle/cli.min.js` | 46.3 MB，由 2,401 个 ESM 模块串联得到 | `cb3807a756a304ce64e95fb9755b264d021c364a399b8e401ea8a5b22f137a31` |
 
-The 2.1.300 checksum matches the value published in its bundle README. Its
-manifest describes 2,651 records: 2,401 application modules plus separately
-stored skills, prompt text, browser libraries, fonts, native addons, and other
-assets. The original 266,972,344-byte ELF is not committed, so byte-for-byte
-re-extraction still requires obtaining the named upstream binary independently.
+2.1.300 的校验和与其 bundle README 公布值一致。清单共记录 2,651 项：2,401 个应用模块，
+以及单独保存的 skill、prompt 文本、浏览器库、字体、原生扩展等资源。原始 266,972,344 字节 ELF 未入库，
+因此完全逐字节重现仍需要独立获取对应上游二进制文件。
 
-## Main technical findings
+## 主要技术结论
 
-### Packaging and extension surface
+### 打包与扩展面
 
-Between 2.1.197 and 2.1.300 the packaged application changed from one Bun
-CommonJS bundle to a code-split ESM graph. The corpus identifies 2,395 lazy
-chunks, a small entry loader, 1,398 dynamic imports, and embedded plugin and
-skill assets. This is more than a packaging change: it exposes a hooks worker,
-plugin UI primitives, self-hosted runner support, and more code paths that are
-loaded only when gated features are active.
+2.1.197 到 2.1.300 从单一 Bun CommonJS bundle 变为拆分的 ESM 模块图。语料识别出
+2,395 个延迟加载 chunk、小型入口 loader、1,398 处动态 import，以及内嵌的 plugin 和 skill 资源。
+这不只是包装形式变化，还暴露了 hooks worker、plugin UI 原语、自托管 runner 与更多只在功能开关激活后加载的路径。
 
-### Remote configuration
+### 远程配置
 
-The reports count 704 feature flags in 2.1.300, up from a same-method recount of
-251 in 2.1.197. The resolver records value provenance and supports session-pinned
-reads. A large fraction of new flags default on, so many act as remote kill
-switches rather than dormant opt-ins. Any behavioral reconstruction therefore
-needs both the compiled default and the server-delivered value source.
+2.1.300 报告计数 704 个功能标志，按相同方法重算的 2.1.197 为 251 个。解析器会记录值的来源，
+并支持会话内锁定读取。很多新开关编译默认为开，实际上更像远程 kill switch。还原行为时不能只看编译默认值，
+还要考虑服务端下发值及其来源。
 
-### Identity and device state
+### 身份与设备状态
 
-The 2.1.300 analysis identifies four persisted random installation identifiers
-and a per-account ECDSA P-256 device key. The identifiers are CSPRNG-generated,
-not hardware-derived. Their outbound behavior differs: `userID` is broadly used
-in first-party and optional telemetry, `machineID` is truncated in error data,
-`summonSidKey` stays local as an HMAC key, and `remoteControlMachineId` is sent
-raw to the remote-control bridge. The device public key is registered with a
-remote-device endpoint.
+2.1.300 分析识别出四个持久化的随机安装标识，以及每账号一个 ECDSA P-256 设备密钥。
+这些标识由 CSPRNG 生成，而非硬件派生。对外传输路径并不相同：`userID` 广泛用于一方遥测与可选遥测；
+`machineID` 只以截断值出现在错误数据中；`summonSidKey` 仅本地作为 HMAC 密钥；
+`remoteControlMachineId` 原样发送到远程控制 bridge。设备公钥会注册到 remote-device 端点。
 
-### Telemetry
+### 遥测
 
-The structured dataset lists 1,944 event names for 2.1.300. The dispatch layer
-has a 1,000-entry pre-sink queue with drop-oldest behavior, first-party event
-logging, an allow-listed Datadog mirror, optional OpenTelemetry, and plugin
-telemetry. The reports state that the embedded Datadog client token remained
-unchanged from 2.1.197. Payload analysis should distinguish event-name presence
-from actual runtime reachability and account for provider-plane and privacy-mode
-gates.
+2.1.300 结构化数据集列出 1,944 个事件名。调度层包含 1,000 项的 sink 前队列，满时丢弃最旧项；
+同时包含一方事件日志、允许列表内的 Datadog 镜像、可选 OpenTelemetry 与 plugin 遥测。
+对 payload 的分析必须区分“事件名出现”和“运行时真正可达”，并纳入 provider plane、隐私模式与采样开关。
 
-### Security and execution control
+### 安全与执行控制
 
-The earlier Haiku-based Bash prefix classifier is reported removed in 2.1.300;
-prefix extraction is deterministic, while model classification remains in the
-separate auto-mode permission path. The corpus also documents sandbox backends,
-read confinement, credential masking, destructive-command warnings, secret
-redaction, server-side arbitration, and a plugin test toolkit. These mechanisms
-are distributed across gates and policy inputs, so no single function describes
-the effective permission boundary.
+早期基于 Haiku 的 Bash 前缀分类器在 2.1.300 中已被移除；命令前缀提取改为确定性逻辑，
+模型分类仍存在于另一条 auto-mode 权限路径。语料还记录 sandbox 后端、读取限制、凭据遮罩、
+破坏性命令警告、secret 编辑、服务端裁决与 plugin 测试工具。这些机制分散在多个开关与策略输入中，
+不存在一个能完整描述有效权限边界的单一函数。
 
-### Backend and model surface
+### 后端与模型面
 
-The 2.1.300 indexes enumerate 347 API path templates and new surfaces for
-self-hosted runners, organization administration, tunnels, dreams, remote
-workers, and frame artifacts. They also identify a new
-`anthropicGoogleCloud` provider plane and a signed remote model catalog capable
-of overriding compiled model defaults. The compiled catalog names a Claude 5.5
-generation and records pricing and capability metadata.
+2.1.300 索引枚举了 347 个 API 路径模板，包含自托管 runner、组织管理、tunnel、dreams、
+远程 worker 与 frame artifact 等新表面。其还识别出新的 `anthropicGoogleCloud` provider plane，
+以及可覆盖编译内置默认值的签名远程模型目录。
 
-## Quality assessment
+## 质量评估
 
-The corpus is unusually reproducible for application reverse engineering: it
-ships source-scale extracts, structured inventories, extraction scripts, hashes,
-symbol remaps, and explicit uncertainty sections. The 2.1.300 reports also
-correct preliminary counts and distinguish published 2.1.197 counts from
-same-method recounts.
+对应用逆向工程仓库而言，该语料的可复现性很强：包含接近源码规模的提取物、结构化盘点、提取脚本、
+校验和、符号映射与显式不确定性说明。2.1.300 报告还主动修正了初步计数，并区分原 2.1.197 公布值与同方法重算值。
 
-Important limitations remain:
+局限性主要包括：
 
-- The analyzed platform is Linux x86-64; macOS and Windows native paths may
-  differ.
-- Minified identifiers are build-specific and local names can be reused across
-  chunks.
-- Static presence does not establish reachability, server configuration, or
-  production rollout.
-- The repository omits the original ELF binaries and the generated 2.1.300
-  beautified file, although it includes deterministic extraction and
-  regeneration instructions.
-- Counts use different corpora in some places. For example, the 2.1.300 headline
-  environment count includes decompressed text assets, while JS-only counts are
-  lower.
+- 被分析平台是 Linux x86-64，macOS 和 Windows 原生路径可能不同。
+- 混淆后标识符只对当前构建有效，局部名称也可能在不同 chunk 中被重用。
+- 静态存在不能证明运行时可达、服务端配置或实际发布范围。
+- 仓库缺少原始 ELF 和生成后的 2.1.300 beautified 文件，但保留了确定性提取与再生成指令。
+- 不同计数的语料边界并不总是相同。例如 2.1.300 的环境变量标题计数包含解压文本资源，仅 JS 计数会更低。
 
-## Follow-up priorities
+## 后续优先级
 
-Future observations should prioritize semantic diffs in the feature resolver,
-identifier transmission sites, telemetry sinks and opt-outs, permission and
-sandbox gates, provider routing, tool schemas, model catalog verification, and
-new embedded assets. Generated update reports under `analysis/upstream-updates/`
-provide the changed path and commit set; high-impact changes should then be
-checked directly against extracted source rather than summarized only from the
-upstream prose.
+后续观测优先跟踪功能标志解析器、标识符外发点、遥测 sink 与退出开关、权限与 sandbox 门控、
+provider 路由、工具 schema、模型目录校验与新嵌入资源。`analysis/upstream-updates/` 中的自动报告用于给出变更路径与提交集；
+高影响变化必须继续回到提取源码核对，而不能只复述上游文章。

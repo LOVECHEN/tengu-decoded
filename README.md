@@ -1,8 +1,8 @@
 # Tengu Decoded
 
-> **Independent archive:** this repository preserves observed upstream history
-> without using GitHub's fork relationship. See [the retention model](ARCHIVE.md)
-> and [the initial content analysis](analysis/INITIAL_ANALYSIS.md).
+> **独立归档：** 本仓库不使用 GitHub Fork 关系，但会保留每次观测到的上游历史。
+> 详见[归档保留模型](ARCHIVE.md)、[中文分析索引](analysis/zh-CN/README.md)
+> 与[初始内容分析](analysis/INITIAL_ANALYSIS.md)。
 
 > Reverse-engineering Claude Code's internals -- feature flags, gated features, telemetry, device fingerprinting, and the infrastructure behind Anthropic's AI coding tool.
 

@@ -68,25 +68,25 @@ mkdir -p "$REPORT_DIR"
 report_created=false
 
 if [[ -n "$previous_main" && "$previous_main" != "$current_main" ]]; then
-  relation="non-fast-forward rewrite"
+  relation="非快进重写"
   if git merge-base --is-ancestor "$previous_main" "$current_main"; then
-    relation="fast-forward"
+    relation="快进"
   fi
 
   report_path="${REPORT_DIR}/${RUN_AT}-${current_main:0:12}.md"
   {
-    printf '# Upstream change observed at %s\n\n' "$RUN_AT"
-    printf -- '- Previous observed `main`: `%s`\n' "$previous_main"
-    printf -- '- Current observed `main`: `%s`\n' "$current_main"
-    printf -- '- Relationship: **%s**\n\n' "$relation"
-    printf '## Tree Changes\n\n```text\n'
+    printf '# 上游变更观测：%s\n\n' "$RUN_AT"
+    printf -- '- 上一次观测的 `main`：`%s`\n' "$previous_main"
+    printf -- '- 本次观测的 `main`：`%s`\n' "$current_main"
+    printf -- '- 两者关系：**%s**\n\n' "$relation"
+    printf '## 文件树变更统计\n\n```text\n'
     git diff --stat "$previous_main" "$current_main" || true
-    printf '```\n\n## Paths\n\n```text\n'
+    printf '```\n\n## 路径变更\n\n```text\n'
     git diff --name-status "$previous_main" "$current_main" || true
-    printf '```\n\n## Commits Only in Current Tip\n\n```text\n'
+    printf '```\n\n## 仅存在于本次顶端的提交\n\n```text\n'
     git log --date=iso-strict --pretty=format:'%H %ad %an %s' \
       "$previous_main..$current_main" || true
-    printf '\n```\n\n## Commits Only in Previous Tip\n\n```text\n'
+    printf '\n```\n\n## 仅存在于上次顶端的提交\n\n```text\n'
     git log --date=iso-strict --pretty=format:'%H %ad %an %s' \
       "$current_main..$previous_main" || true
     printf '\n```\n'
@@ -101,8 +101,8 @@ deleted_report="${REPORT_DIR}/${RUN_AT}-deleted-refs.md"
     [[ -n "${live_ref:-}" ]] || continue
     name="${live_ref#refs/heads/upstream/}"
     if ! git show-ref --verify --quiet "${TMP_NAMESPACE}/heads/${name}" \
-      && ! grep -R -Fq "Deleted branch: \`${name}\`" "$REPORT_DIR"; then
-      printf -- '- Deleted branch: `%s`; retained as `%s`\n' \
+      && ! grep -R -Fq "已删除分支：\`${name}\`" "$REPORT_DIR"; then
+      printf -- '- 已删除分支：`%s`；已保留为 `%s`\n' \
         "$name" "$live_ref"
     fi
   done < <(git ls-remote --heads "$ARCHIVE_REMOTE" 'refs/heads/upstream/*')
@@ -112,8 +112,8 @@ deleted_report="${REPORT_DIR}/${RUN_AT}-deleted-refs.md"
     [[ "$live_ref" != *'^{}' ]] || continue
     name="${live_ref#refs/tags/upstream/}"
     if ! git show-ref --verify --quiet "${TMP_NAMESPACE}/tags/${name}" \
-      && ! grep -R -Fq "Deleted tag: \`${name}\`" "$REPORT_DIR"; then
-      printf -- '- Deleted tag: `%s`; retained as `%s`\n' \
+      && ! grep -R -Fq "已删除标签：\`${name}\`" "$REPORT_DIR"; then
+      printf -- '- 已删除标签：`%s`；已保留为 `%s`\n' \
         "$name" "$live_ref"
     fi
   done < <(git ls-remote --tags "$ARCHIVE_REMOTE" 'refs/tags/upstream/*')
@@ -121,7 +121,7 @@ deleted_report="${REPORT_DIR}/${RUN_AT}-deleted-refs.md"
 
 if [[ -s "$deleted_report" ]]; then
   {
-    printf '# Upstream refs deleted at %s\n\n' "$RUN_AT"
+    printf '# 上游 ref 删除观测：%s\n\n' "$RUN_AT"
     cat "$deleted_report"
   } > "${deleted_report}.tmp"
   mv "${deleted_report}.tmp" "$deleted_report"

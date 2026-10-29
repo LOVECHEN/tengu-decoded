@@ -1830,14 +1830,16 @@ html&gt;body{padding:0}&lt;/style&gt;
     #tengu-call-relation-graph .graph-node[aria-pressed=&quot;true&quot;] { box-shadow: 0 0 0 3px var(--ring); background: var(--accent); color: var(--accent-foreground); }
     #tengu-call-relation-graph .graph-node.is-active { opacity: 1; }
     #tengu-call-relation-graph .graph-node.is-dim { opacity: .16; }
-    #tengu-call-relation-graph .detail { margin-top: 16px; display: grid; grid-template-columns: minmax(150px, .75fr) minmax(0, 1.25fr) minmax(0, 1.25fr); gap: 18px; }
+    #tengu-call-relation-graph .detail { margin-top: 16px; display: grid; grid-template-columns: minmax(180px, .8fr) minmax(0, 1.6fr) minmax(0, 1.6fr); gap: 18px; }
     #tengu-call-relation-graph .detail h3 { margin-top: 0; }
     #tengu-call-relation-graph .detail-label { color: var(--muted-foreground); margin-bottom: 4px; }
     #tengu-call-relation-graph .detail-title { font-weight: 500; }
     #tengu-call-relation-graph .detail-evidence { margin-top: 7px; color: var(--muted-foreground); }
     #tengu-call-relation-graph .edge-list { display: grid; gap: 6px; }
-    #tengu-call-relation-graph .edge-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px; align-items: baseline; }
-    #tengu-call-relation-graph .edge-kind { color: var(--muted-foreground); }
+    #tengu-call-relation-graph .edge-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; padding-bottom: 7px; border-bottom: 1px solid var(--border); }
+    #tengu-call-relation-graph .edge-summary { display: flex; flex-wrap: wrap; gap: 5px 8px; align-items: baseline; }
+    #tengu-call-relation-graph .edge-kind { color: var(--muted-foreground); white-space: nowrap; }
+    #tengu-call-relation-graph .edge-purpose { color: var(--foreground); }
     #tengu-call-relation-graph .empty { color: var(--muted-foreground); }
     @media (max-width: 760px) {
       #tengu-call-relation-graph .network { min-height: 760px; }
@@ -1855,7 +1857,7 @@ html&gt;body{padding:0}&lt;/style&gt;
 
   &lt;header class=&quot;graph-head&quot;&gt;
     &lt;h1&gt;Claude Code 账号风控调用关联网&lt;/h1&gt;
-    &lt;p&gt;函数、字段构建器、事件、API 端点和错误状态按真实调用/数据传播关系互联。默认选中 &lt;code&gt;account_on_hold&lt;/code&gt;，展开它的完整上下游调用链。&lt;/p&gt;
+    &lt;p&gt;函数、字段构建器、事件、API 端点和错误状态按真实调用/数据传播关系互联。点击任一节点，下方会逐条说明谁调用谁、传递什么，以及这条关联实际解决什么问题。&lt;/p&gt;
   &lt;/header&gt;
 
   &lt;div class=&quot;graph-meta&quot; aria-label=&quot;图谱规模&quot;&gt;
@@ -1902,17 +1904,17 @@ html&gt;body{padding:0}&lt;/style&gt;
 
   &lt;div class=&quot;card detail&quot; aria-live=&quot;polite&quot;&gt;
     &lt;section&gt;
-      &lt;div class=&quot;detail-label&quot;&gt;当前节点&lt;/div&gt;
+      &lt;div class=&quot;detail-label&quot;&gt;当前节点及功能用途&lt;/div&gt;
       &lt;div class=&quot;detail-title&quot; id=&quot;detail-title&quot;&gt;&lt;code&gt;account_on_hold&lt;/code&gt;&lt;/div&gt;
       &lt;div id=&quot;detail-desc&quot;&gt;服务端返回的账号阻断错误，客户端将其转换为 blocked 状态并导向申诉。&lt;/div&gt;
       &lt;div class=&quot;detail-evidence&quot; id=&quot;detail-evidence&quot;&gt;证据：&lt;code&gt;cli.min.js&lt;/code&gt; account-on-hold 错误枚举与 UI 分支。&lt;/div&gt;
     &lt;/section&gt;
     &lt;section&gt;
-      &lt;h3&gt;调用者 / 输入&lt;/h3&gt;
+      &lt;h3&gt;调用者 / 输入用途&lt;/h3&gt;
       &lt;div class=&quot;edge-list&quot; id=&quot;incoming-list&quot;&gt;&lt;/div&gt;
     &lt;/section&gt;
     &lt;section&gt;
-      &lt;h3&gt;被调用 / 输出&lt;/h3&gt;
+      &lt;h3&gt;被调用 / 输出用途&lt;/h3&gt;
       &lt;div class=&quot;edge-list&quot; id=&quot;outgoing-list&quot;&gt;&lt;/div&gt;
     &lt;/section&gt;
   &lt;/div&gt;
@@ -1934,6 +1936,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       const outgoingList = root.querySelector(&#x27;#outgoing-list&#x27;);
       const depthSelect = root.querySelector(&#x27;#trace-depth&#x27;);
       const groupNames = { identity:&#x27;身份与会话&#x27;, telemetry:&#x27;遥测与元数据&#x27;, device:&#x27;设备与远程&#x27;, auth:&#x27;OAuth 与账号状态&#x27;, product:&#x27;订阅与限额&#x27;, external:&#x27;API / 服务端&#x27; };
+      const relationNames = { call:&#x27;函数调用&#x27;, data:&#x27;字段传播&#x27;, post:&#x27;外发/API&#x27;, state:&#x27;状态转换&#x27;, opaque:&#x27;服务端返回&#x27; };
       const nodes = [
         {id:&#x27;user-id&#x27;,label:&#x27;_M()&#x27;,sub:&#x27;getOrCreateUserID&#x27;,group:&#x27;identity&#x27;,desc:&#x27;生成或读取 64-hex 随机安装 userID，广泛用于 Messages、一方遥测、GrowthBook 和 OTel。&#x27;,evidence:&#x27;device-fingerprinting.md §1.1，cli.beauty.js:115569&#x27;},
         {id:&#x27;machine-id&#x27;,label:&#x27;Umt()&#x27;,sub:&#x27;getOrCreateMachineID&#x27;,group:&#x27;identity&#x27;,desc:&#x27;生成或读取随机 machineID，错误报告仅发送前 12 位。&#x27;,evidence:&#x27;device-fingerprinting.md §1.2，cli.beauty.js:115581&#x27;},
@@ -1990,24 +1993,66 @@ html&gt;body{padding:0}&lt;/style&gt;
       ];
 
       const links = [
-        [&#x27;user-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 deviceId&#x27;], [&#x27;session-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 sessionId&#x27;], [&#x27;account-source&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 account/org&#x27;],
-        [&#x27;user-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;_M()&#x27;], [&#x27;account-source&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;account_uuid&#x27;], [&#x27;session-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;session_id&#x27;], [&#x27;parent-session&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;parent_session_id&#x27;], [&#x27;message-meta&#x27;,&#x27;messages-api&#x27;,&#x27;post&#x27;,&#x27;metadata.user_id&#x27;],
-        [&#x27;user-id&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;user_id&#x27;], [&#x27;core-user-data&#x27;,&#x27;event-row&#x27;,&#x27;data&#x27;,&#x27;user_metadata&#x27;], [&#x27;event-row&#x27;,&#x27;event-api&#x27;,&#x27;post&#x27;,&#x27;POST batch&#x27;],
-        [&#x27;user-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;call&#x27;,&#x27;device_id&#x27;], [&#x27;account-source&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;], [&#x27;session-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;session_id&#x27;], [&#x27;gb-exposure&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;emit experiment&#x27;],
-        [&#x27;core-user-data&#x27;,&#x27;gb-attrs&#x27;,&#x27;data&#x27;,&#x27;属性源&#x27;], [&#x27;gb-attrs&#x27;,&#x27;gb-api&#x27;,&#x27;post&#x27;,&#x27;remote eval&#x27;],
-        [&#x27;user-id&#x27;,&#x27;otel-resource&#x27;,&#x27;call&#x27;,&#x27;user.id&#x27;], [&#x27;account-source&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;], [&#x27;session-id&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;session.id&#x27;], [&#x27;otel-resource&#x27;,&#x27;otel-sink&#x27;,&#x27;post&#x27;,&#x27;export&#x27;],
-        [&#x27;user-id&#x27;,&#x27;user-bucket&#x27;,&#x27;call&#x27;,&#x27;sha256&#x27;], [&#x27;user-bucket&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;bucket 0–29&#x27;], [&#x27;machine-id&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;slice(0,12)&#x27;],
-        [&#x27;summon-key&#x27;,&#x27;summon-hmac&#x27;,&#x27;call&#x27;,&#x27;HMAC key&#x27;], [&#x27;session-id&#x27;,&#x27;summon-hmac&#x27;,&#x27;data&#x27;,&#x27;sessionId+slug&#x27;], [&#x27;summon-hmac&#x27;,&#x27;summon-post&#x27;,&#x27;data&#x27;,&#x27;sid&#x27;], [&#x27;summon-post&#x27;,&#x27;summon-api&#x27;,&#x27;post&#x27;,&#x27;relay POST&#x27;],
-        [&#x27;remote-id&#x27;,&#x27;bridge-payload&#x27;,&#x27;data&#x27;,&#x27;machine_id&#x27;], [&#x27;bridge-payload&#x27;,&#x27;bridge-api&#x27;,&#x27;post&#x27;,&#x27;POST bridge&#x27;],
-        [&#x27;device-key&#x27;,&#x27;device-registry&#x27;,&#x27;post&#x27;,&#x27;public_key&#x27;], [&#x27;device-registry&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;deviceUUID&#x27;], [&#x27;device-key&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;bind_attestation&#x27;], [&#x27;device-key&#x27;,&#x27;event-signer&#x27;,&#x27;call&#x27;,&#x27;sign payload&#x27;],
-        [&#x27;account-source&#x27;,&#x27;trusted-device&#x27;,&#x27;post&#x27;,&#x27;bearer + name&#x27;],
-        [&#x27;profile-fetch&#x27;,&#x27;profile-cache&#x27;,&#x27;data&#x27;,&#x27;profile record&#x27;], [&#x27;profile-cache&#x27;,&#x27;account-source&#x27;,&#x27;data&#x27;,&#x27;oauthAccount&#x27;], [&#x27;profile-cache&#x27;,&#x27;plan-getter&#x27;,&#x27;call&#x27;,&#x27;subscriptionType&#x27;], [&#x27;profile-cache&#x27;,&#x27;billing-recognizer&#x27;,&#x27;call&#x27;,&#x27;billingType&#x27;], [&#x27;profile-cache&#x27;,&#x27;account-dates&#x27;,&#x27;data&#x27;,&#x27;createdAt fields&#x27;],
-        [&#x27;plan-getter&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tier&#x27;], [&#x27;billing-recognizer&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;billing_path&#x27;], [&#x27;account-dates&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tenure_bucket&#x27;], [&#x27;eligibility-schema&#x27;,&#x27;reset-api&#x27;,&#x27;post&#x27;,&#x27;claim reset&#x27;],
-        [&#x27;server-policy&#x27;,&#x27;oauth-refresh&#x27;,&#x27;opaque&#x27;,&#x27;token error&#x27;], [&#x27;oauth-refresh&#x27;,&#x27;hold-detector&#x27;,&#x27;call&#x27;,&#x27;classify error&#x27;], [&#x27;hold-detector&#x27;,&#x27;hold-cache&#x27;,&#x27;state&#x27;,&#x27;ui.set&#x27;], [&#x27;hold-cache&#x27;,&#x27;hold-event&#x27;,&#x27;call&#x27;,&#x27;emit event&#x27;], [&#x27;hold-cache&#x27;,&#x27;account-hold&#x27;,&#x27;state&#x27;,&#x27;return hold&#x27;],
-        [&#x27;server-policy&#x27;,&#x27;account-hold&#x27;,&#x27;opaque&#x27;,&#x27;account policy&#x27;], [&#x27;server-policy&#x27;,&#x27;verification&#x27;,&#x27;opaque&#x27;,&#x27;verify policy&#x27;], [&#x27;server-policy&#x27;,&#x27;billing-error&#x27;,&#x27;opaque&#x27;,&#x27;billing policy&#x27;], [&#x27;server-policy&#x27;,&#x27;org-ip-refusal&#x27;,&#x27;opaque&#x27;,&#x27;org/IP policy&#x27;],
-        [&#x27;account-hold&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/auth&#x27;], [&#x27;verification&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/verify&#x27;], [&#x27;billing-error&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/billing&#x27;], [&#x27;org-ip-refusal&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;refused&#x27;],
-        [&#x27;account-hold&#x27;,&#x27;hold-ui&#x27;,&#x27;call&#x27;,&#x27;build message&#x27;], [&#x27;hold-ui&#x27;,&#x27;appeal-url&#x27;,&#x27;post&#x27;,&#x27;open appeal&#x27;]
-      ].map((d,i)=&gt;({id:`e${i}`,source:d[0],target:d[1],kind:d[2],label:d[3]}));
+        [&#x27;user-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 deviceId&#x27;,&#x27;把稳定的安装标识并入中心身份包，供多个遥测和请求路径复用。&#x27;],
+        [&#x27;session-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 sessionId&#x27;,&#x27;把本次运行绑定到中心身份包，使后续事件能够按会话聚合。&#x27;],
+        [&#x27;account-source&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 account/org&#x27;,&#x27;把本地安装与已登录账号、组织关联起来。&#x27;],
+        [&#x27;user-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;_M()&#x27;,&#x27;在模型请求元数据中加入安装级标识，区分同一账号下的客户端实例。&#x27;],
+        [&#x27;account-source&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;account_uuid&#x27;,&#x27;把 Messages 请求归属到具体账号和组织。&#x27;],
+        [&#x27;session-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;session_id&#x27;,&#x27;把多次 Messages 请求串成同一会话。&#x27;],
+        [&#x27;parent-session&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;parent_session_id&#x27;,&#x27;保留会话派生关系，识别续接或分支会话。&#x27;],
+        [&#x27;message-meta&#x27;,&#x27;messages-api&#x27;,&#x27;post&#x27;,&#x27;metadata.user_id&#x27;,&#x27;随模型请求外发身份元数据，供服务端归因和可观测性使用。&#x27;],
+        [&#x27;user-id&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;user_id&#x27;,&#x27;让跨会话的一方事件仍可按同一安装聚合。&#x27;],
+        [&#x27;core-user-data&#x27;,&#x27;event-row&#x27;,&#x27;data&#x27;,&#x27;user_metadata&#x27;,&#x27;为事件统一补齐账号、组织、订阅、平台和会话上下文。&#x27;],
+        [&#x27;event-row&#x27;,&#x27;event-api&#x27;,&#x27;post&#x27;,&#x27;POST batch&#x27;,&#x27;批量上传行为和诊断事件，减少逐事件网络开销。&#x27;],
+        [&#x27;user-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;call&#x27;,&#x27;device_id&#x27;,&#x27;把实验曝光归因到稳定安装，而不是仅归因到单次会话。&#x27;],
+        [&#x27;account-source&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;,&#x27;支持按账号和组织分析实验分组与结果。&#x27;],
+        [&#x27;session-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;session_id&#x27;,&#x27;记录实验发生在哪次会话，便于关联后续行为。&#x27;],
+        [&#x27;gb-exposure&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;emit experiment&#x27;,&#x27;复用一方事件通道上传实验曝光，避免另建传输链。&#x27;],
+        [&#x27;core-user-data&#x27;,&#x27;gb-attrs&#x27;,&#x27;data&#x27;,&#x27;属性源&#x27;,&#x27;把身份、订阅和入口等上下文转换为特性评估属性。&#x27;],
+        [&#x27;gb-attrs&#x27;,&#x27;gb-api&#x27;,&#x27;post&#x27;,&#x27;remote eval&#x27;,&#x27;让远端 GrowthBook 根据这些属性返回功能开关或实验变体。&#x27;],
+        [&#x27;user-id&#x27;,&#x27;otel-resource&#x27;,&#x27;call&#x27;,&#x27;user.id&#x27;,&#x27;给 OTel 日志、指标和 trace 加入稳定安装维度。&#x27;],
+        [&#x27;account-source&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;,&#x27;让 OTel 数据能够按账号和组织查询。&#x27;],
+        [&#x27;session-id&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;session.id&#x27;,&#x27;让分散的 OTel 信号可以还原到同一次 CLI 会话。&#x27;],
+        [&#x27;otel-resource&#x27;,&#x27;otel-sink&#x27;,&#x27;post&#x27;,&#x27;export&#x27;,&#x27;把带统一资源标签的遥测导出到用户配置的收集端。&#x27;],
+        [&#x27;user-id&#x27;,&#x27;user-bucket&#x27;,&#x27;call&#x27;,&#x27;sha256&#x27;,&#x27;把原始安装标识转换成稳定的 0–29 匿名分桶。&#x27;],
+        [&#x27;user-bucket&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;bucket 0–29&#x27;,&#x27;用于错误采样和分组，而不直接发送完整 userID。&#x27;],
+        [&#x27;machine-id&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;slice(0,12)&#x27;,&#x27;提供截断机器标识以辅助错误聚类，避免发送完整 machineID。&#x27;],
+        [&#x27;summon-key&#x27;,&#x27;summon-hmac&#x27;,&#x27;call&#x27;,&#x27;HMAC key&#x27;,&#x27;用本地密钥生成不可直接反推原值的 summon 会话标识。&#x27;],
+        [&#x27;session-id&#x27;,&#x27;summon-hmac&#x27;,&#x27;data&#x27;,&#x27;sessionId+slug&#x27;,&#x27;把派生 sid 绑定到当前会话和 artifact slug，防止跨会话复用。&#x27;],
+        [&#x27;summon-hmac&#x27;,&#x27;summon-post&#x27;,&#x27;data&#x27;,&#x27;sid&#x27;,&#x27;把派生 sid 放入状态上报体，用来关联同一次 summon 流程。&#x27;],
+        [&#x27;summon-post&#x27;,&#x27;summon-api&#x27;,&#x27;post&#x27;,&#x27;relay POST&#x27;,&#x27;通过 relay-bound 请求上报 artifact comment 的处理状态和序号。&#x27;],
+        [&#x27;remote-id&#x27;,&#x27;bridge-payload&#x27;,&#x27;data&#x27;,&#x27;machine_id&#x27;,&#x27;在远程控制 bridge 注册时稳定识别当前主机。&#x27;],
+        [&#x27;bridge-payload&#x27;,&#x27;bridge-api&#x27;,&#x27;post&#x27;,&#x27;POST bridge&#x27;,&#x27;注册或维持远程控制环境与当前主机的关联。&#x27;],
+        [&#x27;device-key&#x27;,&#x27;device-registry&#x27;,&#x27;post&#x27;,&#x27;public_key&#x27;,&#x27;登记账号级设备公钥，让服务端为该设备签发 deviceUUID。&#x27;],
+        [&#x27;device-registry&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;deviceUUID&#x27;,&#x27;使用服务端设备标识指定会话要绑定的目标设备。&#x27;],
+        [&#x27;device-key&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;bind_attestation&#x27;,&#x27;证明绑定请求持有对应设备私钥，降低伪造绑定风险。&#x27;],
+        [&#x27;device-key&#x27;,&#x27;event-signer&#x27;,&#x27;call&#x27;,&#x27;sign payload&#x27;,&#x27;为部分 session 事件生成 device_attestation，证明事件来自已登记设备。&#x27;],
+        [&#x27;account-source&#x27;,&#x27;trusted-device&#x27;,&#x27;post&#x27;,&#x27;bearer + name&#x27;,&#x27;用当前账号凭据注册可信设备并换取 device token。&#x27;],
+        [&#x27;profile-fetch&#x27;,&#x27;profile-cache&#x27;,&#x27;data&#x27;,&#x27;profile record&#x27;,&#x27;缓存远端 profile，避免每个功能都重复请求账号资料。&#x27;],
+        [&#x27;profile-cache&#x27;,&#x27;account-source&#x27;,&#x27;data&#x27;,&#x27;oauthAccount&#x27;,&#x27;为身份元数据构建器提供账号和组织 UUID。&#x27;],
+        [&#x27;profile-cache&#x27;,&#x27;plan-getter&#x27;,&#x27;call&#x27;,&#x27;subscriptionType&#x27;,&#x27;为功能门控和遥测读取当前订阅层级。&#x27;],
+        [&#x27;profile-cache&#x27;,&#x27;billing-recognizer&#x27;,&#x27;call&#x27;,&#x27;billingType&#x27;,&#x27;把 Stripe、Apple、Google Play 等计费来源归一化。&#x27;],
+        [&#x27;profile-cache&#x27;,&#x27;account-dates&#x27;,&#x27;data&#x27;,&#x27;createdAt fields&#x27;,&#x27;保留账号和订阅创建时间，用于账龄与 cohort 计算。&#x27;],
+        [&#x27;plan-getter&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tier&#x27;,&#x27;把订阅层级写入限额重置资格/事件维度。&#x27;],
+        [&#x27;billing-recognizer&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;billing_path&#x27;,&#x27;把计费渠道写入资格维度，区分不同购买路径。&#x27;],
+        [&#x27;account-dates&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tenure_bucket&#x27;,&#x27;把创建时间折算为账龄分桶，形成 cohort 条件。&#x27;],
+        [&#x27;eligibility-schema&#x27;,&#x27;reset-api&#x27;,&#x27;post&#x27;,&#x27;claim reset&#x27;,&#x27;携带 program、grant 和资格上下文申请限额重置。&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;oauth-refresh&#x27;,&#x27;opaque&#x27;,&#x27;token error&#x27;,&#x27;服务端策略以 token refresh 错误形式返回；客户端看不到内部特征和阈值。&#x27;],
+        [&#x27;oauth-refresh&#x27;,&#x27;hold-detector&#x27;,&#x27;call&#x27;,&#x27;classify error&#x27;,&#x27;区分 account_on_hold、invalid_grant 和普通瞬时刷新失败。&#x27;],
+        [&#x27;hold-detector&#x27;,&#x27;hold-cache&#x27;,&#x27;state&#x27;,&#x27;ui.set&#x27;,&#x27;命中 hold 后缓存 refresh token，避免后续重复刷新请求。&#x27;],
+        [&#x27;hold-cache&#x27;,&#x27;hold-event&#x27;,&#x27;call&#x27;,&#x27;emit event&#x27;,&#x27;记录客户端命中账号 hold 分支，便于统计和诊断。&#x27;],
+        [&#x27;hold-cache&#x27;,&#x27;account-hold&#x27;,&#x27;state&#x27;,&#x27;return hold&#x27;,&#x27;对已缓存 token 直接复现 hold 状态，保持账号阻断行为一致。&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;account-hold&#x27;,&#x27;opaque&#x27;,&#x27;account policy&#x27;,&#x27;服务端账号策略直接返回账号被 hold 的裁决结果。&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;verification&#x27;,&#x27;opaque&#x27;,&#x27;verify policy&#x27;,&#x27;服务端要求附加验证时进入独立 verification_required 分支。&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;billing-error&#x27;,&#x27;opaque&#x27;,&#x27;billing policy&#x27;,&#x27;服务端发现计费状态异常时返回 billing_error。&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;org-ip-refusal&#x27;,&#x27;opaque&#x27;,&#x27;org/IP policy&#x27;,&#x27;组织状态或 IP allowlist 策略失败时返回独立拒绝原因。&#x27;],
+        [&#x27;account-hold&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/auth&#x27;,&#x27;把账号 hold 归一化为 blocked/auth，供统一状态机处理。&#x27;],
+        [&#x27;verification&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/verify&#x27;,&#x27;把验证要求归一化为 blocked/verify，触发验证提示。&#x27;],
+        [&#x27;billing-error&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/billing&#x27;,&#x27;把计费异常归一化为 blocked/billing，触发计费处理提示。&#x27;],
+        [&#x27;org-ip-refusal&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;refused&#x27;,&#x27;把组织或网络策略错误归一化为明确拒绝状态。&#x27;],
+        [&#x27;account-hold&#x27;,&#x27;hold-ui&#x27;,&#x27;call&#x27;,&#x27;build message&#x27;,&#x27;选择专用终端文案，明确告知账号已被暂停。&#x27;],
+        [&#x27;hold-ui&#x27;,&#x27;appeal-url&#x27;,&#x27;post&#x27;,&#x27;open appeal&#x27;,&#x27;给用户提供受限账号说明与申诉的下一步入口。&#x27;]
+      ].map((d,i)=&gt;({id:`e${i}`,source:d[0],target:d[1],kind:d[2],label:d[3],purpose:d[4]}));
 
       root.querySelector(&#x27;#node-count&#x27;).textContent=String(nodes.length);
       root.querySelector(&#x27;#edge-count&#x27;).textContent=String(links.length);
@@ -2079,7 +2124,7 @@ html&gt;body{padding:0}&lt;/style&gt;
       function edgeRow(link,incoming){
         const other=incoming?nodeId(link.source):nodeId(link.target);const node=nodes.find(n=&gt;n.id===other);
         const row=document.createElement(&#x27;div&#x27;);row.className=&#x27;edge-row&#x27;;
-        row.innerHTML=`&lt;span class=&quot;edge-kind&quot;&gt;${link.label}&lt;/span&gt;&lt;span&gt;&lt;code&gt;${node.label}&lt;/code&gt; · ${node.sub}&lt;/span&gt;`;return row;
+        row.innerHTML=`&lt;div class=&quot;edge-summary&quot;&gt;&lt;span class=&quot;edge-kind&quot;&gt;${relationNames[link.kind]} · ${link.label}&lt;/span&gt;&lt;span&gt;&lt;code&gt;${node.label}&lt;/code&gt; · ${node.sub}&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;edge-purpose&quot;&gt;用途：${link.purpose}&lt;/div&gt;`;return row;
       }
       function fillList(container,items,incoming){
         container.replaceChildren();

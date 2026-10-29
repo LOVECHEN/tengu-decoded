@@ -7,8 +7,10 @@ readonly RUN_AT="$(date -u +%Y%m%dT%H%M%SZ)"
 readonly TMP_NAMESPACE="refs/archive-tmp"
 readonly REPORT_DIR="analysis/upstream-updates"
 
-git config user.name "tengu archive bot"
-git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+if [[ "${GITHUB_ACTIONS:-false}" == "true" ]]; then
+  git config user.name "tengu archive bot"
+  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+fi
 
 # Temporary refs are local-only. Recreate them so deleted upstream refs are detectable.
 while IFS= read -r ref; do

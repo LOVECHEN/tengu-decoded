@@ -1,0 +1,29 @@
+name: Archive upstream
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: archive-upstream
+  cancel-in-progress: false
+
+jobs:
+  archive:
+    if: github.repository == 'LOVECHEN/tengu-decoded'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out archival repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Preserve upstream refs and report changes
+        shell: bash
+        run: .github/scripts/archive-upstream.sh

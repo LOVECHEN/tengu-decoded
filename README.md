@@ -1,5 +1,9 @@
 # Tengu Decoded
 
+> **Independent archive:** this repository preserves observed upstream history
+> without using GitHub's fork relationship. See [the retention model](ARCHIVE.md)
+> and [the initial content analysis](analysis/INITIAL_ANALYSIS.md).
+
 > Reverse-engineering Claude Code's internals -- feature flags, gated features, telemetry, device fingerprinting, and the infrastructure behind Anthropic's AI coding tool.
 
 **"Tengu"** is Anthropic's internal codename for Claude Code. This repository documents what the

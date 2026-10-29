@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-<title>Claude 账号风控逻辑关联图</title>
+<title>Claude Code 账号风控调用关联网</title>
 <style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
 
 </head>
 <body>
-<iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="Claude 账号风控逻辑关联图" data-srcdoc="&lt;!doctype html&gt;
+<iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="Claude Code 账号风控调用关联网" data-srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;zh-CN&quot; data-visualize-standalone&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;&gt;
 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
 &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
 &lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
-&lt;title&gt;Claude 账号风控逻辑关联图&lt;/title&gt;
+&lt;title&gt;Claude Code 账号风控调用关联网&lt;/title&gt;
 &lt;style&gt;:root {
   color-scheme: light dark;
   background-color: var(
@@ -1786,341 +1786,331 @@ html&gt;body{padding:0}&lt;/style&gt;
   syncTheme();
 })();
 &lt;/script&gt;
-&lt;div id=&quot;tengu-risk-logic-map&quot;&gt;
+&lt;div id=&quot;tengu-call-relation-graph&quot;&gt;
   &lt;style&gt;
-    #tengu-risk-logic-map { color: var(--foreground); }
-    #tengu-risk-logic-map * { box-sizing: border-box; }
-    #tengu-risk-logic-map .head { padding-right: 96px; }
-    #tengu-risk-logic-map .head p { max-width: 78ch; color: var(--muted-foreground); }
-    #tengu-risk-logic-map .metrics { margin: 18px 0; }
-    #tengu-risk-logic-map .metric-known .viz-stat-value { color: var(--viz-series-1); }
-    #tengu-risk-logic-map .metric-opaque .viz-stat-value { color: var(--viz-series-3); }
-    #tengu-risk-logic-map .metric-absent .viz-stat-value { color: var(--viz-series-4); }
-    #tengu-risk-logic-map .tabs { margin-top: 14px; }
-    #tengu-risk-logic-map .panel { padding-top: 18px; }
-    #tengu-risk-logic-map .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 14px; color: var(--muted-foreground); }
-    #tengu-risk-logic-map .legend span { display: inline-flex; align-items: center; gap: 7px; }
-    #tengu-risk-logic-map .legend i { width: 13px; height: 3px; display: inline-block; }
-    #tengu-risk-logic-map .legend .a { background: var(--viz-series-1); }
-    #tengu-risk-logic-map .legend .b { background: var(--viz-series-2); }
-    #tengu-risk-logic-map .legend .c { background: var(--viz-series-3); border-top: 1px dashed var(--background); }
-    #tengu-risk-logic-map .legend .d { background: var(--viz-series-4); }
-    #tengu-risk-logic-map .graph-canvas { position: relative; padding: 4px 0; min-height: 610px; }
-    #tengu-risk-logic-map .logic-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; z-index: 0; pointer-events: none; }
-    #tengu-risk-logic-map .logic-links #edge-layer path { fill: none; stroke-width: 1.7; transition: opacity 160ms ease, stroke-width 160ms ease; }
-    #tengu-risk-logic-map .logic-links .edge-a { stroke: var(--viz-series-1); }
-    #tengu-risk-logic-map .logic-links .edge-b { stroke: var(--viz-series-2); }
-    #tengu-risk-logic-map .logic-links .edge-c { stroke: var(--viz-series-3); stroke-dasharray: 7 5; }
-    #tengu-risk-logic-map .logic-links .edge-d { stroke: var(--viz-series-4); stroke-dasharray: 2 5; }
-    #tengu-risk-logic-map .logic-links path.is-dim { opacity: .12; }
-    #tengu-risk-logic-map .logic-links path.is-linked { opacity: 1; stroke-width: 3; }
-    #tengu-risk-logic-map .logic-links text { fill: var(--muted-foreground); stroke: var(--background); stroke-width: 5px; paint-order: stroke; font-size: 11px; text-anchor: middle; dominant-baseline: central; }
-    #tengu-risk-logic-map .logic-links text.is-dim { opacity: .08; }
-    #tengu-risk-logic-map .logic-links text.is-linked { fill: var(--foreground); font-weight: 500; }
-    #tengu-risk-logic-map .logic-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.12fr 1.1fr 1.08fr 1fr 1fr; gap: 70px; align-items: start; }
-    #tengu-risk-logic-map .lane { min-width: 0; }
-    #tengu-risk-logic-map .lane-title { display: flex; gap: 8px; align-items: baseline; margin-bottom: 10px; font-weight: 500; }
-    #tengu-risk-logic-map .lane-index { color: var(--muted-foreground); }
-    #tengu-risk-logic-map .node-list { display: grid; gap: 13px; }
-    #tengu-risk-logic-map .logic-node { position: relative; width: 100%; min-height: 66px; padding: 10px 30px 10px 11px; border: 1px solid var(--border); border-radius: 10px; background: color-mix(in srgb, var(--muted) 76%, var(--background)); color: var(--foreground); text-align: left; font: inherit; transition: opacity 160ms ease, background 160ms ease; }
-    #tengu-risk-logic-map .logic-node strong { display: block; font-weight: 500; margin-bottom: 3px; }
-    #tengu-risk-logic-map .logic-node small { display: block; color: var(--muted-foreground); }
-    #tengu-risk-logic-map .logic-node.level-a { box-shadow: inset 3px 0 0 var(--viz-series-1); }
-    #tengu-risk-logic-map .logic-node.level-b { box-shadow: inset 3px 0 0 var(--viz-series-2); }
-    #tengu-risk-logic-map .logic-node.level-c { box-shadow: inset 3px 0 0 var(--viz-series-3); border-style: dashed; }
-    #tengu-risk-logic-map .logic-node.level-d { box-shadow: inset 3px 0 0 var(--viz-series-4); border-style: dotted; }
-    #tengu-risk-logic-map .logic-node[aria-pressed=&quot;true&quot;] { background: var(--accent); color: var(--accent-foreground); }
-    #tengu-risk-logic-map .logic-node.is-dim { opacity: .24; }
-    #tengu-risk-logic-map .logic-node.is-linked { opacity: 1; }
-    #tengu-risk-logic-map .node-level { position: absolute; top: 8px; right: 8px; color: var(--muted-foreground); font-weight: 500; }
-    #tengu-risk-logic-map .detail { margin-top: 18px; display: grid; grid-template-columns: minmax(140px, .7fr) minmax(0, 2.3fr); gap: 16px; }
-    #tengu-risk-logic-map .detail-label { color: var(--muted-foreground); }
-    #tengu-risk-logic-map .detail-title { margin-top: 4px; font-weight: 500; }
-    #tengu-risk-logic-map .detail-body { margin-top: 4px; }
-    #tengu-risk-logic-map .claim-controls { margin-bottom: 12px; }
-    #tengu-risk-logic-map .claim-count { color: var(--muted-foreground); }
-    #tengu-risk-logic-map .level-pill { display: inline-flex; min-width: 30px; justify-content: center; padding: 2px 7px; border-radius: 999px; font-weight: 500; }
-    #tengu-risk-logic-map .pill-a { background: color-mix(in srgb, var(--viz-series-1) 20%, transparent); }
-    #tengu-risk-logic-map .pill-b { background: color-mix(in srgb, var(--viz-series-2) 20%, transparent); }
-    #tengu-risk-logic-map .pill-c { background: color-mix(in srgb, var(--viz-series-3) 20%, transparent); }
-    #tengu-risk-logic-map .pill-d { background: color-mix(in srgb, var(--viz-series-4) 20%, transparent); }
-    #tengu-risk-logic-map tr[hidden] { display: none; }
-    #tengu-risk-logic-map .outcome-map { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; gap: 8px; align-items: center; }
-    #tengu-risk-logic-map .outcome-group { display: grid; gap: 10px; }
-    #tengu-risk-logic-map .outcome-node { border-left: 3px solid var(--viz-series-1); padding: 8px 10px; background: color-mix(in srgb, var(--muted) 70%, transparent); }
-    #tengu-risk-logic-map .outcome-node.verify { border-color: var(--viz-series-2); }
-    #tengu-risk-logic-map .outcome-node.hold { border-color: var(--viz-series-4); }
-    #tengu-risk-logic-map .outcome-node strong { display: block; font-weight: 500; }
-    #tengu-risk-logic-map .outcome-node span { color: var(--muted-foreground); }
-    #tengu-risk-logic-map .outcome-arrow { text-align: center; color: var(--muted-foreground); font-size: 24px; }
-    #tengu-risk-logic-map .boundary { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 12px; color: var(--muted-foreground); }
-    @media (max-width: 920px) {
-      #tengu-risk-logic-map .logic-grid { grid-template-columns: 1fr; gap: 30px; }
-      #tengu-risk-logic-map .graph-canvas { min-height: 0; }
-      #tengu-risk-logic-map .node-list { gap: 10px; }
-      #tengu-risk-logic-map .logic-links text { display: none; }
-      #tengu-risk-logic-map .detail { grid-template-columns: 1fr; }
-      #tengu-risk-logic-map .outcome-map { grid-template-columns: 1fr; }
-      #tengu-risk-logic-map .outcome-arrow { transform: rotate(90deg); }
+    #tengu-call-relation-graph { color: var(--foreground); }
+    #tengu-call-relation-graph * { box-sizing: border-box; }
+    #tengu-call-relation-graph .graph-head { padding-right: 96px; }
+    #tengu-call-relation-graph .graph-head p { max-width: 82ch; color: var(--muted-foreground); }
+    #tengu-call-relation-graph .graph-meta { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0; color: var(--muted-foreground); }
+    #tengu-call-relation-graph .graph-meta strong { color: var(--foreground); font-weight: 500; }
+    #tengu-call-relation-graph .controls { margin-bottom: 10px; }
+    #tengu-call-relation-graph .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted-foreground); margin-bottom: 10px; }
+    #tengu-call-relation-graph .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    #tengu-call-relation-graph .legend i { display: inline-block; width: 15px; height: 3px; }
+    #tengu-call-relation-graph .legend .call { background: var(--viz-series-1); }
+    #tengu-call-relation-graph .legend .data { background: var(--viz-series-2); }
+    #tengu-call-relation-graph .legend .post { background: var(--viz-series-5); }
+    #tengu-call-relation-graph .legend .state { background: var(--viz-series-4); }
+    #tengu-call-relation-graph .legend .opaque { background: repeating-linear-gradient(90deg, var(--viz-series-3) 0 5px, transparent 5px 8px); }
+    #tengu-call-relation-graph .network { position: relative; width: 100%; min-height: 680px; overflow: hidden; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); touch-action: none; }
+    #tengu-call-relation-graph .network-svg, #tengu-call-relation-graph .node-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #tengu-call-relation-graph .network-svg { z-index: 0; }
+    #tengu-call-relation-graph .node-layer { z-index: 1; pointer-events: none; }
+    #tengu-call-relation-graph .cluster-label { fill: var(--muted-foreground); font-size: 12px; font-weight: 500; text-anchor: middle; opacity: .7; }
+    #tengu-call-relation-graph .link { fill: none; stroke-width: 1.5; opacity: .32; transition: opacity 140ms ease, stroke-width 140ms ease; }
+    #tengu-call-relation-graph .link.call { stroke: var(--viz-series-1); }
+    #tengu-call-relation-graph .link.data { stroke: var(--viz-series-2); }
+    #tengu-call-relation-graph .link.post { stroke: var(--viz-series-5); }
+    #tengu-call-relation-graph .link.state { stroke: var(--viz-series-4); }
+    #tengu-call-relation-graph .link.opaque { stroke: var(--viz-series-3); stroke-dasharray: 7 5; }
+    #tengu-call-relation-graph .link.is-active { opacity: 1; stroke-width: 2.7; }
+    #tengu-call-relation-graph .link.is-dim { opacity: .035; }
+    #tengu-call-relation-graph .link-label { fill: var(--foreground); stroke: var(--background); stroke-width: 5px; paint-order: stroke; font-size: 11px; text-anchor: middle; dominant-baseline: central; opacity: 0; pointer-events: none; }
+    #tengu-call-relation-graph .link-label.is-active { opacity: 1; }
+    #tengu-call-relation-graph .graph-node { position: absolute; width: 132px; min-height: 48px; transform: translate(-50%, -50%); border: 1px solid transparent; border-radius: 9px; padding: 7px 8px; color: var(--foreground); background: color-mix(in srgb, var(--muted) 82%, var(--background)); text-align: center; font: inherit; font-weight: 400; pointer-events: auto; transition: opacity 140ms ease, box-shadow 140ms ease, background 140ms ease; }
+    #tengu-call-relation-graph .graph-node code { display: block; overflow-wrap: anywhere; font-weight: 500; }
+    #tengu-call-relation-graph .graph-node small { display: block; color: var(--muted-foreground); margin-top: 2px; }
+    #tengu-call-relation-graph .graph-node.group-identity { background: color-mix(in srgb, var(--viz-series-1) 13%, var(--background)); }
+    #tengu-call-relation-graph .graph-node.group-telemetry { background: color-mix(in srgb, var(--viz-series-2) 13%, var(--background)); }
+    #tengu-call-relation-graph .graph-node.group-device { background: color-mix(in srgb, var(--viz-series-5) 13%, var(--background)); }
+    #tengu-call-relation-graph .graph-node.group-auth { background: color-mix(in srgb, var(--viz-series-4) 13%, var(--background)); }
+    #tengu-call-relation-graph .graph-node.group-product { background: color-mix(in srgb, var(--viz-series-6) 13%, var(--background)); }
+    #tengu-call-relation-graph .graph-node.group-external { border-color: var(--border); border-style: dashed; }
+    #tengu-call-relation-graph .graph-node[aria-pressed=&quot;true&quot;] { box-shadow: 0 0 0 3px var(--ring); background: var(--accent); color: var(--accent-foreground); }
+    #tengu-call-relation-graph .graph-node.is-active { opacity: 1; }
+    #tengu-call-relation-graph .graph-node.is-dim { opacity: .16; }
+    #tengu-call-relation-graph .detail { margin-top: 16px; display: grid; grid-template-columns: minmax(150px, .75fr) minmax(0, 1.25fr) minmax(0, 1.25fr); gap: 18px; }
+    #tengu-call-relation-graph .detail h3 { margin-top: 0; }
+    #tengu-call-relation-graph .detail-label { color: var(--muted-foreground); margin-bottom: 4px; }
+    #tengu-call-relation-graph .detail-title { font-weight: 500; }
+    #tengu-call-relation-graph .detail-evidence { margin-top: 7px; color: var(--muted-foreground); }
+    #tengu-call-relation-graph .edge-list { display: grid; gap: 6px; }
+    #tengu-call-relation-graph .edge-row { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px; align-items: baseline; }
+    #tengu-call-relation-graph .edge-kind { color: var(--muted-foreground); }
+    #tengu-call-relation-graph .empty { color: var(--muted-foreground); }
+    @media (max-width: 760px) {
+      #tengu-call-relation-graph .network { min-height: 760px; }
+      #tengu-call-relation-graph .graph-node { width: 116px; }
+      #tengu-call-relation-graph .detail { grid-template-columns: 1fr; }
+      #tengu-call-relation-graph .cluster-label { display: none; }
     }
     @media (max-width: 520px) {
-      #tengu-risk-logic-map .head { padding-right: 0; }
+      #tengu-call-relation-graph .graph-head { padding-right: 0; }
     }
     @media (prefers-reduced-motion: reduce) {
-      #tengu-risk-logic-map .logic-links path, #tengu-risk-logic-map .logic-node { transition: none; }
+      #tengu-call-relation-graph .link, #tengu-call-relation-graph .graph-node { transition: none; }
     }
   &lt;/style&gt;
 
-  &lt;header class=&quot;head&quot;&gt;
-    &lt;h1&gt;Claude 账号风控逻辑关联图&lt;/h1&gt;
-    &lt;p&gt;从原始账号/设备/使用信号出发，跟踪客户端上报、服务端关联、黑箱策略、API 结果与客户端动作。点击任意节点可突出完整上下游关系。&lt;/p&gt;
+  &lt;header class=&quot;graph-head&quot;&gt;
+    &lt;h1&gt;Claude Code 账号风控调用关联网&lt;/h1&gt;
+    &lt;p&gt;函数、字段构建器、事件、API 端点和错误状态按真实调用/数据传播关系互联。默认选中 &lt;code&gt;account_on_hold&lt;/code&gt;，展开它的完整上下游调用链。&lt;/p&gt;
   &lt;/header&gt;
 
-  &lt;div class=&quot;viz-grid metrics&quot; aria-label=&quot;核验概况&quot;&gt;
-    &lt;div class=&quot;card viz-stat metric-known&quot;&gt;&lt;span class=&quot;text-muted&quot;&gt;已核验原帖说法&lt;/span&gt;&lt;div class=&quot;viz-stat-value tabular-nums&quot;&gt;20&lt;/div&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;每条均标记证据边界&lt;/span&gt;&lt;/div&gt;
-    &lt;div class=&quot;card viz-stat metric-opaque&quot;&gt;&lt;span class=&quot;text-muted&quot;&gt;服务端黑箱决策层&lt;/span&gt;&lt;div class=&quot;viz-stat-value tabular-nums&quot;&gt;1&lt;/div&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;客户端不包含其权重与阈值&lt;/span&gt;&lt;/div&gt;
-    &lt;div class=&quot;card viz-stat metric-absent&quot;&gt;&lt;span class=&quot;text-muted&quot;&gt;本地积分引擎&lt;/span&gt;&lt;div class=&quot;viz-stat-value tabular-nums&quot;&gt;0&lt;/div&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;无 risk/trust score 或权重表&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;graph-meta&quot; aria-label=&quot;图谱规模&quot;&gt;
+    &lt;span&gt;&lt;strong class=&quot;tabular-nums&quot; id=&quot;node-count&quot;&gt;0&lt;/strong&gt; 个节点&lt;/span&gt;
+    &lt;span&gt;&lt;strong class=&quot;tabular-nums&quot; id=&quot;edge-count&quot;&gt;0&lt;/strong&gt; 条调用/传播边&lt;/span&gt;
+    &lt;span&gt;&lt;strong class=&quot;tabular-nums&quot;&gt;6&lt;/strong&gt; 个功能簇&lt;/span&gt;
   &lt;/div&gt;
 
-  &lt;div class=&quot;nav nav-pills tabs&quot; role=&quot;tablist&quot; aria-label=&quot;分析视图&quot;&gt;
-    &lt;button class=&quot;nav-link active&quot; id=&quot;logic-tab&quot; role=&quot;tab&quot; aria-controls=&quot;logic-panel&quot; aria-selected=&quot;true&quot; type=&quot;button&quot;&gt;逻辑关联图&lt;/button&gt;
-    &lt;button class=&quot;nav-link&quot; id=&quot;claims-tab-v2&quot; role=&quot;tab&quot; aria-controls=&quot;claims-panel-v2&quot; aria-selected=&quot;false&quot; type=&quot;button&quot;&gt;20 项说法&lt;/button&gt;
-    &lt;button class=&quot;nav-link&quot; id=&quot;outcome-tab&quot; role=&quot;tab&quot; aria-controls=&quot;outcome-panel&quot; aria-selected=&quot;false&quot; type=&quot;button&quot;&gt;结果与动作&lt;/button&gt;
+  &lt;div class=&quot;viz-controls controls&quot; aria-label=&quot;图谱控制&quot;&gt;
+    &lt;label class=&quot;form-label&quot; for=&quot;trace-depth&quot;&gt;追踪范围
+      &lt;select class=&quot;form-select&quot; id=&quot;trace-depth&quot;&gt;
+        &lt;option value=&quot;direct&quot;&gt;直接调用者/被调用者&lt;/option&gt;
+        &lt;option value=&quot;all&quot; selected&gt;完整上下游调用链&lt;/option&gt;
+      &lt;/select&gt;
+    &lt;/label&gt;
+    &lt;button class=&quot;btn&quot; type=&quot;button&quot; id=&quot;reset-layout&quot;&gt;恢复网图&lt;/button&gt;
   &lt;/div&gt;
 
-  &lt;section id=&quot;logic-panel&quot; class=&quot;panel&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;logic-tab&quot;&gt;
-    &lt;div class=&quot;legend&quot; aria-label=&quot;连线证据级别&quot;&gt;
-      &lt;span&gt;&lt;i class=&quot;a&quot;&gt;&lt;/i&gt;A 已确认实现&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;b&quot;&gt;&lt;/i&gt;B 信号可观测&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;c&quot;&gt;&lt;/i&gt;C 服务端可能/黑箱&lt;/span&gt;&lt;span&gt;&lt;i class=&quot;d&quot;&gt;&lt;/i&gt;D 未发现逻辑&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;graph-canvas&quot; id=&quot;graph-canvas&quot;&gt;
-      &lt;svg class=&quot;logic-links&quot; id=&quot;logic-links&quot; role=&quot;img&quot; aria-label=&quot;账号风控信号、关联、裁决与客户端动作的连线图&quot;&gt;
-        &lt;title&gt;账号风控逻辑关联图&lt;/title&gt;
-        &lt;desc&gt;实线为客户端已确认传输或处理，虚线为不可见的服务端决策。&lt;/desc&gt;
-        &lt;defs&gt;
-          &lt;marker id=&quot;arrow-a&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto-start-reverse&quot;&gt;&lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--viz-series-1)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
-          &lt;marker id=&quot;arrow-b&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto-start-reverse&quot;&gt;&lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--viz-series-2)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
-          &lt;marker id=&quot;arrow-c&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto-start-reverse&quot;&gt;&lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--viz-series-3)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
-          &lt;marker id=&quot;arrow-d&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto-start-reverse&quot;&gt;&lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; fill=&quot;var(--viz-series-4)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
-        &lt;/defs&gt;
-        &lt;g id=&quot;edge-layer&quot;&gt;&lt;/g&gt;
-      &lt;/svg&gt;
+  &lt;div class=&quot;legend&quot; aria-label=&quot;关系类型&quot;&gt;
+    &lt;span&gt;&lt;i class=&quot;call&quot;&gt;&lt;/i&gt;函数调用&lt;/span&gt;
+    &lt;span&gt;&lt;i class=&quot;data&quot;&gt;&lt;/i&gt;字段/数据传播&lt;/span&gt;
+    &lt;span&gt;&lt;i class=&quot;post&quot;&gt;&lt;/i&gt;HTTP/telemetry 外发&lt;/span&gt;
+    &lt;span&gt;&lt;i class=&quot;state&quot;&gt;&lt;/i&gt;错误/状态转换&lt;/span&gt;
+    &lt;span&gt;&lt;i class=&quot;opaque&quot;&gt;&lt;/i&gt;服务端黑箱返回&lt;/span&gt;
+  &lt;/div&gt;
 
-      &lt;div class=&quot;logic-grid&quot;&gt;
-        &lt;section class=&quot;lane&quot;&gt;&lt;div class=&quot;lane-title&quot;&gt;&lt;span class=&quot;lane-index&quot;&gt;01&lt;/span&gt;原始信号&lt;/div&gt;&lt;div class=&quot;node-list&quot;&gt;
-          &lt;button class=&quot;logic-node level-b cursor-interaction&quot; id=&quot;n-account&quot; data-node=&quot;account&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;B&lt;/span&gt;&lt;strong&gt;账号资料&lt;/strong&gt;&lt;small&gt;email、account/org UUID、账龄&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-b cursor-interaction&quot; id=&quot;n-billing&quot; data-node=&quot;billing&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;B&lt;/span&gt;&lt;strong&gt;订阅与支付&lt;/strong&gt;&lt;small&gt;tier、订阅时间、billing path&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-device&quot; data-node=&quot;device&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;设备身份&lt;/strong&gt;&lt;small&gt;4 个安装 ID、设备密钥&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-b cursor-interaction&quot; id=&quot;n-usage&quot; data-node=&quot;usage&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;B&lt;/span&gt;&lt;strong&gt;使用行为&lt;/strong&gt;&lt;small&gt;模型、限额、Memory、并发会话&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-c cursor-interaction&quot; id=&quot;n-network&quot; data-node=&quot;network&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;C&lt;/span&gt;&lt;strong&gt;网络与支付外部信号&lt;/strong&gt;&lt;small&gt;源 IP、IP 声誉、卡类型&lt;/small&gt;&lt;/button&gt;
-        &lt;/div&gt;&lt;/section&gt;
+  &lt;div class=&quot;network&quot; id=&quot;network&quot;&gt;
+    &lt;svg class=&quot;network-svg&quot; id=&quot;network-svg&quot; role=&quot;img&quot; aria-label=&quot;Claude Code 账号风控函数、字段、API 与状态互相调用关联图&quot;&gt;
+      &lt;title&gt;Claude Code 账号风控调用关联网&lt;/title&gt;
+      &lt;desc&gt;节点包括安装标识函数、遥测构建器、设备 API、OAuth 状态和 account_on_hold 处理链。&lt;/desc&gt;
+      &lt;defs&gt;
+        &lt;marker id=&quot;rel-arrow-call&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;var(--viz-series-1)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
+        &lt;marker id=&quot;rel-arrow-data&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;var(--viz-series-2)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
+        &lt;marker id=&quot;rel-arrow-post&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;var(--viz-series-5)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
+        &lt;marker id=&quot;rel-arrow-state&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;var(--viz-series-4)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
+        &lt;marker id=&quot;rel-arrow-opaque&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;9&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;var(--viz-series-3)&quot;&gt;&lt;/path&gt;&lt;/marker&gt;
+      &lt;/defs&gt;
+      &lt;g id=&quot;cluster-layer&quot;&gt;&lt;/g&gt;
+      &lt;g id=&quot;link-layer&quot;&gt;&lt;/g&gt;
+      &lt;g id=&quot;label-layer&quot;&gt;&lt;/g&gt;
+    &lt;/svg&gt;
+    &lt;div class=&quot;node-layer&quot; id=&quot;node-layer&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
 
-        &lt;section class=&quot;lane&quot;&gt;&lt;div class=&quot;lane-title&quot;&gt;&lt;span class=&quot;lane-index&quot;&gt;02&lt;/span&gt;采集/传输&lt;/div&gt;&lt;div class=&quot;node-list&quot;&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-profile-api&quot; data-node=&quot;profile-api&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;OAuth / Profile API&lt;/strong&gt;&lt;small&gt;返回身份、订阅和账号状态&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-messages&quot; data-node=&quot;messages&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;Messages metadata&lt;/strong&gt;&lt;small&gt;device/account/session/parent session&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-telemetry&quot; data-node=&quot;telemetry&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;1P 日志 + GrowthBook&lt;/strong&gt;&lt;small&gt;核心元数据、用户属性、exposure&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-device-api&quot; data-node=&quot;device-api&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;Trusted / Remote Devices&lt;/strong&gt;&lt;small&gt;设备注册、公钥、绑定证明&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-c cursor-interaction&quot; id=&quot;n-edge-logs&quot; data-node=&quot;edge-logs&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;C&lt;/span&gt;&lt;strong&gt;服务端请求/支付日志&lt;/strong&gt;&lt;small&gt;客户端不可见的边缘与计费数据&lt;/small&gt;&lt;/button&gt;
-        &lt;/div&gt;&lt;/section&gt;
+  &lt;div class=&quot;card detail&quot; aria-live=&quot;polite&quot;&gt;
+    &lt;section&gt;
+      &lt;div class=&quot;detail-label&quot;&gt;当前节点&lt;/div&gt;
+      &lt;div class=&quot;detail-title&quot; id=&quot;detail-title&quot;&gt;&lt;code&gt;account_on_hold&lt;/code&gt;&lt;/div&gt;
+      &lt;div id=&quot;detail-desc&quot;&gt;服务端返回的账号阻断错误，客户端将其转换为 blocked 状态并导向申诉。&lt;/div&gt;
+      &lt;div class=&quot;detail-evidence&quot; id=&quot;detail-evidence&quot;&gt;证据：&lt;code&gt;cli.min.js&lt;/code&gt; account-on-hold 错误枚举与 UI 分支。&lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+      &lt;h3&gt;调用者 / 输入&lt;/h3&gt;
+      &lt;div class=&quot;edge-list&quot; id=&quot;incoming-list&quot;&gt;&lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+      &lt;h3&gt;被调用 / 输出&lt;/h3&gt;
+      &lt;div class=&quot;edge-list&quot; id=&quot;outgoing-list&quot;&gt;&lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/div&gt;
 
-        &lt;section class=&quot;lane&quot;&gt;&lt;div class=&quot;lane-title&quot;&gt;&lt;span class=&quot;lane-index&quot;&gt;03&lt;/span&gt;关联与策略&lt;/div&gt;&lt;div class=&quot;node-list&quot;&gt;
-          &lt;button class=&quot;logic-node level-b cursor-interaction&quot; id=&quot;n-identity-graph&quot; data-node=&quot;identity-graph&quot; type=&quot;button&quot; aria-pressed=&quot;true&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;B&lt;/span&gt;&lt;strong&gt;账号-设备-会话关联图&lt;/strong&gt;&lt;small&gt;多个请求可被稳定标识联结&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-product-rules&quot; data-node=&quot;product-rules&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;产品资格/限额规则&lt;/strong&gt;&lt;small&gt;tenure + billing path 参与 offer/reset&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-c cursor-interaction&quot; id=&quot;n-risk-policy&quot; data-node=&quot;risk-policy&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;C&lt;/span&gt;&lt;strong&gt;服务端风控/策略引擎&lt;/strong&gt;&lt;small&gt;特征、权重、阈值和观察期不可见&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-d cursor-interaction&quot; id=&quot;n-no-score&quot; data-node=&quot;no-score&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;D&lt;/span&gt;&lt;strong&gt;客户端未发现积分表&lt;/strong&gt;&lt;small&gt;无 risk_score / trust_score / 权重配置&lt;/small&gt;&lt;/button&gt;
-        &lt;/div&gt;&lt;/section&gt;
-
-        &lt;section class=&quot;lane&quot;&gt;&lt;div class=&quot;lane-title&quot;&gt;&lt;span class=&quot;lane-index&quot;&gt;04&lt;/span&gt;API 裁决结果&lt;/div&gt;&lt;div class=&quot;node-list&quot;&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-ok&quot; data-node=&quot;ok&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;OK / 正常返回&lt;/strong&gt;&lt;small&gt;正常认证、使用和限额流程&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-verify&quot; data-node=&quot;verify&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;附加验证/计费错误&lt;/strong&gt;&lt;small&gt;verification_required、billing_error&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-hold&quot; data-node=&quot;hold&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;account_on_hold&lt;/strong&gt;&lt;small&gt;OAuth refresh 和 Claude Code 使用被阻断&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-org-block&quot; data-node=&quot;org-block&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;组织/IP 策略拒绝&lt;/strong&gt;&lt;small&gt;organization_on_hold / refused_ip_allowlist&lt;/small&gt;&lt;/button&gt;
-        &lt;/div&gt;&lt;/section&gt;
-
-        &lt;section class=&quot;lane&quot;&gt;&lt;div class=&quot;lane-title&quot;&gt;&lt;span class=&quot;lane-index&quot;&gt;05&lt;/span&gt;客户端动作&lt;/div&gt;&lt;div class=&quot;node-list&quot;&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-continue&quot; data-node=&quot;continue&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;继续使用&lt;/strong&gt;&lt;small&gt;进入正常会话、限额和模型路由&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-recover&quot; data-node=&quot;recover&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;补充验证/处理计费&lt;/strong&gt;&lt;small&gt;重试登录、更新支付或账号状态&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-appeal&quot; data-node=&quot;appeal&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;阻断 + 申诉&lt;/strong&gt;&lt;small&gt;显示 hold，导向 claude.ai/restricted&lt;/small&gt;&lt;/button&gt;
-          &lt;button class=&quot;logic-node level-a cursor-interaction&quot; id=&quot;n-admin&quot; data-node=&quot;admin&quot; type=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;&lt;span class=&quot;node-level&quot;&gt;A&lt;/span&gt;&lt;strong&gt;组织管理处理&lt;/strong&gt;&lt;small&gt;与个人账号积分是不同策略域&lt;/small&gt;&lt;/button&gt;
-        &lt;/div&gt;&lt;/section&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-
-    &lt;div class=&quot;card detail&quot; aria-live=&quot;polite&quot;&gt;
-      &lt;div&gt;&lt;div class=&quot;detail-label&quot;&gt;选中节点&lt;/div&gt;&lt;div class=&quot;detail-title&quot; id=&quot;detail-title&quot;&gt;账号-设备-会话关联图&lt;/div&gt;&lt;/div&gt;
-      &lt;div&gt;&lt;div class=&quot;detail-label&quot;&gt;上下游逻辑&lt;/div&gt;&lt;div class=&quot;detail-body&quot; id=&quot;detail-body&quot;&gt;设备 ID、account/org UUID、session ID 和设备注册让服务端可以关联多个请求。这个关联能力有直接证据，但关联结果是否进入风控模型及其权重不可见。&lt;/div&gt;&lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/section&gt;
-
-  &lt;section id=&quot;claims-panel-v2&quot; class=&quot;panel&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;claims-tab-v2&quot; hidden&gt;
-    &lt;div class=&quot;viz-controls claim-controls&quot; aria-label=&quot;证据筛选&quot;&gt;
-      &lt;button class=&quot;btn btn-primary claim-filter&quot; type=&quot;button&quot; data-filter=&quot;all&quot; aria-pressed=&quot;true&quot;&gt;全部&lt;/button&gt;
-      &lt;button class=&quot;btn claim-filter&quot; type=&quot;button&quot; data-filter=&quot;A&quot; aria-pressed=&quot;false&quot;&gt;A 已确认&lt;/button&gt;
-      &lt;button class=&quot;btn claim-filter&quot; type=&quot;button&quot; data-filter=&quot;B&quot; aria-pressed=&quot;false&quot;&gt;B 可观测&lt;/button&gt;
-      &lt;button class=&quot;btn claim-filter&quot; type=&quot;button&quot; data-filter=&quot;C&quot; aria-pressed=&quot;false&quot;&gt;C 服务端&lt;/button&gt;
-      &lt;button class=&quot;btn claim-filter&quot; type=&quot;button&quot; data-filter=&quot;D&quot; aria-pressed=&quot;false&quot;&gt;D 未发现&lt;/button&gt;
-      &lt;span class=&quot;claim-count&quot; id=&quot;claim-count-v2&quot; aria-live=&quot;polite&quot;&gt;显示 20 条&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;table-responsive&quot;&gt;
-      &lt;table class=&quot;table table-sm&quot;&gt;
-        &lt;thead&gt;&lt;tr&gt;&lt;th&gt;原帖说法&lt;/th&gt;&lt;th&gt;证据&lt;/th&gt;&lt;th&gt;客户端可确认内容&lt;/th&gt;&lt;th&gt;结论&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-        &lt;tbody id=&quot;claims-body-v2&quot;&gt;&lt;/tbody&gt;
-      &lt;/table&gt;
-    &lt;/div&gt;
-  &lt;/section&gt;
-
-  &lt;section id=&quot;outcome-panel&quot; class=&quot;panel&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;outcome-tab&quot; hidden&gt;
-    &lt;div class=&quot;outcome-map&quot; aria-label=&quot;服务端结果到客户端动作&quot;&gt;
-      &lt;div class=&quot;outcome-group&quot;&gt;
-        &lt;div class=&quot;outcome-node&quot;&gt;&lt;strong&gt;OK&lt;/strong&gt;&lt;span&gt;身份与组织状态允许使用&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node verify&quot;&gt;&lt;strong&gt;verification_required / billing_error&lt;/strong&gt;&lt;span&gt;需要补充验证或处理计费&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node hold&quot;&gt;&lt;strong&gt;account_on_hold&lt;/strong&gt;&lt;span&gt;账号级阻断状态&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node hold&quot;&gt;&lt;strong&gt;organization_on_hold / refused_ip_allowlist&lt;/strong&gt;&lt;span&gt;组织或网络策略域&lt;/span&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;outcome-arrow&quot; aria-hidden=&quot;true&quot;&gt;→&lt;/div&gt;
-      &lt;div class=&quot;outcome-group&quot;&gt;
-        &lt;div class=&quot;outcome-node&quot;&gt;&lt;strong&gt;API/OAuth 错误分类&lt;/strong&gt;&lt;span&gt;客户端根据明确错误枚举分支&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node verify&quot;&gt;&lt;strong&gt;OAuth refresh 与 auth health&lt;/strong&gt;&lt;span&gt;hold 结果会被缓存并产生对应事件&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node hold&quot;&gt;&lt;strong&gt;blocked 状态&lt;/strong&gt;&lt;span&gt;阻止正常 Claude Code 路径&lt;/span&gt;&lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;outcome-arrow&quot; aria-hidden=&quot;true&quot;&gt;→&lt;/div&gt;
-      &lt;div class=&quot;outcome-group&quot;&gt;
-        &lt;div class=&quot;outcome-node&quot;&gt;&lt;strong&gt;继续使用&lt;/strong&gt;&lt;span&gt;正常会话和限额流程&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node verify&quot;&gt;&lt;strong&gt;重新登录/处理计费&lt;/strong&gt;&lt;span&gt;根据错误类型处理&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node hold&quot;&gt;&lt;strong&gt;显示 hold 并申诉&lt;/strong&gt;&lt;span&gt;导向 &lt;code&gt;claude.ai/restricted&lt;/code&gt;&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;outcome-node hold&quot;&gt;&lt;strong&gt;联系组织管理员&lt;/strong&gt;&lt;span&gt;不与个人账号结果混同&lt;/span&gt;&lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;boundary&quot;&gt;可以证明“有这些结果和处理分支”，不能由结果反推“一定存在某套公开的加减分表”。&lt;/p&gt;
-  &lt;/section&gt;
-
+  &lt;script src=&quot;https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js&quot;&gt;&lt;/script&gt;
   &lt;script&gt;
     (() =&gt; {
-      const root = document.getElementById(&#x27;tengu-risk-logic-map&#x27;);
-      const canvas = root.querySelector(&#x27;#graph-canvas&#x27;);
-      const svg = root.querySelector(&#x27;#logic-links&#x27;);
-      const edgeLayer = root.querySelector(&#x27;#edge-layer&#x27;);
-      const title = root.querySelector(&#x27;#detail-title&#x27;);
-      const body = root.querySelector(&#x27;#detail-body&#x27;);
-      const ns = &#x27;http://www.w3.org/2000/svg&#x27;;
-      const edges = [
-        [&#x27;account&#x27;,&#x27;profile-api&#x27;,&#x27;A&#x27;,&#x27;OAuth/Profile&#x27;,&#x27;-18&#x27;], [&#x27;billing&#x27;,&#x27;profile-api&#x27;,&#x27;A&#x27;,&#x27;订阅字段&#x27;,&#x27;18&#x27;],
-        [&#x27;device&#x27;,&#x27;messages&#x27;,&#x27;A&#x27;,&#x27;metadata&#x27;,&#x27;-26&#x27;], [&#x27;device&#x27;,&#x27;telemetry&#x27;,&#x27;A&#x27;,&#x27;device_id&#x27;,&#x27;18&#x27;], [&#x27;device&#x27;,&#x27;device-api&#x27;,&#x27;A&#x27;,&#x27;公钥/绑定&#x27;,&#x27;34&#x27;],
-        [&#x27;usage&#x27;,&#x27;telemetry&#x27;,&#x27;B&#x27;,&#x27;行为/实验&#x27;,&#x27;-22&#x27;], [&#x27;network&#x27;,&#x27;edge-logs&#x27;,&#x27;C&#x27;,&#x27;请求/支付&#x27;,&#x27;12&#x27;], [&#x27;billing&#x27;,&#x27;edge-logs&#x27;,&#x27;C&#x27;,&#x27;支付后端&#x27;,&#x27;34&#x27;],
-        [&#x27;profile-api&#x27;,&#x27;identity-graph&#x27;,&#x27;A&#x27;,&#x27;account/org&#x27;,&#x27;-25&#x27;], [&#x27;messages&#x27;,&#x27;identity-graph&#x27;,&#x27;A&#x27;,&#x27;session&#x27;,&#x27;-8&#x27;], [&#x27;telemetry&#x27;,&#x27;identity-graph&#x27;,&#x27;B&#x27;,&#x27;遥测关联&#x27;,&#x27;16&#x27;], [&#x27;device-api&#x27;,&#x27;identity-graph&#x27;,&#x27;A&#x27;,&#x27;设备集&#x27;,&#x27;34&#x27;],
-        [&#x27;profile-api&#x27;,&#x27;product-rules&#x27;,&#x27;A&#x27;,&#x27;tier/tenure&#x27;,&#x27;22&#x27;], [&#x27;edge-logs&#x27;,&#x27;risk-policy&#x27;,&#x27;C&#x27;,&#x27;黑箱特征&#x27;,&#x27;-20&#x27;], [&#x27;identity-graph&#x27;,&#x27;risk-policy&#x27;,&#x27;C&#x27;,&#x27;可能输入&#x27;,&#x27;20&#x27;],
-        [&#x27;identity-graph&#x27;,&#x27;product-rules&#x27;,&#x27;B&#x27;,&#x27;账号语境&#x27;,&#x27;-14&#x27;], [&#x27;no-score&#x27;,&#x27;risk-policy&#x27;,&#x27;D&#x27;,&#x27;客户端无权重&#x27;,&#x27;30&#x27;],
-        [&#x27;product-rules&#x27;,&#x27;ok&#x27;,&#x27;A&#x27;,&#x27;资格/限额&#x27;,&#x27;-22&#x27;], [&#x27;product-rules&#x27;,&#x27;verify&#x27;,&#x27;A&#x27;,&#x27;计费状态&#x27;,&#x27;22&#x27;],
-        [&#x27;risk-policy&#x27;,&#x27;ok&#x27;,&#x27;C&#x27;,&#x27;允许&#x27;,&#x27;-34&#x27;], [&#x27;risk-policy&#x27;,&#x27;verify&#x27;,&#x27;C&#x27;,&#x27;附加验证&#x27;,&#x27;-12&#x27;], [&#x27;risk-policy&#x27;,&#x27;hold&#x27;,&#x27;C&#x27;,&#x27;账号策略&#x27;,&#x27;14&#x27;], [&#x27;risk-policy&#x27;,&#x27;org-block&#x27;,&#x27;C&#x27;,&#x27;组织/IP 策略&#x27;,&#x27;36&#x27;],
-        [&#x27;ok&#x27;,&#x27;continue&#x27;,&#x27;A&#x27;,&#x27;正常&#x27;,&#x27;-18&#x27;], [&#x27;verify&#x27;,&#x27;recover&#x27;,&#x27;A&#x27;,&#x27;补充处理&#x27;,&#x27;4&#x27;], [&#x27;hold&#x27;,&#x27;appeal&#x27;,&#x27;A&#x27;,&#x27;blocked&#x27;,&#x27;4&#x27;], [&#x27;org-block&#x27;,&#x27;admin&#x27;,&#x27;A&#x27;,&#x27;管理处理&#x27;,&#x27;20&#x27;]
+      const root = document.getElementById(&#x27;tengu-call-relation-graph&#x27;);
+      const network = root.querySelector(&#x27;#network&#x27;);
+      const svg = d3.select(root.querySelector(&#x27;#network-svg&#x27;));
+      const nodeLayer = d3.select(root.querySelector(&#x27;#node-layer&#x27;));
+      const linkLayer = svg.select(&#x27;#link-layer&#x27;);
+      const labelLayer = svg.select(&#x27;#label-layer&#x27;);
+      const clusterLayer = svg.select(&#x27;#cluster-layer&#x27;);
+      const detailTitle = root.querySelector(&#x27;#detail-title&#x27;);
+      const detailDesc = root.querySelector(&#x27;#detail-desc&#x27;);
+      const detailEvidence = root.querySelector(&#x27;#detail-evidence&#x27;);
+      const incomingList = root.querySelector(&#x27;#incoming-list&#x27;);
+      const outgoingList = root.querySelector(&#x27;#outgoing-list&#x27;);
+      const depthSelect = root.querySelector(&#x27;#trace-depth&#x27;);
+      const groupNames = { identity:&#x27;身份与会话&#x27;, telemetry:&#x27;遥测与元数据&#x27;, device:&#x27;设备与远程&#x27;, auth:&#x27;OAuth 与账号状态&#x27;, product:&#x27;订阅与限额&#x27;, external:&#x27;API / 服务端&#x27; };
+      const nodes = [
+        {id:&#x27;user-id&#x27;,label:&#x27;_M()&#x27;,sub:&#x27;getOrCreateUserID&#x27;,group:&#x27;identity&#x27;,desc:&#x27;生成或读取 64-hex 随机安装 userID，广泛用于 Messages、一方遥测、GrowthBook 和 OTel。&#x27;,evidence:&#x27;device-fingerprinting.md §1.1，cli.beauty.js:115569&#x27;},
+        {id:&#x27;machine-id&#x27;,label:&#x27;Umt()&#x27;,sub:&#x27;getOrCreateMachineID&#x27;,group:&#x27;identity&#x27;,desc:&#x27;生成或读取随机 machineID，错误报告仅发送前 12 位。&#x27;,evidence:&#x27;device-fingerprinting.md §1.2，cli.beauty.js:115581&#x27;},
+        {id:&#x27;summon-key&#x27;,label:&#x27;rPo()&#x27;,sub:&#x27;summonSidKey&#x27;,group:&#x27;identity&#x27;,desc:&#x27;返回本地 HMAC 密钥；密钥不外发，只传播派生 sid。&#x27;,evidence:&#x27;device-fingerprinting.md §1.3，cli.beauty.js:115596&#x27;},
+        {id:&#x27;remote-id&#x27;,label:&#x27;f7s() → xO()&#x27;,sub:&#x27;remoteControlMachineId&#x27;,group:&#x27;identity&#x27;,desc:&#x27;生成并持久化 UUID，作为 bridge machine_id 原样外发。&#x27;,evidence:&#x27;device-fingerprinting.md §1.4，cli.beauty.js:115613&#x27;},
+        {id:&#x27;session-id&#x27;,label:&#x27;q()&#x27;,sub:&#x27;getSessionId&#x27;,group:&#x27;identity&#x27;,desc:&#x27;当前会话 ID，进入核心元数据、Messages metadata 和 summon HMAC。&#x27;,evidence:&#x27;device-fingerprinting.md §2.1&#x27;},
+        {id:&#x27;parent-session&#x27;,label:&#x27;QC()&#x27;,sub:&#x27;parent_session_id&#x27;,group:&#x27;identity&#x27;,desc:&#x27;父会话标识，用于 Messages API 元数据中的会话系谱。&#x27;,evidence:&#x27;device-fingerprinting.md §2.1，cli.beauty.js:103144&#x27;},
+        {id:&#x27;account-source&#x27;,label:&#x27;VC() / An()&#x27;,sub:&#x27;account + organization&#x27;,group:&#x27;identity&#x27;,desc:&#x27;优先从 gateway 账号，其次从 oauthAccount 取 accountUuid/organizationUuid。&#x27;,evidence:&#x27;device-fingerprinting.md §2.2，cli.beauty.js:133603&#x27;},
+        {id:&#x27;core-user-data&#x27;,label:&#x27;ek.coreUserData&#x27;,sub:&#x27;中心身份包&#x27;,group:&#x27;identity&#x27;,desc:&#x27;合并 deviceId、sessionId、account/org UUID、platform、subscriptionType 和 rateLimitTier。&#x27;,evidence:&#x27;device-fingerprinting.md §2.2，cli.beauty.js:133593&#x27;},
+
+        {id:&#x27;message-meta&#x27;,label:&#x27;EBe()&#x27;,sub:&#x27;metadata.user_id&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;构建 Messages API 的 JSON 元数据，包含 device/account/session/parent session。&#x27;,evidence:&#x27;device-fingerprinting.md §2.3，cli.beauty.js:176875&#x27;},
+        {id:&#x27;event-row&#x27;,label:&#x27;PW()&#x27;,sub:&#x27;1P event row&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;构建一方事件行：event_name、core_metadata、user_metadata、user_id。&#x27;,evidence:&#x27;device-fingerprinting.md §2.3，cli.beauty.js:142328&#x27;},
+        {id:&#x27;gb-exposure&#x27;,label:&#x27;Mxo()&#x27;,sub:&#x27;GrowthBook exposure&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;构建 growthbook_experiment 事件，携带 experiment/variation/device/account/org 标识。&#x27;,evidence:&#x27;telemetry.md §3.3，cli.beauty.js:142397&#x27;},
+        {id:&#x27;gb-attrs&#x27;,label:&#x27;nT()&#x27;,sub:&#x27;GrowthBook attributes&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;构建 GrowthBook 用户属性，包含设备、会话、账号、订阅、平台和入口信息。&#x27;,evidence:&#x27;telemetry.md §3.3，cli.beauty.js:142573&#x27;},
+        {id:&#x27;otel-resource&#x27;,label:&#x27;CDt()&#x27;,sub:&#x27;OTel resource&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;构建 OpenTelemetry resource，可包含 user.id、account/org UUID、session 与 email。&#x27;,evidence:&#x27;device-fingerprinting.md §2.3，cli.beauty.js:194425&#x27;},
+        {id:&#x27;user-bucket&#x27;,label:&#x27;getUserBucket()&#x27;,sub:&#x27;sha256(userID) % 30&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;将 userID 哈希为 0–29 的 Datadog 分桶值。&#x27;,evidence:&#x27;telemetry.md §3.3，cli.beauty.js:349720&#x27;},
+        {id:&#x27;messages-api&#x27;,label:&#x27;Messages API&#x27;,sub:&#x27;metadata.user_id&#x27;,group:&#x27;external&#x27;,desc:&#x27;接收 EBe() 序列化的 user_id 元数据。&#x27;,evidence:&#x27;device-fingerprinting.md §2.3&#x27;},
+        {id:&#x27;event-api&#x27;,label:&#x27;/event_logging/v2/batch&#x27;,sub:&#x27;1P event sink&#x27;,group:&#x27;external&#x27;,desc:&#x27;一方事件默认批量上传端点。&#x27;,evidence:&#x27;telemetry.md §1.1、§3&#x27;},
+        {id:&#x27;gb-api&#x27;,label:&#x27;/api/eval/{clientKey}&#x27;,sub:&#x27;GrowthBook remote eval&#x27;,group:&#x27;external&#x27;,desc:&#x27;GrowthBook 远程评估端点，使用 nT() 属性。&#x27;,evidence:&#x27;api-endpoints.md §6&#x27;},
+        {id:&#x27;otel-sink&#x27;,label:&#x27;OTel collector&#x27;,sub:&#x27;operator configured&#x27;,group:&#x27;external&#x27;,desc:&#x27;用户配置的 OpenTelemetry 收集端。&#x27;,evidence:&#x27;telemetry.md §1.1&#x27;},
+        {id:&#x27;dd-error&#x27;,label:&#x27;Datadog error&#x27;,sub:&#x27;error report sink&#x27;,group:&#x27;external&#x27;,desc:&#x27;接收 user_bucket 和 machineID 前 12 位等允许字段。&#x27;,evidence:&#x27;telemetry.md §3.3，cli.beauty.js:350262&#x27;},
+
+        {id:&#x27;summon-hmac&#x27;,label:&#x27;Se()&#x27;,sub:&#x27;HMAC summon sid&#x27;,group:&#x27;device&#x27;,desc:&#x27;计算 HMAC-SHA256(summonSidKey, sessionId + slug) 并截断前 16 位。&#x27;,evidence:&#x27;device-fingerprinting.md §1.3，cli.beauty.js:701360&#x27;},
+        {id:&#x27;summon-post&#x27;,label:&#x27;Bns()&#x27;,sub:&#x27;postRelayBound&#x27;,group:&#x27;device&#x27;,desc:&#x27;将 summon status body 通过 relay-bound POST 发送。&#x27;,evidence:&#x27;device-fingerprinting.md §1.3，cli.beauty.js:700337&#x27;},
+        {id:&#x27;summon-api&#x27;,label:&#x27;/summon-status&#x27;,sub:&#x27;frame comment status&#x27;,group:&#x27;external&#x27;,desc:&#x27;接收 status、reason、sid 和 seq 的 artifact comment summon 端点。&#x27;,evidence:&#x27;device-fingerprinting.md §1.3&#x27;},
+        {id:&#x27;bridge-payload&#x27;,label:&#x27;bridge payload&#x27;,sub:&#x27;machine_id + metadata&#x27;,group:&#x27;device&#x27;,desc:&#x27;构建 remote-control bridge 注册 payload，携带 remoteControlMachineId。&#x27;,evidence:&#x27;device-fingerprinting.md §5&#x27;},
+        {id:&#x27;bridge-api&#x27;,label:&#x27;/v1/environments/bridge&#x27;,sub:&#x27;remote-control bridge&#x27;,group:&#x27;external&#x27;,desc:&#x27;远程控制 bridge 注册端点，接收原样 machine_id。&#x27;,evidence:&#x27;device-fingerprinting.md §2.4&#x27;},
+        {id:&#x27;device-key&#x27;,label:&#x27;P-256 device key&#x27;,sub:&#x27;per-account keypair&#x27;,group:&#x27;device&#x27;,desc:&#x27;每账号设备密钥，用于远程设备注册、绑定和事件签名。&#x27;,evidence:&#x27;device-fingerprinting.md §1.0、§3&#x27;},
+        {id:&#x27;device-registry&#x27;,label:&#x27;Ee() / remote_devices&#x27;,sub:&#x27;device registry&#x27;,group:&#x27;device&#x27;,desc:&#x27;注册设备公钥并获取服务端 deviceUUID。&#x27;,evidence:&#x27;device-fingerprinting.md §3.1，cli.beauty.js:1000193&#x27;},
+        {id:&#x27;session-bind&#x27;,label:&#x27;/sessions/{id}/device&#x27;,sub:&#x27;target_device_id&#x27;,group:&#x27;external&#x27;,desc:&#x27;会话设备绑定端点，接收 deviceUUID 和 bind_attestation。&#x27;,evidence:&#x27;api-endpoints.md §4&#x27;},
+        {id:&#x27;trusted-device&#x27;,label:&#x27;/api/auth/trusted_devices&#x27;,sub:&#x27;trusted enrollment&#x27;,group:&#x27;external&#x27;,desc:&#x27;以 display_name 注册 trusted device，返回 device_token 与 device_id。&#x27;,evidence:&#x27;api-endpoints.md §5&#x27;},
+        {id:&#x27;event-signer&#x27;,label:&#x27;sin()&#x27;,sub:&#x27;device_attestation&#x27;,group:&#x27;device&#x27;,desc:&#x27;对部分 session payload 签名并附加 device_attestation。&#x27;,evidence:&#x27;telemetry.md §3.5，cli.beauty.js:136799&#x27;},
+
+        {id:&#x27;profile-fetch&#x27;,label:&#x27;NPr()&#x27;,sub:&#x27;/api/oauth/profile&#x27;,group:&#x27;auth&#x27;,desc:&#x27;获取 OAuth profile，映射 organization_type、订阅、账号时间和计费类型。&#x27;,evidence:&#x27;plan-tier-gating.md “Subscription Types”，cli.beauty.js:118605&#x27;},
+        {id:&#x27;profile-cache&#x27;,label:&#x27;Mn()&#x27;,sub:&#x27;cached profile record&#x27;,group:&#x27;auth&#x27;,desc:&#x27;按 host 缓存 profile/token record，供订阅、身份和遥测路径读取。&#x27;,evidence:&#x27;plan-tier-gating.md “OAuth token record”&#x27;},
+        {id:&#x27;plan-getter&#x27;,label:&#x27;Rr()&#x27;,sub:&#x27;subscriptionType&#x27;,group:&#x27;product&#x27;,desc:&#x27;返回当前订阅类型，优先读取缓存 profile。&#x27;,evidence:&#x27;plan-tier-gating.md “Accessors”，cli.beauty.js:130940&#x27;},
+        {id:&#x27;billing-recognizer&#x27;,label:&#x27;VYs()&#x27;,sub:&#x27;billingType recognizer&#x27;,group:&#x27;product&#x27;,desc:&#x27;识别 Stripe、Apple、Google Play、AWS Marketplace 等支持的 billingType。&#x27;,evidence:&#x27;plan-tier-gating.md “Accessors”，cli.beauty.js:130908&#x27;},
+        {id:&#x27;account-dates&#x27;,label:&#x27;accountCreatedAt&#x27;,sub:&#x27;subscriptionCreatedAt&#x27;,group:&#x27;product&#x27;,desc:&#x27;Profile 保留的账号和订阅时间字段。&#x27;,evidence:&#x27;plan-tier-gating.md profile record&#x27;},
+        {id:&#x27;eligibility-schema&#x27;,label:&#x27;tenure_bucket&#x27;,sub:&#x27;billing_path + tier&#x27;,group:&#x27;product&#x27;,desc:&#x27;limit-reset event_props 的 cohort/资格维度，可观测但其作为真实资格规则仍带推断成分。&#x27;,evidence:&#x27;plan-tier-gating.md “NEW: Limit resets”&#x27;},
+        {id:&#x27;reset-api&#x27;,label:&#x27;/reset_rate_limits&#x27;,sub:&#x27;limit reset claim&#x27;,group:&#x27;external&#x27;,desc:&#x27;通过 program/grant 申请限额 reset 的端点。&#x27;,evidence:&#x27;plan-tier-gating.md “NEW: Limit resets”&#x27;},
+
+        {id:&#x27;oauth-refresh&#x27;,label:&#x27;OAuth refresh&#x27;,sub:&#x27;token refresh path&#x27;,group:&#x27;auth&#x27;,desc:&#x27;执行 token refresh，对错误进行 invalid_grant/account_on_hold 分类。&#x27;,evidence:&#x27;cli.min.js “tengu_oauth_token_refresh_failure” 附近&#x27;},
+        {id:&#x27;hold-detector&#x27;,label:&#x27;$Pr(error)&#x27;,sub:&#x27;hold detector&#x27;,group:&#x27;auth&#x27;,desc:&#x27;识别 OAuth/API 错误是否为 account_on_hold。&#x27;,evidence:&#x27;cli.min.js account_on_hold refresh 分支&#x27;},
+        {id:&#x27;hold-cache&#x27;,label:&#x27;ui.set(refreshToken)&#x27;,sub:&#x27;hold token cache&#x27;,group:&#x27;auth&#x27;,desc:&#x27;将已返回 account_on_hold 的 refresh token 记入缓存，之后直接返回 hold。&#x27;,evidence:&#x27;cli.min.js OAuth refresh outcome 分支&#x27;},
+        {id:&#x27;hold-event&#x27;,label:&#x27;tengu_oauth_refresh…&#x27;,sub:&#x27;account_on_hold event&#x27;,group:&#x27;telemetry&#x27;,desc:&#x27;记录 tengu_oauth_refresh_token_account_on_hold 事件。&#x27;,evidence:&#x27;cli.min.js 相应事件字面量&#x27;},
+        {id:&#x27;account-hold&#x27;,label:&#x27;account_on_hold&#x27;,sub:&#x27;account state&#x27;,group:&#x27;auth&#x27;,desc:&#x27;服务端返回的账号阻断错误，客户端将其转换为 blocked 状态并导向申诉。&#x27;,evidence:&#x27;cli.min.js 错误枚举、refresh、API 映射与 UI 分支&#x27;},
+        {id:&#x27;blocked-mapper&#x27;,label:&#x27;blocked mapper&#x27;,sub:&#x27;state:&quot;blocked&quot;&#x27;,group:&#x27;auth&#x27;,desc:&#x27;将 account_on_hold、verification_required、billing_error 等 API 错误映射为不同 blocked reason。&#x27;,evidence:&#x27;cli.min.js “state:\&quot;blocked\&quot;” 分支&#x27;},
+        {id:&#x27;hold-ui&#x27;,label:&#x27;O0o() / C6n()&#x27;,sub:&#x27;hold UI message&#x27;,group:&#x27;auth&#x27;,desc:&#x27;构建“Your account is on hold”终端信息。&#x27;,evidence:&#x27;cli.min.js account-on-hold 文案构建器&#x27;},
+        {id:&#x27;appeal-url&#x27;,label:&#x27;claude.ai/restricted&#x27;,sub:&#x27;appeal URL&#x27;,group:&#x27;external&#x27;,desc:&#x27;account_on_hold 详情与申诉链接。&#x27;,evidence:&#x27;api-endpoints.md §5，cli.min.js: KFt&#x27;},
+        {id:&#x27;verification&#x27;,label:&#x27;verification_required&#x27;,sub:&#x27;API error state&#x27;,group:&#x27;auth&#x27;,desc:&#x27;需要附加验证的独立 API 错误，不证明就是 KYC。&#x27;,evidence:&#x27;cli.min.js API error enum&#x27;},
+        {id:&#x27;billing-error&#x27;,label:&#x27;billing_error&#x27;,sub:&#x27;API error state&#x27;,group:&#x27;auth&#x27;,desc:&#x27;计费错误状态，映射为 blocked/billing reason。&#x27;,evidence:&#x27;cli.min.js API error enum&#x27;},
+        {id:&#x27;org-ip-refusal&#x27;,label:&#x27;org / IP refusal&#x27;,sub:&#x27;separate policy domain&#x27;,group:&#x27;auth&#x27;,desc:&#x27;organization_on_hold、organization_disabled 和 refused_ip_allowlist 等组织/网络策略结果。&#x27;,evidence:&#x27;cli.min.js auth failure reason enum&#x27;},
+        {id:&#x27;server-policy&#x27;,label:&#x27;服务端策略黑箱&#x27;,sub:&#x27;weights/thresholds unseen&#x27;,group:&#x27;external&#x27;,desc:&#x27;客户端只看到返回错误，不包含服务端特征、权重、阈值或观察期状态机。&#x27;,evidence:&#x27;客户端语料边界&#x27;}
       ];
-      const details = {
-        account:[&#x27;账号资料&#x27;,&#x27;email、account/org UUID、accountCreatedAt 和角色可被 Profile/OAuth 路径获取。邮箱域名权重和注册方式加分在客户端中未发现。&#x27;],
-        billing:[&#x27;订阅与支付&#x27;,&#x27;subscriptionType、subscriptionCreatedAt、rateLimitTier、tenure_bucket 和 billing_path 可观测。只证实它们参与部分 offer/reset 规则，没有封禁权重。&#x27;],
-        device:[&#x27;设备身份&#x27;,&#x27;userID、machineID、summonSidKey、remoteControlMachineId 与每账号 P-256 密钥构成多层设备标识。这些是随机持久 ID，不是硬件序列号。&#x27;],
-        usage:[&#x27;使用行为&#x27;,&#x27;模型、限额、Memory、entrypoint、platform 和并发 session 可观测。没有“Fable 减分”、“Memory 加分”或“额度用尽扣分”本地逻辑。&#x27;],
-        network:[&#x27;网络与支付外部信号&#x27;,&#x27;服务端天然能看到源 IP，支付后端可能拥有更多卡信息。这些数据不在客户端包中，因此只能标为服务端可能信号。&#x27;],
-        &#x27;profile-api&#x27;:[&#x27;OAuth / Profile API&#x27;,&#x27;该路径承载账号、组织、订阅和错误状态。account_on_hold 可在 token refresh 过程中被识别并缓存。&#x27;],
-        messages:[&#x27;Messages metadata&#x27;,&#x27;Messages API 元数据可包含 device_id、account_uuid、session_id 和 parent_session_id，因此请求可与安装、账号和会话关联。&#x27;],
-        telemetry:[&#x27;1P 日志 + GrowthBook&#x27;,&#x27;一方日志携带核心元数据；GrowthBook 属性和 exposure 还可包含订阅、账号、设备、平台和入口信息。产品遥测可观测不等于已用于风控。&#x27;],
-        &#x27;device-api&#x27;:[&#x27;Trusted / Remote Devices&#x27;,&#x27;trusted_devices 与 remote_devices 端点会注册设备、公钥和绑定证明，证明服务端可建立账号设备集。多设备减分未被证实。&#x27;],
-        &#x27;edge-logs&#x27;:[&#x27;服务端请求/支付日志&#x27;,&#x27;请求入口和支付处理层可以拥有客户端不保存的 IP、支付与风险信号。具体字段、保留时间和用途不能从 CLI 语料确定。&#x27;],
-        &#x27;identity-graph&#x27;:[&#x27;账号-设备-会话关联图&#x27;,&#x27;设备 ID、account/org UUID、session ID 和设备注册让服务端可以关联多个请求。这个关联能力有直接证据，但关联结果是否进入风控模型及其权重不可见。&#x27;],
-        &#x27;product-rules&#x27;:[&#x27;产品资格/限额规则&#x27;,&#x27;tier、tenure_bucket、billing_path、billing_period 与 extra_usage_state 确实参与服务端下发的 limit-reset/offer 资格。这是产品规则的 A 级证据，不应被等同于封禁风控。&#x27;],
-        &#x27;risk-policy&#x27;:[&#x27;服务端风控/策略引擎&#x27;,&#x27;客户端明确接收 account_on_hold、verification_required、organization_on_hold 等结果，说明服务端有策略裁决。但其特征、权重、阈值、模型和观察期都不在客户端。&#x27;],
-        &#x27;no-score&#x27;:[&#x27;客户端未发现积分表&#x27;,&#x27;risk_score、riskScore、trust_score、trustScore、virtual_card 和 identity_verification 均无实现命中。kyc 命中是随机字符串子串。&#x27;],
-        ok:[&#x27;OK / 正常返回&#x27;,&#x27;正常结果进入会话、限额和模型路由。它不能证明账号拥有某个“高分”，只能证明当前请求被允许。&#x27;],
-        verify:[&#x27;附加验证/计费错误&#x27;,&#x27;verification_required 和 billing_error 是明确错误分支。客户端不说明 verification_required 是否为 KYC，也不说明它与“观察期”的关系。&#x27;],
-        hold:[&#x27;account_on_hold&#x27;,&#x27;该结果会阻断 OAuth refresh 和正常 Claude Code 使用，显示 hold 提示并导向 claude.ai/restricted。结果链是确认的，触发算法不可见。&#x27;],
-        &#x27;org-block&#x27;:[&#x27;组织/IP 策略拒绝&#x27;,&#x27;organization_on_hold、organization_disabled 与 refused_ip_allowlist 是与个人 account_on_hold 不同的策略域。将它们全部解释为个人积分下降会混淆结果类型。&#x27;],
-        continue:[&#x27;继续使用&#x27;,&#x27;客户端进入正常会话、限额与模型路由。&#x27;], recover:[&#x27;补充验证/处理计费&#x27;,&#x27;根据 API 错误处理验证、登录或计费问题。&#x27;], appeal:[&#x27;阻断 + 申诉&#x27;,&#x27;客户端显示账号 hold，并导向 claude.ai/restricted 查看或申诉。&#x27;], admin:[&#x27;组织管理处理&#x27;,&#x27;组织禁用或 IP allowlist 拒绝需在组织/网络策略域处理，不是个人账号积分的同义词。&#x27;]
-      };
-      const claims = [
-        [&#x27;干净 IP 是最重要加分项&#x27;,&#x27;C&#x27;,&#x27;服务端看到源 IP；无本地 IP 声誉评分器&#x27;,&#x27;无法验证权重&#x27;],
-        [&#x27;Gmail 不优，其他邮箱加分&#x27;,&#x27;CD&#x27;,&#x27;email 可进入属性；无域名权重&#x27;,&#x27;可见不等于打分&#x27;],
-        [&#x27;注册即 KYC 减分&#x27;,&#x27;D&#x27;,&#x27;kyc 命中是随机 ID 子串&#x27;,&#x27;未发现 KYC 逻辑&#x27;],
-        [&#x27;移动端注册加分&#x27;,&#x27;CD&#x27;,&#x27;Linux CLI 可上报 client/platform&#x27;,&#x27;无移动注册风控证据&#x27;],
-        [&#x27;立即订阅或直接 Max 减分&#x27;,&#x27;BC&#x27;,&#x27;账号/订阅时间可见&#x27;,&#x27;无扣分权重&#x27;],
-        [&#x27;支付 KYC 代表观察期&#x27;,&#x27;CD&#x27;,&#x27;存在通用 verification_required&#x27;,&#x27;无支付观察状态机&#x27;],
-        [&#x27;外卡/Google Play 加分，虚拟卡减分&#x27;,&#x27;BCD&#x27;,&#x27;计费路径可见；无实体/虚拟卡字段&#x27;,&#x27;未证实加减分&#x27;],
-        [&#x27;跑空用量会减分&#x27;,&#x27;B&#x27;,&#x27;用量、限额、reset 可观测&#x27;,&#x27;无封禁分数关系&#x27;],
-        [&#x27;Desktop/Mobile 加分，Web 不加&#x27;,&#x27;BC&#x27;,&#x27;platform/client_type/entrypoint 可观测&#x27;,&#x27;无渠道权重&#x27;],
-        [&#x27;Memory 开启且文件多加分&#x27;,&#x27;BD&#x27;,&#x27;Memory 功能和事件存在&#x27;,&#x27;无记忆数量权重&#x27;],
-        [&#x27;稳定 IP 加分，变 IP 减分&#x27;,&#x27;C&#x27;,&#x27;服务端可观察 IP&#x27;,&#x27;客户端无统计和权重&#x27;],
-        [&#x27;代理必须全局/TUN&#x27;,&#x27;CD&#x27;,&#x27;支持代理环境变量&#x27;,&#x27;无 TUN 风控检测&#x27;],
-        [&#x27;多设备登录减分&#x27;,&#x27;BC&#x27;,&#x27;设备 ID、trusted/remote devices 存在&#x27;,&#x27;设备集可建立，无数量权重&#x27;],
-        [&#x27;频繁登录、高并发减分&#x27;,&#x27;BC&#x27;,&#x27;OAuth refresh、auth health、session 可观测&#x27;,&#x27;未发现风控权重&#x27;],
-        [&#x27;账号越老分数越高&#x27;,&#x27;BC&#x27;,&#x27;accountCreatedAt 和 tenure_bucket 存在&#x27;,&#x27;账龄参与 offer/reset，未证实参与封禁&#x27;],
-        [&#x27;Linux 减分，Windows/macOS 不变&#x27;,&#x27;BD&#x27;,&#x27;platform 会上报&#x27;,&#x27;无 OS 信任权重&#x27;],
-        [&#x27;时区和中文不影响分数&#x27;,&#x27;BD&#x27;,&#x27;locale/timezone 可在不同路径出现&#x27;,&#x27;不能证明有或无影响&#x27;],
-        [&#x27;大量使用 Fable 减分&#x27;,&#x27;BD&#x27;,&#x27;模型与使用事件可观测&#x27;,&#x27;无 Fable 特定风控&#x27;],
-        [&#x27;升级 Max 后进入观察期&#x27;,&#x27;BCD&#x27;,&#x27;计划迁移可见&#x27;,&#x27;无 observation-period 状态机&#x27;],
-        [&#x27;接近阈值掉登录，继续扣分封禁&#x27;,&#x27;AD&#x27;,&#x27;account_on_hold 会阻断刷新和使用&#x27;,&#x27;hold 已证实；分数阈值未证实&#x27;]
-      ];
 
-      function nodeBox(name) {
-        const element = root.querySelector(`[data-node=&quot;${name}&quot;]`);
-        const c = canvas.getBoundingClientRect();
-        const r = element.getBoundingClientRect();
-        return { left:r.left-c.left, right:r.right-c.left, top:r.top-c.top, bottom:r.bottom-c.top, cx:(r.left+r.right)/2-c.left, cy:(r.top+r.bottom)/2-c.top };
-      }
-      function drawEdges() {
-        edgeLayer.replaceChildren();
-        const width = canvas.clientWidth;
-        const height = canvas.clientHeight;
-        svg.setAttribute(&#x27;viewBox&#x27;, `0 0 ${width} ${height}`);
-        edges.forEach(([from,to,level,label,offset], index) =&gt; {
-          const a = nodeBox(from), b = nodeBox(to);
-          const mobile = width &lt; 920;
-          let d, lx, ly;
-          if (mobile) {
-            const sx=a.cx, sy=a.bottom, tx=b.cx, ty=b.top, mid=(sy+ty)/2;
-            d=`M ${sx} ${sy} C ${sx} ${mid}, ${tx} ${mid}, ${tx} ${ty}`; lx=(sx+tx)/2; ly=mid+Number(offset)/3;
-          } else {
-            const sx=a.right, sy=a.cy, tx=b.left, ty=b.cy, mid=(sx+tx)/2;
-            d=`M ${sx} ${sy} C ${mid} ${sy}, ${mid} ${ty}, ${tx} ${ty}`; lx=mid; ly=(sy+ty)/2+Number(offset);
-          }
-          const path=document.createElementNS(ns,&#x27;path&#x27;);
-          path.setAttribute(&#x27;d&#x27;,d); path.setAttribute(&#x27;class&#x27;,`edge-${level.toLowerCase()}`); path.setAttribute(&#x27;marker-end&#x27;,`url(#arrow-${level.toLowerCase()})`);
-          path.dataset.from=from; path.dataset.to=to; path.dataset.edge=String(index); edgeLayer.appendChild(path);
-          const text=document.createElementNS(ns,&#x27;text&#x27;); text.setAttribute(&#x27;x&#x27;,String(lx)); text.setAttribute(&#x27;y&#x27;,String(ly)); text.textContent=label;
-          text.dataset.from=from; text.dataset.to=to; text.dataset.edge=String(index); edgeLayer.appendChild(text);
-        });
-      }
-      function selectNode(name, save=true) {
-        const connected = new Set([name]);
-        edges.forEach(([from,to]) =&gt; { if (from===name) connected.add(to); if (to===name) connected.add(from); });
-        root.querySelectorAll(&#x27;.logic-node&#x27;).forEach((node) =&gt; {
-          const selected=node.dataset.node===name, linked=connected.has(node.dataset.node);
-          node.setAttribute(&#x27;aria-pressed&#x27;,String(selected)); node.classList.toggle(&#x27;is-linked&#x27;,linked); node.classList.toggle(&#x27;is-dim&#x27;,!linked);
-        });
-        edgeLayer.querySelectorAll(&#x27;[data-edge]&#x27;).forEach((item) =&gt; {
-          const linked=item.dataset.from===name || item.dataset.to===name; item.classList.toggle(&#x27;is-linked&#x27;,linked); item.classList.toggle(&#x27;is-dim&#x27;,!linked);
-        });
-        title.textContent=details[name][0]; body.textContent=details[name][1];
-        if (save &amp;&amp; window.openai?.setWidgetState) window.openai.setWidgetState({modelContent:{selectedNode:name},privateContent:null}).catch(()=&gt;{});
-      }
-      root.querySelectorAll(&#x27;.logic-node&#x27;).forEach((node)=&gt;node.addEventListener(&#x27;click&#x27;,()=&gt;selectNode(node.dataset.node)));
+      const links = [
+        [&#x27;user-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 deviceId&#x27;], [&#x27;session-id&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 sessionId&#x27;], [&#x27;account-source&#x27;,&#x27;core-user-data&#x27;,&#x27;call&#x27;,&#x27;读取 account/org&#x27;],
+        [&#x27;user-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;_M()&#x27;], [&#x27;account-source&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;account_uuid&#x27;], [&#x27;session-id&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;session_id&#x27;], [&#x27;parent-session&#x27;,&#x27;message-meta&#x27;,&#x27;call&#x27;,&#x27;parent_session_id&#x27;], [&#x27;message-meta&#x27;,&#x27;messages-api&#x27;,&#x27;post&#x27;,&#x27;metadata.user_id&#x27;],
+        [&#x27;user-id&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;user_id&#x27;], [&#x27;core-user-data&#x27;,&#x27;event-row&#x27;,&#x27;data&#x27;,&#x27;user_metadata&#x27;], [&#x27;event-row&#x27;,&#x27;event-api&#x27;,&#x27;post&#x27;,&#x27;POST batch&#x27;],
+        [&#x27;user-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;call&#x27;,&#x27;device_id&#x27;], [&#x27;account-source&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;], [&#x27;session-id&#x27;,&#x27;gb-exposure&#x27;,&#x27;data&#x27;,&#x27;session_id&#x27;], [&#x27;gb-exposure&#x27;,&#x27;event-row&#x27;,&#x27;call&#x27;,&#x27;emit experiment&#x27;],
+        [&#x27;core-user-data&#x27;,&#x27;gb-attrs&#x27;,&#x27;data&#x27;,&#x27;属性源&#x27;], [&#x27;gb-attrs&#x27;,&#x27;gb-api&#x27;,&#x27;post&#x27;,&#x27;remote eval&#x27;],
+        [&#x27;user-id&#x27;,&#x27;otel-resource&#x27;,&#x27;call&#x27;,&#x27;user.id&#x27;], [&#x27;account-source&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;account/org&#x27;], [&#x27;session-id&#x27;,&#x27;otel-resource&#x27;,&#x27;data&#x27;,&#x27;session.id&#x27;], [&#x27;otel-resource&#x27;,&#x27;otel-sink&#x27;,&#x27;post&#x27;,&#x27;export&#x27;],
+        [&#x27;user-id&#x27;,&#x27;user-bucket&#x27;,&#x27;call&#x27;,&#x27;sha256&#x27;], [&#x27;user-bucket&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;bucket 0–29&#x27;], [&#x27;machine-id&#x27;,&#x27;dd-error&#x27;,&#x27;post&#x27;,&#x27;slice(0,12)&#x27;],
+        [&#x27;summon-key&#x27;,&#x27;summon-hmac&#x27;,&#x27;call&#x27;,&#x27;HMAC key&#x27;], [&#x27;session-id&#x27;,&#x27;summon-hmac&#x27;,&#x27;data&#x27;,&#x27;sessionId+slug&#x27;], [&#x27;summon-hmac&#x27;,&#x27;summon-post&#x27;,&#x27;data&#x27;,&#x27;sid&#x27;], [&#x27;summon-post&#x27;,&#x27;summon-api&#x27;,&#x27;post&#x27;,&#x27;relay POST&#x27;],
+        [&#x27;remote-id&#x27;,&#x27;bridge-payload&#x27;,&#x27;data&#x27;,&#x27;machine_id&#x27;], [&#x27;bridge-payload&#x27;,&#x27;bridge-api&#x27;,&#x27;post&#x27;,&#x27;POST bridge&#x27;],
+        [&#x27;device-key&#x27;,&#x27;device-registry&#x27;,&#x27;post&#x27;,&#x27;public_key&#x27;], [&#x27;device-registry&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;deviceUUID&#x27;], [&#x27;device-key&#x27;,&#x27;session-bind&#x27;,&#x27;data&#x27;,&#x27;bind_attestation&#x27;], [&#x27;device-key&#x27;,&#x27;event-signer&#x27;,&#x27;call&#x27;,&#x27;sign payload&#x27;],
+        [&#x27;account-source&#x27;,&#x27;trusted-device&#x27;,&#x27;post&#x27;,&#x27;bearer + name&#x27;],
+        [&#x27;profile-fetch&#x27;,&#x27;profile-cache&#x27;,&#x27;data&#x27;,&#x27;profile record&#x27;], [&#x27;profile-cache&#x27;,&#x27;account-source&#x27;,&#x27;data&#x27;,&#x27;oauthAccount&#x27;], [&#x27;profile-cache&#x27;,&#x27;plan-getter&#x27;,&#x27;call&#x27;,&#x27;subscriptionType&#x27;], [&#x27;profile-cache&#x27;,&#x27;billing-recognizer&#x27;,&#x27;call&#x27;,&#x27;billingType&#x27;], [&#x27;profile-cache&#x27;,&#x27;account-dates&#x27;,&#x27;data&#x27;,&#x27;createdAt fields&#x27;],
+        [&#x27;plan-getter&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tier&#x27;], [&#x27;billing-recognizer&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;billing_path&#x27;], [&#x27;account-dates&#x27;,&#x27;eligibility-schema&#x27;,&#x27;data&#x27;,&#x27;tenure_bucket&#x27;], [&#x27;eligibility-schema&#x27;,&#x27;reset-api&#x27;,&#x27;post&#x27;,&#x27;claim reset&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;oauth-refresh&#x27;,&#x27;opaque&#x27;,&#x27;token error&#x27;], [&#x27;oauth-refresh&#x27;,&#x27;hold-detector&#x27;,&#x27;call&#x27;,&#x27;classify error&#x27;], [&#x27;hold-detector&#x27;,&#x27;hold-cache&#x27;,&#x27;state&#x27;,&#x27;ui.set&#x27;], [&#x27;hold-cache&#x27;,&#x27;hold-event&#x27;,&#x27;call&#x27;,&#x27;emit event&#x27;], [&#x27;hold-cache&#x27;,&#x27;account-hold&#x27;,&#x27;state&#x27;,&#x27;return hold&#x27;],
+        [&#x27;server-policy&#x27;,&#x27;account-hold&#x27;,&#x27;opaque&#x27;,&#x27;account policy&#x27;], [&#x27;server-policy&#x27;,&#x27;verification&#x27;,&#x27;opaque&#x27;,&#x27;verify policy&#x27;], [&#x27;server-policy&#x27;,&#x27;billing-error&#x27;,&#x27;opaque&#x27;,&#x27;billing policy&#x27;], [&#x27;server-policy&#x27;,&#x27;org-ip-refusal&#x27;,&#x27;opaque&#x27;,&#x27;org/IP policy&#x27;],
+        [&#x27;account-hold&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/auth&#x27;], [&#x27;verification&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/verify&#x27;], [&#x27;billing-error&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;blocked/billing&#x27;], [&#x27;org-ip-refusal&#x27;,&#x27;blocked-mapper&#x27;,&#x27;state&#x27;,&#x27;refused&#x27;],
+        [&#x27;account-hold&#x27;,&#x27;hold-ui&#x27;,&#x27;call&#x27;,&#x27;build message&#x27;], [&#x27;hold-ui&#x27;,&#x27;appeal-url&#x27;,&#x27;post&#x27;,&#x27;open appeal&#x27;]
+      ].map((d,i)=&gt;({id:`e${i}`,source:d[0],target:d[1],kind:d[2],label:d[3]}));
 
-      const tbody=root.querySelector(&#x27;#claims-body-v2&#x27;);
-      claims.forEach(([claim,levels,evidence,conclusion])=&gt;{
-        const row=document.createElement(&#x27;tr&#x27;); row.dataset.levels=levels;
-        const tone=levels.includes(&#x27;A&#x27;)?&#x27;a&#x27;:levels.includes(&#x27;B&#x27;)?&#x27;b&#x27;:levels.includes(&#x27;C&#x27;)?&#x27;c&#x27;:&#x27;d&#x27;;
-        row.innerHTML=`&lt;td&gt;${claim}&lt;/td&gt;&lt;td&gt;&lt;span class=&quot;level-pill pill-${tone}&quot;&gt;${levels.split(&#x27;&#x27;).join(&#x27;/&#x27;)}&lt;/span&gt;&lt;/td&gt;&lt;td&gt;${evidence}&lt;/td&gt;&lt;td&gt;${conclusion}&lt;/td&gt;`;
-        tbody.appendChild(row);
-      });
-      const count=root.querySelector(&#x27;#claim-count-v2&#x27;);
-      root.querySelectorAll(&#x27;.claim-filter&#x27;).forEach((button)=&gt;button.addEventListener(&#x27;click&#x27;,()=&gt;{
-        const filter=button.dataset.filter; let visible=0;
-        root.querySelectorAll(&#x27;.claim-filter&#x27;).forEach((item)=&gt;{const active=item===button; item.setAttribute(&#x27;aria-pressed&#x27;,String(active)); item.classList.toggle(&#x27;btn-primary&#x27;,active);});
-        tbody.querySelectorAll(&#x27;tr&#x27;).forEach((row)=&gt;{const show=filter===&#x27;all&#x27;||row.dataset.levels.includes(filter); row.hidden=!show; if(show)visible+=1;});
-        count.textContent=`显示 ${visible} 条`;
-      }));
+      root.querySelector(&#x27;#node-count&#x27;).textContent=String(nodes.length);
+      root.querySelector(&#x27;#edge-count&#x27;).textContent=String(links.length);
+      let width=0,height=0,simulation,selected=&#x27;account-hold&#x27;;
+      const centers={};
+      const clusterOrder=[&#x27;identity&#x27;,&#x27;telemetry&#x27;,&#x27;device&#x27;,&#x27;auth&#x27;,&#x27;product&#x27;,&#x27;external&#x27;];
 
-      const saved=window.openai?.widgetState?.modelContent?.selectedNode;
-      const initial=saved&amp;&amp;details[saved]?saved:&#x27;identity-graph&#x27;;
-      requestAnimationFrame(()=&gt;{drawEdges();selectNode(initial,false);});
-      new ResizeObserver(()=&gt;drawEdges()).observe(canvas);
-      window.addEventListener(&#x27;openai:set_globals&#x27;,(event)=&gt;{const value=event.detail?.globals?.widgetState?.modelContent?.selectedNode;if(value&amp;&amp;details[value])selectNode(value,false);});
+      const linkSel=linkLayer.selectAll(&#x27;path&#x27;).data(links).join(&#x27;path&#x27;).attr(&#x27;class&#x27;,d=&gt;`link ${d.kind}`).attr(&#x27;marker-end&#x27;,d=&gt;`url(#rel-arrow-${d.kind})`);
+      const labelSel=labelLayer.selectAll(&#x27;text&#x27;).data(links).join(&#x27;text&#x27;).attr(&#x27;class&#x27;,&#x27;link-label&#x27;).text(d=&gt;d.label);
+      const buttons=nodeLayer.selectAll(&#x27;button&#x27;).data(nodes).join(&#x27;button&#x27;)
+        .attr(&#x27;type&#x27;,&#x27;button&#x27;).attr(&#x27;class&#x27;,d=&gt;`graph-node group-${d.group} cursor-interaction`).attr(&#x27;aria-pressed&#x27;,&#x27;false&#x27;)
+        .html(d=&gt;`&lt;code&gt;${d.label}&lt;/code&gt;&lt;small&gt;${d.sub}&lt;/small&gt;`)
+        .on(&#x27;click&#x27;,(event,d)=&gt;{event.stopPropagation();selectNode(d.id,true);});
+
+      function computeCenters(){
+        const compact=width&lt;760;
+        const points=compact?{
+          identity:[.23,.20],telemetry:[.22,.54],device:[.28,.82],auth:[.77,.22],product:[.78,.53],external:[.72,.82]
+        }:{
+          identity:[.20,.25],telemetry:[.22,.72],device:[.63,.78],auth:[.78,.25],product:[.52,.24],external:[.52,.60]
+        };
+        clusterOrder.forEach(g=&gt;centers[g]=[points[g][0]*width,points[g][1]*height]);
+      }
+      function curve(d){
+        const sx=d.source.x,sy=d.source.y,tx=d.target.x,ty=d.target.y;
+        const dx=tx-sx,dy=ty-sy,dist=Math.max(1,Math.hypot(dx,dy));
+        const bend=((Number(d.id.slice(1))%5)-2)*7;
+        const mx=(sx+tx)/2-(dy/dist)*bend,my=(sy+ty)/2+(dx/dist)*bend;
+        return `M${sx},${sy} Q${mx},${my} ${tx},${ty}`;
+      }
+      function ticked(){
+        const pad=72;
+        nodes.forEach(d=&gt;{d.x=Math.max(pad,Math.min(width-pad,d.x));d.y=Math.max(32,Math.min(height-32,d.y));});
+        linkSel.attr(&#x27;d&#x27;,curve);
+        labelSel.attr(&#x27;x&#x27;,d=&gt;(d.source.x+d.target.x)/2).attr(&#x27;y&#x27;,d=&gt;(d.source.y+d.target.y)/2-7);
+        buttons.style(&#x27;left&#x27;,d=&gt;`${d.x}px`).style(&#x27;top&#x27;,d=&gt;`${d.y}px`);
+      }
+      function startSimulation(reheat=true){
+        computeCenters();
+        if(simulation)simulation.stop();
+        simulation=d3.forceSimulation(nodes)
+          .force(&#x27;link&#x27;,d3.forceLink(links).id(d=&gt;d.id).distance(d=&gt;d.kind===&#x27;post&#x27;?105:88).strength(.34))
+          .force(&#x27;charge&#x27;,d3.forceManyBody().strength(-250))
+          .force(&#x27;collide&#x27;,d3.forceCollide().radius(width&lt;760?64:74).iterations(2))
+          .force(&#x27;x&#x27;,d3.forceX(d=&gt;centers[d.group][0]).strength(.105))
+          .force(&#x27;y&#x27;,d3.forceY(d=&gt;centers[d.group][1]).strength(.105))
+          .alphaDecay(.035).velocityDecay(.34).on(&#x27;tick&#x27;,ticked);
+        buttons.call(d3.drag().on(&#x27;start&#x27;,(event,d)=&gt;{if(!event.active)simulation.alphaTarget(.25).restart();d.fx=d.x;d.fy=d.y;})
+          .on(&#x27;drag&#x27;,(event,d)=&gt;{d.fx=Math.max(68,Math.min(width-68,event.x));d.fy=Math.max(28,Math.min(height-28,event.y));})
+          .on(&#x27;end&#x27;,(event,d)=&gt;{if(!event.active)simulation.alphaTarget(0);d.fx=null;d.fy=null;}));
+        if(reheat)simulation.alpha(1).restart();
+      }
+      function nodeId(value){return typeof value===&#x27;string&#x27;?value:value.id;}
+      function traceSet(id){
+        const mode=depthSelect.value;
+        const nodeSet=new Set([id]),edgeSet=new Set();
+        if(mode===&#x27;direct&#x27;){
+          links.forEach(l=&gt;{const s=nodeId(l.source),t=nodeId(l.target);if(s===id||t===id){nodeSet.add(s);nodeSet.add(t);edgeSet.add(l.id);}});
+          return {nodeSet,edgeSet};
+        }
+        const queue=[id];
+        while(queue.length){
+          const cur=queue.shift();
+          links.forEach(l=&gt;{const s=nodeId(l.source),t=nodeId(l.target);if(s===cur&amp;&amp;!nodeSet.has(t)){nodeSet.add(t);queue.push(t);}if(t===cur&amp;&amp;!nodeSet.has(s)){nodeSet.add(s);queue.push(s);}});
+        }
+        links.forEach(l=&gt;{if(nodeSet.has(nodeId(l.source))&amp;&amp;nodeSet.has(nodeId(l.target)))edgeSet.add(l.id);});
+        return {nodeSet,edgeSet};
+      }
+      function edgeRow(link,incoming){
+        const other=incoming?nodeId(link.source):nodeId(link.target);const node=nodes.find(n=&gt;n.id===other);
+        const row=document.createElement(&#x27;div&#x27;);row.className=&#x27;edge-row&#x27;;
+        row.innerHTML=`&lt;span class=&quot;edge-kind&quot;&gt;${link.label}&lt;/span&gt;&lt;span&gt;&lt;code&gt;${node.label}&lt;/code&gt; · ${node.sub}&lt;/span&gt;`;return row;
+      }
+      function fillList(container,items,incoming){
+        container.replaceChildren();
+        if(!items.length){const empty=document.createElement(&#x27;div&#x27;);empty.className=&#x27;empty&#x27;;empty.textContent=&#x27;无&#x27;;container.appendChild(empty);return;}
+        items.forEach(item=&gt;container.appendChild(edgeRow(item,incoming)));
+      }
+      function selectNode(id,save){
+        selected=id;
+        const node=nodes.find(n=&gt;n.id===id);const traced=traceSet(id);
+        buttons.attr(&#x27;aria-pressed&#x27;,d=&gt;String(d.id===id)).classed(&#x27;is-active&#x27;,d=&gt;traced.nodeSet.has(d.id)).classed(&#x27;is-dim&#x27;,d=&gt;!traced.nodeSet.has(d.id));
+        linkSel.classed(&#x27;is-active&#x27;,d=&gt;traced.edgeSet.has(d.id)).classed(&#x27;is-dim&#x27;,d=&gt;!traced.edgeSet.has(d.id));
+        labelSel.classed(&#x27;is-active&#x27;,d=&gt;{const s=nodeId(d.source),t=nodeId(d.target);return s===id||t===id;});
+        detailTitle.innerHTML=`&lt;code&gt;${node.label}&lt;/code&gt; · ${node.sub}`;detailDesc.textContent=node.desc;detailEvidence.textContent=`证据：${node.evidence}`;
+        fillList(incomingList,links.filter(l=&gt;nodeId(l.target)===id),true);fillList(outgoingList,links.filter(l=&gt;nodeId(l.source)===id),false);
+        if(save&amp;&amp;window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{selectedNode:id,traceDepth:depthSelect.value},privateContent:null}).catch(()=&gt;{});
+      }
+      function resize(){
+        width=network.clientWidth;height=Math.max(width&lt;760?760:680,Math.min(820,width*.78));network.style.height=`${height}px`;svg.attr(&#x27;viewBox&#x27;,`0 0 ${width} ${height}`);
+        computeCenters();
+        clusterLayer.selectAll(&#x27;text&#x27;).data(clusterOrder).join(&#x27;text&#x27;).attr(&#x27;class&#x27;,&#x27;cluster-label&#x27;).attr(&#x27;x&#x27;,d=&gt;centers[d][0]).attr(&#x27;y&#x27;,d=&gt;Math.max(18,centers[d][1]-110)).text(d=&gt;groupNames[d]);
+        startSimulation(false);selectNode(selected,false);
+      }
+      depthSelect.addEventListener(&#x27;change&#x27;,()=&gt;selectNode(selected,true));
+      root.querySelector(&#x27;#reset-layout&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{nodes.forEach(d=&gt;{d.fx=null;d.fy=null;d.x=centers[d.group][0]+(Math.random()-.5)*80;d.y=centers[d.group][1]+(Math.random()-.5)*80;});startSimulation(true);selectNode(selected,false);});
+      network.addEventListener(&#x27;click&#x27;,()=&gt;{buttons.classed(&#x27;is-active&#x27;,true).classed(&#x27;is-dim&#x27;,false).attr(&#x27;aria-pressed&#x27;,&#x27;false&#x27;);linkSel.classed(&#x27;is-active&#x27;,false).classed(&#x27;is-dim&#x27;,false);labelSel.classed(&#x27;is-active&#x27;,false);});
+      const saved=window.openai?.widgetState?.modelContent;
+      if(saved?.traceDepth===&#x27;direct&#x27;||saved?.traceDepth===&#x27;all&#x27;)depthSelect.value=saved.traceDepth;
+      if(saved?.selectedNode&amp;&amp;nodes.some(n=&gt;n.id===saved.selectedNode))selected=saved.selectedNode;
+      resize();
+      new ResizeObserver(resize).observe(network);
+      window.addEventListener(&#x27;openai:set_globals&#x27;,event=&gt;{const state=event.detail?.globals?.widgetState?.modelContent;if(state?.traceDepth===&#x27;direct&#x27;||state?.traceDepth===&#x27;all&#x27;)depthSelect.value=state.traceDepth;if(state?.selectedNode&amp;&amp;nodes.some(n=&gt;n.id===state.selectedNode))selectNode(state.selectedNode,false);});
     })();
   &lt;/script&gt;
 &lt;/div&gt;
